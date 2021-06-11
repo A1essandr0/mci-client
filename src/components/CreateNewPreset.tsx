@@ -1,5 +1,7 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogContentText, DialogActions, Button, TextField } from '@material-ui/core';
+import { createPreset } from '../code/presets';
+import { auth } from '../code/auth';
 
 
 export class CreateNewPreset extends React.Component {
@@ -8,18 +10,22 @@ export class CreateNewPreset extends React.Component {
         this.state = {
             presetName: '',
             presetDescription: '', 
-            bgColor: null,
-            textColor: null,
-            backColor: null,
-            emptyColor: null,
-            isPublic: false,
+            bgColor: '#000000', // TODO стартовые цвета
+            textColor: '#000000',
+            backColor: '#000000',
+            emptyColor: '#000000',
 
-            cardValues: [],
-            cardInfos: [],
+            isPlayableByAll: true,
+            isViewableByAll: true,
+            isViewableByUsers: true,
+
+            cardValues: '',
+            cardInfos: '',
 
             error: ''
         }
 
+        this.handleToggleChange = this.handleToggleChange.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.clickSubmit = this.clickSubmit.bind(this);
     }
@@ -30,8 +36,70 @@ export class CreateNewPreset extends React.Component {
         }
     }
 
-    clickSubmit() {
+    handleToggleChange(field) {
+        return (event) => {
+            this.setState({ [field]: !this.state[field] })
+        }
+    }
 
+    clickSubmit() {
+        const jwt = auth.isAuthenticated();
+
+        let newPreset = {
+            presetName: this.state['presetName'] || undefined,
+            presetDescription: this.state['presetDescription'] || undefined, 
+            bgColor: this.state['bgColor'],
+            textColor: this.state['textColor'],
+            backColor: this.state['backColor'],
+            emptyColor: this.state['emptyColor'],
+
+            isPlayableByAll: this.state['isPlayableByAll'],
+            isViewableByAll: this.state['isViewableByAll'],
+            isViewableByUsers: this.state['isViewableByUsers'],
+
+            cardValues: this.state['cardValues'] || undefined,
+            cardInfos: this.state['cardInfos'] || undefined
+        }
+
+        let fieldsAreCorrect = ['presetName','presetDescription','cardValues','cardInfos']
+            .map(field => newPreset[field])
+            .every(field => field)
+        if (!fieldsAreCorrect) {
+            this.setState({
+                error: 'All text fields are required'
+            })
+            return;
+        }
+        let [valuesSplitted, infoSplitted] = [
+            this.state['cardValues'].split(';'),
+            this.state['cardInfos'].split(';')
+        ]
+        if (valuesSplitted.length % 2 == 1) {
+            this.setState({
+                error: 'To form pairs there should be even number of cards'
+            })
+            return;
+        }
+        if (valuesSplitted.length != infoSplitted.length) {
+            this.setState({
+                error: 'Card values and card descriptions should correspond each other'
+            })
+            return;            
+        }
+
+        newPreset.cardValues = valuesSplitted;
+        newPreset.cardInfos = infoSplitted;
+
+        createPreset(newPreset, { t: jwt.token}).then(
+            (data: any) => {
+                if (!data || data.error) this.setState({error: data.error})
+                else {
+                    this.setState({error: ""});
+                    this.props['toggleCreatePreset'](false);
+                    alert(`Preset named '${newPreset.presetName}' created`);                    
+                }
+            }
+        )
     }
 
 
@@ -45,12 +113,78 @@ export class CreateNewPreset extends React.Component {
                                 Create new preset
                             </DialogContentText>
 
-                            <TextField />
+                            <TextField id="presetName" value={this.state['presetName']} label="Preset name"
+                                required margin="normal"
+                                onChange={this.handleChange('presetName')}
+                            />
+                            <TextField id="presetDescription" value={this.state['presetDescription']} label="Preset description"
+                                required margin="normal"
+                                onChange={this.handleChange('presetDescription')}
+                            />
+
+                            {/* TODO более удобный интерфейс с полем для каждой пары слов */}
+                            <TextField id="cardValues" value={this.state['cardValues']} label="Words on cards"
+                                required fullWidth variant="outlined" margin="normal" multiline rows={4}
+                                placeholder="Enter card values separated by ';' "
+                                onChange={this.handleChange('cardValues')}
+                            />
+                            <TextField id="cardInfos" value={this.state['cardInfos']} label="Card descriptions"
+                                required fullWidth variant="outlined" margin="normal" multiline rows={4}
+                                placeholder="Enter card descriptions separated by ';' "
+                                onChange={this.handleChange('cardInfos')}
+                            />
+
+
+                            <div className="dialogMenuBox">
+                                <div className="dialogMenuItem">
+                                    <input type="color" id="bgColor" value={this.state['bgColor']}
+                                            onChange={this.handleChange('bgColor')}
+                                     />&nbsp;Background color
+                                </div>
+                                <div className="dialogMenuItem">
+                                    <input type="color" id="textColor" value={this.state['textColor']}
+                                            onChange={this.handleChange('textColor')}
+                                    />&nbsp;Text color
+                                </div>
+
+                                <div className="dialogMenuItem">
+                                    <input type="color" id="backColor" value={this.state['backColor']}
+                                            onChange={this.handleChange('backColor')}
+                                    />&nbsp;Back color
+                                </div>
+                                <div className="dialogMenuItem">
+                                    <input type="color" id="emptyColor" value={this.state['emptyColor']}
+                                            onChange={this.handleChange('emptyColor')}
+                                    />&nbsp;Empty color
+                                </div>
+                            </div>
+
+
+                            <div className="dialogMenuBox">
+                                <div className="dialogMenuItem">
+                                    <input type="checkbox" checked={this.state['isPlayableByAll']}
+                                            onChange={this.handleToggleChange('isPlayableByAll')}
+                                    />&nbsp;Playable by everyone
+                                </div>
+                                <div className="dialogMenuItem">
+                                    <input type="checkbox" checked={this.state['isViewableByAll']}
+                                            onChange={this.handleToggleChange('isViewableByAll')}
+                                    />&nbsp;Viewable by everyone
+                                </div>
+                                <div className="dialogMenuItem">
+                                    <input type="checkbox" checked={this.state['isViewableByUsers']}
+                                            onChange={this.handleToggleChange('isViewableByUsers')}
+                                    />&nbsp;Viewable by any logged in user
+                                </div>
+                            </div>
+
+
                             {this.state['error'] && <div>{this.state['error']}</div>}
                         </DialogContent>
 
                         <DialogActions>
-
+                            <Button onClick={this.clickSubmit} color="primary">Create preset</Button>
+                            <Button onClick={()=>{this.props['toggleCreatePreset'](false)}}>Close</Button>
                         </DialogActions>
             </Dialog>
         )

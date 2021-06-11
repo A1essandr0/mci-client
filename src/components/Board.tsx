@@ -60,8 +60,6 @@ export const Board = function(props) {
                     })                
                 }
 
-                {/* TODO delete preset button */}
-
             </div>
         )
 

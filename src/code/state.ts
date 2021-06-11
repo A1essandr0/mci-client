@@ -13,7 +13,10 @@ export interface IPreset {
     cardBack: string,
     cardEmpty: string,
     description: string,
-    cards: ICard[]
+    cards: ICard[],
+    playableByAll: number,
+    viewableByAll: number,
+    viewableByUsers: number
 }
 
 
@@ -27,7 +30,8 @@ export function createGlobalState(parentComponent) {
 
         gameInProgress: false,
 
-        availablePresets: [],
+        playablePresets: [],
+        viewablePresets: [],
         currentPlayedPreset: "",
         currentViewedPreset: "",
 
@@ -55,13 +59,13 @@ export function createGlobalState(parentComponent) {
         }.bind(parentComponent),
 
         setPlayedPreset: function(presetName: string) {
-            let preset = this.state.availablePresets
+            let preset = this.state.playablePresets
                 .filter(item => item.presetName === presetName)[0]
             this.setState({ currentPlayedPreset: preset})
         }.bind(parentComponent),
 
         setViewedPreset: function(presetName: string) {
-            let preset = this.state.availablePresets
+            let preset = this.state.viewablePresets
                 .filter(item => item.presetName === presetName)[0]            
             this.setState({ currentViewedPreset: preset})
         }.bind(parentComponent),

@@ -31,7 +31,6 @@ const auth = {
 
 const signinRequest = function(user) {
     return fetch(auth_signin_url, {
-        mode: 'cors', // UNSAFE, development mode only!
         method: 'POST',
         headers: {
             'Accept': 'application/json',

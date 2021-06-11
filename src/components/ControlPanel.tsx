@@ -35,7 +35,7 @@ export const ControlPanel = function(props) {
                             props.setPlayedPreset(event.target.value)
                         }}
                     >
-                        {props.availablePresets.map(
+                        {props.playablePresets.map(
                             (item, reactKey) => <MenuItem key={reactKey} value={item.presetName}>{item.presetName}</MenuItem>
                         )}
                     </Select>
@@ -145,13 +145,11 @@ export const ControlPanel = function(props) {
                             props.setViewedPreset(event.target.value)
                         }}
                     >
-                        {props.availablePresets.map(
+                        {props.viewablePresets.map(
                             (item, reactKey) => <MenuItem key={reactKey} value={item.presetName}>{item.presetName}</MenuItem>
                         )}
                     </Select>
                 </FormControl>
-                
-                {/* TODO refresh button */}
 
                 {auth.isAuthenticated() && <div className="startButton">
                     <BlueButton disabled={props.gameInProgress} variant="contained" color="secondary"

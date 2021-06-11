@@ -6,6 +6,7 @@ import { Signin } from './Signin';
 import { Game } from './Game';
 
 import { createGlobalState, IPreset } from '../code/state';
+import { auth } from '../code/auth';
 import { getPresets } from "../code/presets";
 
 
@@ -16,18 +17,24 @@ class GeneralLayout extends React.Component {
     }
 
     componentDidMount() {
-        getPresets().then((data) => {
+        let user = auth.isAuthenticated().user;
+        getPresets(user && user.id).then((data) => {
             if (data.error) console.log(data.error)
             else {
-                // TODO две группы, playable / viewable
-                let presetsData: IPreset[] = data;
-                let currentPlayed: IPreset = data[0];
-                let currentViewed: IPreset = data[0];
+                let playablePresetsData: IPreset[] = data.filter(
+                    (item: IPreset) => item.playableByAll || user.id === item.owner
+                );
+                let viewablePresetsData: IPreset[] = data.filter(
+                    (item: IPreset) => item.viewableByAll || item.viewableByUsers && user
+                );
+                // console.log('playable', playablePresetsData);
+                // console.info('viewable', viewablePresetsData);
 
                 this.setState({
-                    availablePresets: presetsData,
-                    currentPlayedPreset: currentPlayed,
-                    currentViewedPreset: currentViewed
+                    playablePresets: playablePresetsData,
+                    viewablePresets: viewablePresetsData,
+                    currentPlayedPreset: playablePresetsData[0],
+                    currentViewedPreset: viewablePresetsData[0]
                 })
             }
         })

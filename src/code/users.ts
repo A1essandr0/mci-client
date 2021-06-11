@@ -3,7 +3,6 @@ import { create_user_url, get_users_url } from './urls'
 
 const createUser = function(user) {
     return fetch(create_user_url, {
-        mode: 'cors', // UNSAFE, development mode only!
         method: 'POST',
         headers: {
             'Accept': 'application/json',

@@ -114,3 +114,23 @@
     align-self: flex-end;
     padding-right: 16px;
 }
+
+
+.dialogMenuBox {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.dialogMenuItem {
+    padding-left: 15px;
+    padding-right: 5px;
+}
+.dialogMenuFile {
+    max-width: 40%;
+}
+.dialogMenuFileText {
+    max-width: 20%;
+}
