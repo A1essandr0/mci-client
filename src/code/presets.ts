@@ -24,11 +24,15 @@ const createPreset = function(newPreset, credentials) {
     ).catch((err) => console.log(err))
 }
 
-const uploadPreset = function(uploadedPreset, uploadedPresetFiles, credentials) {
+const uploadPreset = function(uploadedPreset, uploadedPresetFiles, uploadedBackFiles, credentials) {
     // data has to be sent as FormData object
     let uploadedPresetFinal = uploadedPresetFiles;
     for (let [key, value] of Object.entries(uploadedPreset))
         uploadedPresetFinal.set(key, value)
+    
+    for (let [key, value] of uploadedBackFiles.entries()) 
+        uploadedPresetFinal.set(key, value)
+
 
     return fetch(upload_preset_url, {
         method: 'POST',

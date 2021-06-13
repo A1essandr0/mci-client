@@ -1,8 +1,11 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogContentText, DialogActions, Button, TextField } from '@material-ui/core';
+import { Input, Dialog, DialogContent, DialogContentText, DialogActions, Button, TextField } from '@material-ui/core';
 import { UploadPresetFile } from './UploadPresetFile';
 import { uploadPreset } from '../code/presets';
 import { auth } from '../code/auth';
+
+
+const maxCardPairNum = 10;
 
 
 export class UploadPreset extends React.Component {
@@ -16,10 +19,9 @@ export class UploadPreset extends React.Component {
             isViewableByAll: true,
             isViewableByUsers: true,
 
-            cardPairsNum: 4,
+            cardPairsNum: 5,
             cardFiles: new FormData(),
-            backFile: null,
-            emptyFile: null,
+            backFiles: new FormData(),
             
             error: ''
         }
@@ -28,6 +30,8 @@ export class UploadPreset extends React.Component {
         this.handleToggleChange = this.handleToggleChange.bind(this);
         this.handleChangeNumberOfPairs = this.handleChangeNumberOfPairs.bind(this);
         this.handleFileSelection = this.handleFileSelection.bind(this);
+        this.handleBackFileSelection = this.handleBackFileSelection.bind(this);
+
         this.clickSubmit = this.clickSubmit.bind(this);
     }
 
@@ -46,7 +50,7 @@ export class UploadPreset extends React.Component {
     handleChangeNumberOfPairs(num) {
         return (event) => {
             if (this.state['cardPairsNum'] === 0 && num === -1 ||
-                    this.state['cardPairsNum'] === 5 && num === 1)
+                    this.state['cardPairsNum'] === maxCardPairNum && num === 1)
                 num = 0;
             this.setState({ cardPairsNum: this.state['cardPairsNum'] + num})
         }
@@ -61,6 +65,12 @@ export class UploadPreset extends React.Component {
         }
     }
 
+    handleBackFileSelection(fileField) {
+        return (event) => {
+            this.state['backFiles'].set(fileField, event.target.files[0])
+        }
+    }
+
 
     clickSubmit() {
         const jwt = auth.isAuthenticated();
@@ -72,9 +82,6 @@ export class UploadPreset extends React.Component {
             isPlayableByAll: this.state['isPlayableByAll'],
             isViewableByAll: this.state['isViewableByAll'],
             isViewableByUsers: this.state['isViewableByUsers'],
-
-            backFile: this.state['backFile'] || undefined,
-            emptyFile: this.state['emptyFile'] || undefined,
         };
 
         let fieldsAreCorrect = ['presetName','presetDescription']
@@ -91,7 +98,7 @@ export class UploadPreset extends React.Component {
         // checking whether file list is not empty
         // and whether pairs are formed correctly
         let fileListIsCorrect = !uploadedPresetFiles.entries().next().done && 
-            ([1,2,3,4,5].map(
+            ([1,2,3,4,5,6,7,8,9,10].map(
                     i => uploadedPresetFiles.has(`imgFile${i}one`) && uploadedPresetFiles.has(`imgFile${i}two`) ||
                         (!uploadedPresetFiles.has(`imgFile${i}one`) && !uploadedPresetFiles.has(`imgFile${i}two`))
                 ).every(condition => condition)
@@ -103,13 +110,19 @@ export class UploadPreset extends React.Component {
             })
             return;
         }
-                
+        
+        let uploadedBackFiles = this.state['backFiles'];
 
-        uploadPreset(uploadedPreset, uploadedPresetFiles, {t: jwt.token}).then(
+
+        uploadPreset(uploadedPreset, uploadedPresetFiles, uploadedBackFiles, {t: jwt.token}).then(
             (data: any) => {
                 if (!data || data.error) this.setState({error: data.error})
                 else {
-                    this.setState({error: ""});
+                    this.setState({
+                        error: "",
+                        cardFiles: new FormData(),
+                        backFiles: new FormData()                        
+                    });
                     this.props['toggleUploadPreset'](false);
                     alert(`Preset named '${uploadedPreset.presetName}' uploaded`);
                 }
@@ -124,7 +137,8 @@ export class UploadPreset extends React.Component {
                     onClose={ () => {
                         this.props['toggleUploadPreset'](false);
                         this.setState({
-                            cardFiles: new FormData()
+                            cardFiles: new FormData(),
+                            backFiles: new FormData()
                         })
                     }}
             >
@@ -182,7 +196,19 @@ export class UploadPreset extends React.Component {
                     </div>
 
 
-                    {/* TODO card backs                             */}
+                    <div className="dialogMenuBox">
+                        <Input className="dialogMenuFile" inputProps={{ 
+                            accept: "image/gif, image/png, image/jpeg, image/jpg",
+                            type: "file"}}
+                            onChange={this.handleBackFileSelection('backImg')}
+                        />
+                        <DialogContentText>Card back (opt.)</DialogContentText>
+                        <Input className="dialogMenuFile" inputProps={{
+                            accept: "image/gif, image/png, image/jpeg, image/jpg",
+                            type: "file"}}
+                            onChange={this.handleBackFileSelection('emptyImg')}
+                        /><DialogContentText>Empty card (opt.)</DialogContentText>
+                    </div>
 
 
                     {this.state['error'] && <div>{this.state['error']}</div>} 
@@ -195,8 +221,9 @@ export class UploadPreset extends React.Component {
                     <Button onClick={ () => {
                                 this.props['toggleUploadPreset'](false);
                                 this.setState({
-                                    cardFiles: new FormData()
-                                })        
+                                    cardFiles: new FormData(),
+                                    backFiles: new FormData()
+                                })
                             }}
                     >Close</Button>
                 </DialogActions>
