@@ -2,23 +2,13 @@ import React from 'react';
 import { 
     ListItem, Button, FormControl, InputLabel, Select, MenuItem, Typography
 } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { blue } from '@material-ui/core/colors';
 import { auth } from '../code/auth';
-import { sleep } from '../code/lib';
+import { sleep, arrayRange } from '../code/lib';
 import { CreateNewPreset } from './CreateNewPreset';
 import { UploadPreset } from './UploadPreset';
+import { DeletePreset } from './DeletePreset';
+import { BlueButton, RedButton } from './ColoredButtons';
 
-
-const BlueButton = withStyles((theme) => ({
-    root: {
-      color: theme.palette.getContrastText(blue[500]),
-      backgroundColor: blue[500],
-      '&:hover': {
-        backgroundColor: blue[700],
-      },
-    },
-  }))(Button);
 
 export const ControlPanel = function(props) {
     // console.log('control panel props', props);
@@ -52,7 +42,7 @@ export const ControlPanel = function(props) {
                                 props.setGlobalStateParameter('gameStartingDelay', event.target.value)
                             }}
                         >
-                            {[1,2,3,4,5].map(
+                            {arrayRange(6, 1).map(
                                 (t, reactKey) => <MenuItem key={reactKey} value={t}>{t} sec</MenuItem>
                             )}
                         </Select>
@@ -88,7 +78,7 @@ export const ControlPanel = function(props) {
                                 props.setGlobalStateParameter('gameStartingScore', event.target.value)
                             }}
                         >
-                            {[3,4,5,6,7,8,9].map(
+                            {arrayRange(7, 3).map(
                                 (t, reactKey) => <MenuItem key={reactKey} value={t}>{t}</MenuItem>
                             )}
                         </Select>
@@ -132,6 +122,11 @@ export const ControlPanel = function(props) {
             toggleUploadPreset: props.toggleUploadPreset,
             uploadPresetActive: props.uploadPresetActive
         };
+        let propsToDeletePreset = {
+            presetId: props.currentViewedPreset.presetId,
+            toggleDeletePreset: props.toggleDeletePreset,
+            deletePresetActive: props.deletePresetActive            
+        }
 
         return (
             <div className="controlPanel">
@@ -152,22 +147,29 @@ export const ControlPanel = function(props) {
                 </FormControl>
 
                 {auth.isAuthenticated() && <div className="startButton">
-                    <BlueButton disabled={props.gameInProgress} variant="contained" color="secondary"
+                    <BlueButton disabled={props.gameInProgress} variant="contained"
                             onClick={ () => { props.toggleUploadPreset(true) }}
                     >Upload</BlueButton>
                     </div>}
                 {auth.isAuthenticated() && <div className="startButton">
-                    <BlueButton disabled={props.gameInProgress} variant="contained" color="secondary"
+                    <BlueButton disabled={props.gameInProgress} variant="contained"
                             onClick={ () => { props.toggleCreatePreset(true) }}
                     >Create</BlueButton>
                     </div>}
                 {!auth.isAuthenticated() && 
                     <div className="startButton"><Typography>Sign in to upload or create new presets</Typography></div>}
 
+                {auth.isAuthenticated() && <div className="startButton">
+                    <RedButton variant="contained" disabled={props.gameInProgress}
+                            onClick={()=>{ props.toggleDeletePreset(true) }}
+                    >Delete</RedButton>
+                </div>}
 
                 <CreateNewPreset {...propsToCreatePreset} />
 
                 <UploadPreset {...propsToUploadPreset} />
+
+                <DeletePreset {...propsToDeletePreset} />
 
             </div>
         )

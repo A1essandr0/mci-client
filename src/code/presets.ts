@@ -45,13 +45,17 @@ const uploadPreset = function(uploadedPreset, uploadedPresetFiles, uploadedBackF
     ).catch((err) => console.log(err))
 }
 
-
-
-
-
 const deletePreset = function(presetId: number, credentials) {
-
-
+    return fetch(`${delete_preset_url}/${presetId}`, {
+        method: 'DELETE',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + credentials.t
+        }
+    }).then((response) => {
+        return response.json()  
+    }).catch((err) => console.log(err))
 }
 
 

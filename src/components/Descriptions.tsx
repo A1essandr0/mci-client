@@ -8,11 +8,10 @@ export const Descriptions = function(props) {
         if (props.currentView === "presets")
             return (
                 <div className="infoPanelDescriptions">
-                    Preset info: {props.currentViewedPreset.description}
+                    Preset name:  {props.currentViewedPreset.presetName}<br /><br />
+                    Preset info: {props.currentViewedPreset.description}<br /><br />
+                    Owner: {props.currentViewedPreset.ownerName}
                 </div>
-
-                // TODO delete preset button
-
             )
         
         else return (

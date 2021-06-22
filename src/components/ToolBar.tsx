@@ -1,19 +1,7 @@
 import React from 'react';
-import { Button, Typography } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { teal } from '@material-ui/core/colors';
+import { Typography } from '@material-ui/core';
 import { auth } from '../code/auth';
-
-
-const TealButton = withStyles((theme) => ({
-    root: {
-      color: theme.palette.getContrastText(teal[500]),
-      backgroundColor: teal[500],
-      '&:hover': {
-        backgroundColor: teal[700],
-      },
-    },
-  }))(Button);
+import { TealButton } from './ColoredButtons';
 
 
 export const ToolBar = function(props) {

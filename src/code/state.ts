@@ -27,6 +27,7 @@ export function createGlobalState(parentComponent) {
         signupActive: false,
         createPresetActive: false,
         uploadPresetActive: false,
+        deletePresetActive: false,
 
         gameInProgress: false,
 
@@ -52,6 +53,10 @@ export function createGlobalState(parentComponent) {
         toggleUploadPreset: function(value: boolean): void { 
             this.setState({ uploadPresetActive: value })
         }.bind(parentComponent),
+        toggleDeletePreset: function(value: boolean): void { 
+            this.setState({ deletePresetActive: value })
+        }.bind(parentComponent),
+
 
 
         setView: function(viewName: string) {
@@ -60,13 +65,13 @@ export function createGlobalState(parentComponent) {
 
         setPlayedPreset: function(presetName: string) {
             let preset = this.state.playablePresets
-                .filter(item => item.presetName === presetName)[0]
+                .filter(item => item.presetName === presetName)[0] // O(n) search
             this.setState({ currentPlayedPreset: preset})
         }.bind(parentComponent),
 
         setViewedPreset: function(presetName: string) {
             let preset = this.state.viewablePresets
-                .filter(item => item.presetName === presetName)[0]            
+                .filter(item => item.presetName === presetName)[0] // O(n) search
             this.setState({ currentViewedPreset: preset})
         }.bind(parentComponent),
 

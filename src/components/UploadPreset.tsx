@@ -3,6 +3,8 @@ import { Input, Dialog, DialogContent, DialogContentText, DialogActions, Button,
 import { UploadPresetFile } from './UploadPresetFile';
 import { uploadPreset } from '../code/presets';
 import { auth } from '../code/auth';
+import { arrayRange } from '../code/lib';
+import { BlueButton, RedButton } from './ColoredButtons';
 
 
 const maxCardPairNum = 10;
@@ -98,7 +100,7 @@ export class UploadPreset extends React.Component {
         // checking whether file list is not empty
         // and whether pairs are formed correctly
         let fileListIsCorrect = !uploadedPresetFiles.entries().next().done && 
-            ([1,2,3,4,5,6,7,8,9,10].map(
+            (arrayRange(maxCardPairNum, 1).map(
                     i => uploadedPresetFiles.has(`imgFile${i}one`) && uploadedPresetFiles.has(`imgFile${i}two`) ||
                         (!uploadedPresetFiles.has(`imgFile${i}one`) && !uploadedPresetFiles.has(`imgFile${i}two`))
                 ).every(condition => condition)
@@ -124,7 +126,7 @@ export class UploadPreset extends React.Component {
                         backFiles: new FormData()                        
                     });
                     this.props['toggleUploadPreset'](false);
-                    alert(`Preset named '${uploadedPreset.presetName}' uploaded`);
+                    alert(`Preset named '${uploadedPreset.presetName}' uploaded, refresh the page`);
                 }
             }
         )
@@ -168,12 +170,14 @@ export class UploadPreset extends React.Component {
                     )}
 
                     <div className="dialogMenuBox">
-                        <Button color="primary" variant="contained"
-                            onClick={this.handleChangeNumberOfPairs(1)}
-                        >+</Button>
-                        <Button color="secondary" variant="contained"
-                            onClick={this.handleChangeNumberOfPairs(-1)}
-                        >-</Button>
+                        <div className="dialogMenuItemRight">
+                            <BlueButton color="primary" variant="contained"
+                                onClick={this.handleChangeNumberOfPairs(1)}
+                            >+</BlueButton>
+                            <RedButton color="secondary" variant="contained"
+                                onClick={this.handleChangeNumberOfPairs(-1)}
+                            >-</RedButton>
+                        </div>
                     </div>
 
 
@@ -215,7 +219,6 @@ export class UploadPreset extends React.Component {
                 </DialogContent>
 
                 <DialogActions>
-                    {/* TODO причесать кпопки */}
                     <Button onClick={this.clickSubmit} color="primary">Upload preset</Button>
 
                     <Button onClick={ () => {

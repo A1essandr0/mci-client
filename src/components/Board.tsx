@@ -52,9 +52,6 @@ export const Board = function(props) {
     else if (props.currentView === "presets")
         return (
             <div className="presetEditView">
-                {/* TODO причесать  */}
-                {props.currentViewedPreset.presetName}
-                
                 {props.currentViewedPreset.cards && 
                     props.currentViewedPreset.cards.map((item, reactKey) => {
                         return <img key={reactKey} className="gameCell" src={`${server_url}${item.filename}`} />

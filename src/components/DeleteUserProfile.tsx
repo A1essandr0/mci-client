@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogContentText, DialogActions, Button, TextField } from '@material-ui/core';
+import { Dialog, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
 import { removeUser } from '../code/users';
 import { auth } from '../code/auth';
 
@@ -15,7 +15,7 @@ export class DeleteUserProfile extends React.Component {
     componentDidUpdate(prevProps) {
         if (this.props['userId'] !== prevProps['userId']) {
             let user = this.props['users']
-                .filter(item => item.id === this.props['userId'])
+                .filter(item => item.id === this.props['userId']) // O(n) search
                 [0];
             this.setState({
                 id: this.props['userId'],
@@ -43,9 +43,9 @@ export class DeleteUserProfile extends React.Component {
         return (
             <Dialog open={this.props['deleteDialogOpen']} onClose={()=>{this.props['toggleDeleteOpen'](false)}}>
                 <DialogContent>
-                    <DialogContentText>Delete account for {this.state['email']}?</DialogContentText>
+                    <DialogContentText>Delete account for {this.state['email']}? This can't be undone</DialogContentText>
+                    {this.state['error'] && <div>{this.state['error']}</div>}
                 </DialogContent>
-                {this.state['error'] && <div>{this.state['error']}</div>}
 
                 <DialogActions>
                         <Button onClick={this.clickSubmit} color="primary">Delete</Button>
