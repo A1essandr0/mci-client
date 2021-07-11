@@ -10,10 +10,12 @@ export class CreateNewPreset extends React.Component {
         this.state = {
             presetName: '',
             presetDescription: '', 
-            bgColor: '#000000', // TODO стартовые цвета
-            textColor: '#000000',
-            backColor: '#000000',
-            emptyColor: '#000000',
+            bgColorOne: '#008080',
+            bgColorTwo: '#00A0A0',
+            textColorOne: '#FFFFFF',
+            textColorTwo: '#FFFFFF',
+            backColor: '#FFA500',
+            emptyColor: '#FFFFFF',
 
             isPlayableByAll: true,
             isViewableByAll: true,
@@ -48,8 +50,10 @@ export class CreateNewPreset extends React.Component {
         let newPreset = {
             presetName: this.state['presetName'] || undefined,
             presetDescription: this.state['presetDescription'] || undefined, 
-            bgColor: this.state['bgColor'],
-            textColor: this.state['textColor'],
+            bgColorOne: this.state['bgColorOne'],
+            bgColorTwo: this.state['bgColorTwo'],
+            textColorOne: this.state['textColorOne'],
+            textColorTwo: this.state['textColorTwo'],
             backColor: this.state['backColor'],
             emptyColor: this.state['emptyColor'],
 
@@ -106,7 +110,7 @@ export class CreateNewPreset extends React.Component {
 
     render() {
         return (
-            <Dialog open={this.props['createPresetActive']} 
+            <Dialog open={this.props['createPresetActive']} maxWidth="xl"
                     onClose={()=>{this.props['toggleCreatePreset'](false)}}>
                         <DialogContent>
                             <DialogContentText>
@@ -137,14 +141,25 @@ export class CreateNewPreset extends React.Component {
 
                             <div className="dialogMenuBox">
                                 <div className="dialogMenuItem">
-                                    <input type="color" id="bgColor" value={this.state['bgColor']}
-                                            onChange={this.handleChange('bgColor')}
-                                     />&nbsp;Background color
+                                    <input type="color" id="bgColorOne" value={this.state['bgColorOne']}
+                                            onChange={this.handleChange('bgColorOne')}
+                                     />&nbsp;Background color one
                                 </div>
                                 <div className="dialogMenuItem">
-                                    <input type="color" id="textColor" value={this.state['textColor']}
-                                            onChange={this.handleChange('textColor')}
-                                    />&nbsp;Text color
+                                    <input type="color" id="bgColorTwo" value={this.state['bgColorTwo']}
+                                            onChange={this.handleChange('bgColorTwo')}
+                                     />&nbsp;Background color two
+                                </div>
+
+                                <div className="dialogMenuItem">
+                                    <input type="color" id="textColorOne" value={this.state['textColorOne']}
+                                            onChange={this.handleChange('textColorOne')}
+                                    />&nbsp;Text color one
+                                </div>
+                                <div className="dialogMenuItem">
+                                    <input type="color" id="textColorTwo" value={this.state['textColorTwo']}
+                                            onChange={this.handleChange('textColorTwo')}
+                                    />&nbsp;Text color two
                                 </div>
 
                                 <div className="dialogMenuItem">

@@ -135,7 +135,7 @@ export class UploadPreset extends React.Component {
 
     render() {
         return (
-            <Dialog open={this.props['uploadPresetActive']}
+            <Dialog open={this.props['uploadPresetActive']} maxWidth="xl"
                     onClose={ () => {
                         this.props['toggleUploadPreset'](false);
                         this.setState({
@@ -206,12 +206,14 @@ export class UploadPreset extends React.Component {
                             type: "file"}}
                             onChange={this.handleBackFileSelection('backImg')}
                         />
-                        <DialogContentText>Card back (opt.)</DialogContentText>
+                        <DialogContentText>Card back (optional)</DialogContentText>
+                    </div>
+                    <div className="dialogMenuBox">
                         <Input className="dialogMenuFile" inputProps={{
                             accept: "image/gif, image/png, image/jpeg, image/jpg",
                             type: "file"}}
                             onChange={this.handleBackFileSelection('emptyImg')}
-                        /><DialogContentText>Empty card (opt.)</DialogContentText>
+                        /><DialogContentText>Empty card (optional)</DialogContentText>
                     </div>
 
 

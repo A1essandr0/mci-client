@@ -19,7 +19,7 @@ export function UploadPresetFile(props) {
                 onChange={props.handleFileSelection('imgFile' + props.row + 'two')}
             />
 
-            <Input type="text" className="dialogMenuFileText" placeholder="info (opt.)"
+            <Input type="text" className="dialogMenuFileText" placeholder="info (optional)"
                     onChange={props.handleFileSelection('imgInfo' + props.row, true)}
             />
 
