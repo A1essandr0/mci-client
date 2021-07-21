@@ -27,8 +27,6 @@ class GeneralLayout extends React.Component {
                 let viewablePresetsData: IPreset[] = data.filter(
                     (item: IPreset) => item.viewableByAll || item.viewableByUsers && user
                 );
-                // console.log('playable', playablePresetsData);
-                // console.info('viewable', viewablePresetsData);
 
                 this.setState({
                     playablePresets: playablePresetsData,

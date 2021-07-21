@@ -43,34 +43,33 @@ export class Signin extends React.Component {
         )
     }
 
+
     render() {
         return (
-                    <Dialog open={this.props['signinActive']} onClose={()=>{this.props['toggleSignin'](false)}}>
-                        <DialogContent>
-                            <DialogContentText>
-                                Sign in
-                            </DialogContentText>
-                            <TextField id="email" type="email" label="Email" 
-                                        value={this.state['email']}
-                                        required fullWidth variant="outlined" margin="normal"
-                                        onChange={this.handleChange('email')}
-                            />
-                            
-                            <TextField id="password" type="password" label="Password"
-                                        value={this.state['password']}
-                                        required fullWidth variant="outlined" margin="normal"
-                                        onChange={this.handleChange('password')}
-                            />
-                            {this.state['error'] && <div>{this.state['error']}</div>}
-                            
-                        </DialogContent>
+            <Dialog open={this.props['signinActive']} onClose={()=>{this.props['toggleSignin'](false)}}>
+                <DialogContent>
+                    <DialogContentText>
+                        Sign in
+                    </DialogContentText>
+                    <TextField id="email" type="email" label="Email" 
+                                value={this.state['email']}
+                                required fullWidth variant="outlined" margin="normal"
+                                onChange={this.handleChange('email')}
+                    />
+                    
+                    <TextField id="password" type="password" label="Password"
+                                value={this.state['password']}
+                                required fullWidth variant="outlined" margin="normal"
+                                onChange={this.handleChange('password')}
+                    />
+                    {this.state['error'] && <div>{this.state['error']}</div>}                    
+                </DialogContent>
 
-                        <DialogActions>
-                            <Button onClick={this.clickSubmit}>Sign in</Button>
-                            <Button onClick={()=>{this.props['toggleSignin'](false)}}>Close</Button>
-                        </DialogActions>
-
-                    </Dialog>           
+                <DialogActions>
+                    <Button onClick={this.clickSubmit}>Sign in</Button>
+                    <Button onClick={()=>{this.props['toggleSignin'](false)}}>Close</Button>
+                </DialogActions>
+            </Dialog>
         )
     }
 }

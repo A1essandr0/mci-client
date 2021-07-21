@@ -1,6 +1,6 @@
 import React from 'react';
 import { 
-    ListItem, Button, FormControl, InputLabel, Select, MenuItem, Typography
+    ListItem, FormControl, InputLabel, Select, MenuItem, Typography
 } from '@material-ui/core';
 import { auth } from '../code/auth';
 import { sleep, arrayRange } from '../code/lib';
@@ -42,7 +42,7 @@ export const ControlPanel = function(props) {
                                 props.setGlobalStateParameter('gameStartingDelay', event.target.value)
                             }}
                         >
-                            {arrayRange(6, 1).map(
+                            {arrayRange(14, 2).map(
                                 (t, reactKey) => <MenuItem key={reactKey} value={t}>{t} sec</MenuItem>
                             )}
                         </Select>
@@ -78,7 +78,7 @@ export const ControlPanel = function(props) {
                                 props.setGlobalStateParameter('gameStartingScore', event.target.value)
                             }}
                         >
-                            {arrayRange(7, 3).map(
+                            {arrayRange(8, 3).map(
                                 (t, reactKey) => <MenuItem key={reactKey} value={t}>{t}</MenuItem>
                             )}
                         </Select>
@@ -159,6 +159,8 @@ export const ControlPanel = function(props) {
                 {!auth.isAuthenticated() && 
                     <div className="startButton"><Typography>Sign in to upload or create new presets</Typography></div>}
 
+                {/* TODO edit preset properties button */}
+
                 {auth.isAuthenticated() && <div className="startButton">
                     <RedButton variant="contained" disabled={props.gameInProgress}
                             onClick={()=>{ props.toggleDeletePreset(true) }}
@@ -169,13 +171,14 @@ export const ControlPanel = function(props) {
 
                 <UploadPreset {...propsToUploadPreset} />
 
+                {/* TODO EditPreset component */}
+
                 <DeletePreset {...propsToDeletePreset} />
 
             </div>
         )
     }
 
-
     else if (props.currentView === "users")
-        return <div className="controlPanel">Registered users</div>
+        return <div className="controlPanel">Manage user accounts</div>
 }

@@ -1,7 +1,6 @@
 import React from 'react';
+import { config } from '../code/config';
 
-
-const messageQueueLength = 7;
 
 export const Console = function(props) {
     if (!props.gameInProgress)
@@ -14,8 +13,8 @@ export const Console = function(props) {
     else return (
             <div className="infoPanelConsole">
                     {
-                    (props.messageQueue.length > messageQueueLength 
-                        ? props.messageQueue.slice(props.messageQueue.length - messageQueueLength)
+                    (props.messageQueue.length > config.messageQueueLength 
+                        ? props.messageQueue.slice(props.messageQueue.length - config.messageQueueLength)
                         : props.messageQueue
                     ).map(
                         (msg, reactKey) => <div key={reactKey} className="consoleMessage">{msg}</div>

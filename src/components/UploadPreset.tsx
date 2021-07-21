@@ -1,13 +1,11 @@
 import React from 'react';
 import { Input, Dialog, DialogContent, DialogContentText, DialogActions, Button, TextField } from '@material-ui/core';
+import { BlueButton, RedButton } from './ColoredButtons';
 import { UploadPresetFile } from './UploadPresetFile';
 import { uploadPreset } from '../code/presets';
 import { auth } from '../code/auth';
 import { arrayRange } from '../code/lib';
-import { BlueButton, RedButton } from './ColoredButtons';
-
-
-const maxCardPairNum = 10;
+import { config } from '../code/config';
 
 
 export class UploadPreset extends React.Component {
@@ -51,9 +49,9 @@ export class UploadPreset extends React.Component {
 
     handleChangeNumberOfPairs(num) {
         return (event) => {
-            if (this.state['cardPairsNum'] === 0 && num === -1 ||
-                    this.state['cardPairsNum'] === maxCardPairNum && num === 1)
-                num = 0;
+            if (this.state['cardPairsNum'] === 1 && num === -1 ||
+                    this.state['cardPairsNum'] === config.maxCardPairNum && num === 1)
+                return;
             this.setState({ cardPairsNum: this.state['cardPairsNum'] + num})
         }
     }
@@ -72,7 +70,6 @@ export class UploadPreset extends React.Component {
             this.state['backFiles'].set(fileField, event.target.files[0])
         }
     }
-
 
     clickSubmit() {
         const jwt = auth.isAuthenticated();
@@ -100,7 +97,7 @@ export class UploadPreset extends React.Component {
         // checking whether file list is not empty
         // and whether pairs are formed correctly
         let fileListIsCorrect = !uploadedPresetFiles.entries().next().done && 
-            (arrayRange(maxCardPairNum, 1).map(
+            (arrayRange(config.maxCardPairNum, 1).map(
                     i => uploadedPresetFiles.has(`imgFile${i}one`) && uploadedPresetFiles.has(`imgFile${i}two`) ||
                         (!uploadedPresetFiles.has(`imgFile${i}one`) && !uploadedPresetFiles.has(`imgFile${i}two`))
                 ).every(condition => condition)
@@ -114,8 +111,6 @@ export class UploadPreset extends React.Component {
         }
         
         let uploadedBackFiles = this.state['backFiles'];
-
-
         uploadPreset(uploadedPreset, uploadedPresetFiles, uploadedBackFiles, {t: jwt.token}).then(
             (data: any) => {
                 if (!data || data.error) this.setState({error: data.error})
@@ -158,7 +153,6 @@ export class UploadPreset extends React.Component {
                         onChange={this.handleChange('presetDescription')}
                     />
 
-
                     {Array.from(
                         {length: this.state['cardPairsNum']}, (a, b) => b+1
                     ).map(
@@ -180,7 +174,6 @@ export class UploadPreset extends React.Component {
                         </div>
                     </div>
 
-
                     <div className="dialogMenuBox">
                         <div className="dialogMenuItem">
                             <input type="checkbox" checked={this.state['isPlayableByAll']}
@@ -199,7 +192,6 @@ export class UploadPreset extends React.Component {
                         </div>
                     </div>
 
-
                     <div className="dialogMenuBox">
                         <Input className="dialogMenuFile" inputProps={{ 
                             accept: "image/gif, image/png, image/jpeg, image/jpg",
@@ -215,7 +207,6 @@ export class UploadPreset extends React.Component {
                             onChange={this.handleBackFileSelection('emptyImg')}
                         /><DialogContentText>Empty card (optional)</DialogContentText>
                     </div>
-
 
                     {this.state['error'] && <div>{this.state['error']}</div>} 
                 </DialogContent>

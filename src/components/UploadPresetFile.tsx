@@ -3,10 +3,8 @@ import { Input } from '@material-ui/core';
 
 
 export function UploadPresetFile(props) {
-
     return (
-        <div className="dialogMenuBox">
-            
+        <div className="dialogMenuBox">            
             <Input className="dialogMenuFile" inputProps={
                     { accept: "image/gif, image/png, image/jpeg, image/jpg",
                         type: "file"}}
@@ -22,7 +20,6 @@ export function UploadPresetFile(props) {
             <Input type="text" className="dialogMenuFileText" placeholder="info (optional)"
                     onChange={props.handleFileSelection('imgInfo' + props.row, true)}
             />
-
         </div>
     )
 }

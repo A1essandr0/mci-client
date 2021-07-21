@@ -15,7 +15,6 @@ import { EditUserProfile } from './EditUserProfile';
 import { DeleteUserProfile } from './DeleteUserProfile';
 
 
-
 export class Users extends React.Component {
     constructor(props) {
         super(props);
@@ -32,7 +31,6 @@ export class Users extends React.Component {
             toggleDeleteOpen: function(value: boolean): void {
                 this.setState({ deleteDialogOpen: value})
             }.bind(this)
-
         }
     }
 
@@ -42,6 +40,7 @@ export class Users extends React.Component {
             else this.setState({ users: data })            
         })
     }
+
 
     render() {
         return (
@@ -82,7 +81,6 @@ export class Users extends React.Component {
                                             </IconButton>
                                         </ListItemSecondaryAction>
                                     </ListItem>
-
                                 )
                         })}
                     </List>

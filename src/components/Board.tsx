@@ -30,8 +30,6 @@ export const Board = function(props) {
             )
         }
 
-
-
         else return (
                 <div className="gameBoard" >
                     {props.currentPlayedPreset.cards && 
@@ -48,7 +46,6 @@ export const Board = function(props) {
     }
 
 
-
     else if (props.currentView === "presets")
         return (
             <div className="presetEditView">
@@ -57,7 +54,6 @@ export const Board = function(props) {
                         return <img key={reactKey} className="gameCell" src={`${server_url}${item.filename}`} />
                     })                
                 }
-
             </div>
         )
 

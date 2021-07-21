@@ -16,8 +16,7 @@ export class EditUserProfile extends React.Component {
     componentDidUpdate(prevProps) {
         if (this.props['userId'] !== prevProps['userId']) {
             let user = this.props['users']
-                .filter(item => item.id === this.props['userId'])
-                [0];
+                .filter(item => item.id === this.props['userId'])[0];
             this.setState({
                 id: this.props['userId'],
                 name: user && user['name'],

@@ -18,7 +18,6 @@ export class Signup extends React.Component {
         }
     }
 
-
     clickSubmit() {
         const user = {
             name: this.state['name'] || undefined,
@@ -61,7 +60,6 @@ export class Signup extends React.Component {
                                 value={this.state['name']}
                                 onChange={this.handleChange('name')} 
                     />
-
                     <TextField id="email" type="email" label="Email" 
                                 required fullWidth margin="normal" variant="outlined"
                                 value={this.state['email']}
@@ -78,14 +76,12 @@ export class Signup extends React.Component {
                                 onChange={this.handleChange('passwordRepeat')}
                     />
                     {this.state['error'] && <div>{this.state['error']}</div>}
-
                 </DialogContent>
 
                 <DialogActions>
                     <Button onClick={this.clickSubmit}>Sign up</Button>
                     <Button onClick={()=>{this.props['toggleSignup'](false)}}>Close</Button>
                 </DialogActions>
-
             </Dialog>           
         )
     }

@@ -17,7 +17,6 @@ export const ToolBar = function(props) {
                             if (result) props.setGlobalStateParameter('gameInProgress', false);                            
                         }}
                 >Stop</TealButton>}
-
             </div>
 
             <div className="navButton">
@@ -26,7 +25,6 @@ export const ToolBar = function(props) {
                         disabled={props.gameInProgress}
                 >Presets</TealButton>
             </div>
-
 
             {!auth.isAuthenticated() && <div className="navButton toolBarRight">
                 <TealButton variant="contained" color="primary"
@@ -50,14 +48,12 @@ export const ToolBar = function(props) {
                 >Log out</TealButton>
             </div>}
 
-
             {auth.isAuthenticated() && !props.gameInProgress &&
             <div className="navButton">
                 <TealButton variant="contained" disabled={false} color="primary"
                         onClick={() => { props.setView('users') }}
                 >Users</TealButton>
             </div>}
-
         </div>
     )
 }

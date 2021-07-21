@@ -107,7 +107,6 @@ export class CreateNewPreset extends React.Component {
     }
 
 
-
     render() {
         return (
             <Dialog open={this.props['createPresetActive']} maxWidth="xl"
@@ -126,7 +125,7 @@ export class CreateNewPreset extends React.Component {
                                 onChange={this.handleChange('presetDescription')}
                             />
 
-                            {/* TODO более удобный интерфейс с полем для каждой пары слов */}
+                            {/* TODO more convenient interface with field for every word */}
                             <TextField id="cardValues" value={this.state['cardValues']} label="Words on cards"
                                 required fullWidth variant="outlined" margin="normal" multiline rows={4}
                                 placeholder="Enter card values separated by ';' "
@@ -192,7 +191,6 @@ export class CreateNewPreset extends React.Component {
                                     />&nbsp;Viewable by any logged in user
                                 </div>
                             </div>
-
 
                             {this.state['error'] && <div>{this.state['error']}</div>}
                         </DialogContent>

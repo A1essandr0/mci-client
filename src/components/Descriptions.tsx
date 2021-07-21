@@ -1,6 +1,7 @@
 import React from 'react';
 import { server_url} from '../code/urls';
 import { Card } from '@material-ui/core';
+import { AboutTheMemoricci } from './AboutTheMemoricci';
 
 
 export const Descriptions = function(props) {
@@ -14,11 +15,7 @@ export const Descriptions = function(props) {
                 </div>
             )
         
-        else return (
-            <div className="infoPanelDescriptions">
-                About the Memoricci
-            </div>
-        )
+        else return <AboutTheMemoricci />
     }
 
     else return (

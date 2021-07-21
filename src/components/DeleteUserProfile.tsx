@@ -39,6 +39,7 @@ export class DeleteUserProfile extends React.Component {
         })  
     }
 
+
     render() {
         return (
             <Dialog open={this.props['deleteDialogOpen']} onClose={()=>{this.props['toggleDeleteOpen'](false)}}>

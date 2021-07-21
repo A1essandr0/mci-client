@@ -69,7 +69,6 @@ export class Game extends React.Component {
                                 currentViewedPreset={this.props['currentViewedPreset']}
                                 {...this.state}
                 />
-
             </div>
         )
     }
