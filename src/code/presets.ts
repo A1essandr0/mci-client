@@ -1,4 +1,6 @@
-import { get_presets_url, upload_preset_url, delete_preset_url, create_preset_url } from './urls';
+import { 
+    get_presets_url, upload_preset_url, delete_preset_url, edit_preset_url, create_preset_url 
+} from './urls';
 
 
 const getPresets = function(userId) {
@@ -45,6 +47,20 @@ const uploadPreset = function(uploadedPreset, uploadedPresetFiles, uploadedBackF
     ).catch((err) => console.log(err))
 }
 
+const editPreset = function(presetId: number, modifiedAttributes, credentials) {
+    return fetch(`${edit_preset_url}/${presetId}`, {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + credentials.t
+        },
+        body: JSON.stringify(modifiedAttributes)
+    }).then((response) => {
+        return response.json()  
+    }).catch((err) => console.log(err))
+}
+
 const deletePreset = function(presetId: number, credentials) {
     return fetch(`${delete_preset_url}/${presetId}`, {
         method: 'DELETE',
@@ -59,4 +75,4 @@ const deletePreset = function(presetId: number, credentials) {
 }
 
 
-export { getPresets, createPreset, uploadPreset, deletePreset }
+export { getPresets, createPreset, uploadPreset, editPreset, deletePreset }

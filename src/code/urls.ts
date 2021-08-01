@@ -11,5 +11,6 @@ export const get_users_url = `${server_url}/api/users`;
 
 export const get_presets_url = `${server_url}/api/presets`;
 export const upload_preset_url = `${server_url}/api/presets`;
+export const edit_preset_url = `${server_url}/api/presets`;
 export const delete_preset_url = `${server_url}/api/presets`;
 export const create_preset_url = `${server_url}/api/new-preset`;

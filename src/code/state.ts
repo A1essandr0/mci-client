@@ -1,4 +1,5 @@
 import { sleep } from './lib';
+import { config } from './config';
 
 
 export interface ICard {
@@ -28,6 +29,7 @@ export function createGlobalState(parentComponent) {
         createPresetActive: false,
         uploadPresetActive: false,
         deletePresetActive: false,
+        editPresetActive: false,
 
         gameInProgress: false,
 
@@ -36,9 +38,9 @@ export function createGlobalState(parentComponent) {
         currentPlayedPreset: "",
         currentViewedPreset: "",
 
-        gameStartingDelay: 2,
-        gameDelayOnShow: 400,
-        gameStartingScore: 5,
+        gameStartingDelay: config.gameStartingDelay,
+        gameDelayOnShow: config.gameDelayOnShow,
+        gameStartingScore: config.gameStartingScore,
 
 
         toggleSignin: function(value: boolean): void { 
@@ -53,6 +55,9 @@ export function createGlobalState(parentComponent) {
         toggleUploadPreset: function(value: boolean): void { 
             this.setState({ uploadPresetActive: value })
         }.bind(parentComponent),
+        toggleEditPreset: function(value: boolean): void { 
+            this.setState({ editPresetActive: value })
+        }.bind(parentComponent),
         toggleDeletePreset: function(value: boolean): void { 
             this.setState({ deletePresetActive: value })
         }.bind(parentComponent),
@@ -66,7 +71,12 @@ export function createGlobalState(parentComponent) {
         setPlayedPreset: function(presetName: string) {
             let preset = this.state.playablePresets
                 .filter(item => item.presetName === presetName)[0] // O(n) search
-            this.setState({ currentPlayedPreset: preset})
+            this.setState({ 
+                currentPlayedPreset: preset,
+                gameStartingDelay: config.gameStartingDelay, // to avoid cheating
+                gameDelayOnShow: config.gameDelayOnShow,
+                gameStartingScore: config.gameStartingScore
+            })
         }.bind(parentComponent),
 
         setViewedPreset: function(presetName: string) {

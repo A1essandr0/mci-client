@@ -22,10 +22,10 @@ class GeneralLayout extends React.Component {
             if (data.error) console.log(data.error)
             else {
                 let playablePresetsData: IPreset[] = data.filter(
-                    (item: IPreset) => item.playableByAll || user.id === item.owner
+                    (item: IPreset) => item.playableByAll || user && user.id === item.owner
                 );
                 let viewablePresetsData: IPreset[] = data.filter(
-                    (item: IPreset) => item.viewableByAll || item.viewableByUsers && user
+                    (item: IPreset) => item.viewableByAll || item.viewableByUsers && user || user && user.id === item.owner
                 );
 
                 this.setState({
@@ -84,9 +84,7 @@ class GeneralLayout extends React.Component {
         return (
             <div className="appContainer">
                 <ToolBar {...propsToToolBar}/>
-
                 <Game {...propsToGame} {...this.state}/>
-
                 <Signup {...propsToSignup}/>                
                 <Signin {...propsToSignin}/>
             </div>

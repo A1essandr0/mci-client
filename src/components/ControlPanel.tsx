@@ -6,12 +6,21 @@ import { auth } from '../code/auth';
 import { sleep, arrayRange } from '../code/lib';
 import { CreateNewPreset } from './CreateNewPreset';
 import { UploadPreset } from './UploadPreset';
+import { EditPreset } from './EditPreset'; 
 import { DeletePreset } from './DeletePreset';
 import { BlueButton, RedButton } from './ColoredButtons';
 
 
 export const ControlPanel = function(props) {
     // console.log('control panel props', props);
+    const userIsAuthenticated = auth.isAuthenticated();
+
+    const userOwnsPreset = userIsAuthenticated && props.currentPlayedPreset.owner === userIsAuthenticated.user.id;
+
+    const modifyGameSettingsRestricted = (props.currentPlayedPreset.viewableByAll === 0 && 
+            (!userIsAuthenticated || props.currentPlayedPreset.viewableByUsers === 0 && !userOwnsPreset)) ||
+        (props.currentPlayedPreset.viewableByUsers === 0 && !userIsAuthenticated);
+
     if (props.currentView === "play")
         return (
             <div className="controlPanel">
@@ -32,7 +41,7 @@ export const ControlPanel = function(props) {
                 </FormControl>                    
 
                 <ListItem>
-                    <FormControl disabled={props.gameInProgress} fullWidth>
+                    <FormControl disabled={props.gameInProgress || modifyGameSettingsRestricted} fullWidth>
                         <InputLabel id="select-start-delay-label">Starting delay</InputLabel>
                         <Select
                             labelId="select-start-delay-label"
@@ -50,7 +59,7 @@ export const ControlPanel = function(props) {
                 </ListItem>
 
                 <ListItem>
-                    <FormControl disabled={props.gameInProgress} fullWidth>
+                    <FormControl disabled={props.gameInProgress || modifyGameSettingsRestricted} fullWidth>
                         <InputLabel id="select-onshow-delay-label">Delay on show</InputLabel>
                         <Select
                             labelId="select-onshow-delay-label"
@@ -68,7 +77,7 @@ export const ControlPanel = function(props) {
                 </ListItem>
 
                 <ListItem>
-                    <FormControl disabled={props.gameInProgress} fullWidth>
+                    <FormControl disabled={props.gameInProgress || modifyGameSettingsRestricted} fullWidth>
                         <InputLabel id="select-starting-score-label">Starting score</InputLabel>
                         <Select
                             labelId="select-starting-score-label"
@@ -86,18 +95,19 @@ export const ControlPanel = function(props) {
                 </ListItem>                    
                 
                 {!props.gameInProgress && <div className="startButton">
-                    <BlueButton variant="contained" color="secondary" onClick={() => {
-                        let result = confirm('Start the game?');
-                        if (result) {
-                            props.setGlobalStateParameter('gameInProgress', true);
+                    <BlueButton variant="contained" color="secondary" 
+                                onClick={() => {
+                                    let result = confirm('Start the game?');
+                                    if (result) {
+                                        props.setGlobalStateParameter('gameInProgress', true);
 
-                            // opening all the cards to show them on start, then closing them
-                            props.setGameStateParameter('gameJustStarted', true);
-                            sleep(props.gameStartingDelay*1000).then(
-                                () => props.setGameStateParameter('gameJustStarted', false)                                
-                            )
-                        }
-                    }} 
+                                        // opening all the cards to show them on start, then closing them
+                                        props.setGameStateParameter('gameJustStarted', true);
+                                        sleep(props.gameStartingDelay*1000).then(
+                                            () => props.setGameStateParameter('gameJustStarted', false)                                
+                                        )
+                                    }
+                                }} 
                     >Start</BlueButton>
                 </div>}
 
@@ -122,11 +132,22 @@ export const ControlPanel = function(props) {
             toggleUploadPreset: props.toggleUploadPreset,
             uploadPresetActive: props.uploadPresetActive
         };
+        let propsToEditPreset = {
+            toggleEditPreset: props.toggleEditPreset,
+            editPresetActive: props.editPresetActive,
+
+            presetId: props.currentViewedPreset.presetId,
+            presetName: props.currentViewedPreset.presetName,
+            playableByAll: Boolean(props.currentViewedPreset.playableByAll),
+            viewableByAll: Boolean(props.currentViewedPreset.viewableByAll),
+            viewableByUsers: Boolean(props.currentViewedPreset.viewableByUsers)
+        };
         let propsToDeletePreset = {
             presetId: props.currentViewedPreset.presetId,
+
             toggleDeletePreset: props.toggleDeletePreset,
             deletePresetActive: props.deletePresetActive            
-        }
+        };
 
         return (
             <div className="controlPanel">
@@ -146,35 +167,35 @@ export const ControlPanel = function(props) {
                     </Select>
                 </FormControl>
 
-                {auth.isAuthenticated() && <div className="startButton">
-                    <BlueButton disabled={props.gameInProgress} variant="contained"
+                {userIsAuthenticated && <div className="startButton">
+                    <BlueButton variant="contained" disabled={props.gameInProgress}
                             onClick={ () => { props.toggleUploadPreset(true) }}
                     >Upload</BlueButton>
                     </div>}
-                {auth.isAuthenticated() && <div className="startButton">
-                    <BlueButton disabled={props.gameInProgress} variant="contained"
+                {userIsAuthenticated && <div className="startButton">
+                    <BlueButton variant="contained" disabled={props.gameInProgress}
                             onClick={ () => { props.toggleCreatePreset(true) }}
                     >Create</BlueButton>
                     </div>}
-                {!auth.isAuthenticated() && 
-                    <div className="startButton"><Typography>Sign in to upload or create new presets</Typography></div>}
-
-                {/* TODO edit preset properties button */}
-
-                {auth.isAuthenticated() && <div className="startButton">
+                {userIsAuthenticated && <div className="startButton">
+                    <RedButton variant="contained" disabled={props.gameInProgress}
+                            onClick={()=>{ props.toggleEditPreset(true) }}
+                    >Modify</RedButton>
+                </div>}
+                {userIsAuthenticated && <div className="startButton">
                     <RedButton variant="contained" disabled={props.gameInProgress}
                             onClick={()=>{ props.toggleDeletePreset(true) }}
                     >Delete</RedButton>
                 </div>}
 
+                {!userIsAuthenticated && <div className="startButton">
+                    <Typography>Sign in to upload or create new presets</Typography>
+                </div>}
+
                 <CreateNewPreset {...propsToCreatePreset} />
-
                 <UploadPreset {...propsToUploadPreset} />
-
-                {/* TODO EditPreset component */}
-
+                <EditPreset {...propsToEditPreset} />
                 <DeletePreset {...propsToDeletePreset} />
-
             </div>
         )
     }
