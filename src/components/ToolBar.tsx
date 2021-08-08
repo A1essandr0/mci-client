@@ -5,6 +5,8 @@ import { TealButton } from './ColoredButtons';
 
 
 export const ToolBar = function(props) {
+    let userIsAuthenticated = auth.isAuthenticated();
+
     return (
         <div className="toolBar">
             <div className="navButton">
@@ -26,21 +28,21 @@ export const ToolBar = function(props) {
                 >Presets</TealButton>
             </div>
 
-            {!auth.isAuthenticated() && <div className="navButton toolBarRight">
+            {!userIsAuthenticated && <div className="navButton toolBarRight">
                 <TealButton variant="contained" color="primary"
                         onClick={() => { props.toggleSignup(!props.signupActive)} }
                 >Sign up</TealButton>
             </div>}
-            {!auth.isAuthenticated() && <div className="navButton">
+            {!userIsAuthenticated && <div className="navButton">
                 <TealButton variant="contained" color="primary"
                         onClick={() => { props.toggleSignin(!props.signinActive)} }
                 >Sign in</TealButton>
             </div>}
 
-            {auth.isAuthenticated() && <div className="toolBarRight navWrittenElement">
-                <Typography>{auth.isAuthenticated().user.name}</Typography>
+            {userIsAuthenticated && <div className="toolBarRight navWrittenElement">
+                <Typography>{userIsAuthenticated.user.name}</Typography>
             </div>}
-            {auth.isAuthenticated() && <div className="navButton">
+            {userIsAuthenticated && <div className="navButton">
                 <TealButton variant="contained" color="primary"
                         onClick={() => {auth.signOut( () => {
                             props.setView('play')
@@ -48,7 +50,7 @@ export const ToolBar = function(props) {
                 >Log out</TealButton>
             </div>}
 
-            {auth.isAuthenticated() && !props.gameInProgress &&
+            {userIsAuthenticated && !props.gameInProgress &&
             <div className="navButton">
                 <TealButton variant="contained" disabled={false} color="primary"
                         onClick={() => { props.setView('users') }}

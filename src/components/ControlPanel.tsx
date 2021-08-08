@@ -12,7 +12,6 @@ import { BlueButton, RedButton } from './ColoredButtons';
 
 
 export const ControlPanel = function(props) {
-    // console.log('control panel props', props);
     const userIsAuthenticated = auth.isAuthenticated();
 
     const userOwnsPreset = userIsAuthenticated && props.currentPlayedPreset.owner === userIsAuthenticated.user.id;
@@ -87,7 +86,7 @@ export const ControlPanel = function(props) {
                                 props.setGlobalStateParameter('gameStartingScore', event.target.value)
                             }}
                         >
-                            {arrayRange(8, 3).map(
+                            {arrayRange(9, 3).map(
                                 (t, reactKey) => <MenuItem key={reactKey} value={t}>{t}</MenuItem>
                             )}
                         </Select>
@@ -133,14 +132,14 @@ export const ControlPanel = function(props) {
             uploadPresetActive: props.uploadPresetActive
         };
         let propsToEditPreset = {
-            toggleEditPreset: props.toggleEditPreset,
-            editPresetActive: props.editPresetActive,
-
             presetId: props.currentViewedPreset.presetId,
             presetName: props.currentViewedPreset.presetName,
             playableByAll: Boolean(props.currentViewedPreset.playableByAll),
             viewableByAll: Boolean(props.currentViewedPreset.viewableByAll),
-            viewableByUsers: Boolean(props.currentViewedPreset.viewableByUsers)
+            viewableByUsers: Boolean(props.currentViewedPreset.viewableByUsers),
+
+            toggleEditPreset: props.toggleEditPreset,
+            editPresetActive: props.editPresetActive
         };
         let propsToDeletePreset = {
             presetId: props.currentViewedPreset.presetId,

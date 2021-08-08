@@ -24,14 +24,14 @@ export interface IPreset {
 export function createGlobalState(parentComponent) {
     return {
         currentView: "play",
+        gameInProgress: false,
+
         signinActive: false,
         signupActive: false,
         createPresetActive: false,
         uploadPresetActive: false,
         deletePresetActive: false,
         editPresetActive: false,
-
-        gameInProgress: false,
 
         playablePresets: [],
         viewablePresets: [],
@@ -61,7 +61,6 @@ export function createGlobalState(parentComponent) {
         toggleDeletePreset: function(value: boolean): void { 
             this.setState({ deletePresetActive: value })
         }.bind(parentComponent),
-
 
 
         setView: function(viewName: string) {
@@ -201,7 +200,6 @@ export function createGameState(gameComponent) {
                             gameHasEnded: true
                         });
                     }
-
 
 
                     this.setState({

@@ -17,8 +17,9 @@ export class Game extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (this.props != prevProps)  {
-            // on game start (and only then) we have to shuffle the cards
             let cards = [...this.props['cards']];
+            
+            // on game start (and only then) we have to shuffle the cards
             if (this.props['gameInProgress'] && !prevProps['gameInProgress'])
                 cards = shuffleArray(cards);
 
@@ -43,7 +44,6 @@ export class Game extends React.Component {
 
 
     render() {
-        // console.log("game props",this.props)
         return (
             <div className="gameArea">
                 <Paper elevation={4}>

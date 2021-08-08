@@ -5,7 +5,6 @@ import { Card } from '@material-ui/core';
 
 
 export const Board = function(props) {
-    // console.log('board props', props);
     if (props.currentView === "play") {
         if (props.gameInProgress) {
             return (

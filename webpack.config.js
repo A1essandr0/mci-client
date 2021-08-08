@@ -24,6 +24,6 @@ module.exports = {
         port: 4500
     },
 
-    // performance : { hints : false },
+    performance : { hints : false },
     devtool : "source-map"
 };
