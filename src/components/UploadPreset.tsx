@@ -19,7 +19,7 @@ export class UploadPreset extends React.Component {
             isViewableByAll: true,
             isViewableByUsers: true,
 
-            cardPairsNum: 5,
+            cardPairsNum: 8,
             cardFiles: new FormData(),
             backFiles: new FormData(),
             
