@@ -1,6 +1,6 @@
 
 export const config = {
-    mode: 'unknown',
+    mode: process.env.CLIENT_MODE,
 
     local_server_url: 'https://localhost:3003',
     azurevm_server_url: 'https://api.memoricci.fun:3003',

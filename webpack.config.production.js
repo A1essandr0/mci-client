@@ -1,4 +1,6 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+
 
 module.exports = {
     mode: "production",
@@ -16,7 +18,11 @@ module.exports = {
     
     plugins : [
       new HtmlWebPackPlugin({ template : "./src/index.html",
-        filename : "./index.html" })
+        filename : "./index.html" }),
+
+      new webpack.DefinePlugin({
+        "process.env.CLIENT_MODE": JSON.stringify("production")
+      })
     ],
 
 };

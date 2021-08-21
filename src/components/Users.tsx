@@ -43,6 +43,8 @@ export class Users extends React.Component {
 
 
     render() {
+        let userIsAuthenticated = auth.isAuthenticated();
+
         return (
             <div className="usersEditView">
                 <Paper elevation={4}>
@@ -57,19 +59,21 @@ export class Users extends React.Component {
                                             </Avatar>
                                         </ListItemAvatar>
     
-                                    <ListItemText primary={item.name} secondary={item.email}/>
+                                    <ListItemText primary={item.name} 
+                                        secondary={userIsAuthenticated.user.is_admin === 1 && item.email}
+                                    />
                                         <ListItemSecondaryAction>
 
-                                            {(auth.isAuthenticated().user.is_admin === 1 || 
-                                                auth.isAuthenticated().user.id === item.id) && 
+                                            {(userIsAuthenticated.user.is_admin === 1 || 
+                                                userIsAuthenticated.user.id === item.id) && 
                                             <IconButton color="primary"
                                                         onClick={()=>{ this.setState({ 
                                                             userId: item.id, editDialogOpen: true
                                                         })}}
                                             ><Edit /></IconButton>}
 
-                                            {(auth.isAuthenticated().user.is_admin === 1 ||
-                                                auth.isAuthenticated().user.id === item.id) &&
+                                            {(userIsAuthenticated.user.is_admin === 1 ||
+                                                userIsAuthenticated.user.id === item.id) &&
                                             <IconButton color="secondary"
                                                         onClick={()=>{ this.setState({
                                                             userId: item.id, deleteDialogOpen: true

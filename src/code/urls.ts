@@ -1,7 +1,10 @@
 import { config } from './config';
 
 
-export const server_url = config.local_server_url;
+let default_server_url = config.local_server_url;
+if (config.mode === 'production') default_server_url = config.azurevm_server_url;
+
+export const server_url = default_server_url;
 
 export const auth_signin_url = `${server_url}/auth/signin`;
 export const auth_signout_url = `${server_url}/auth/signout`;
