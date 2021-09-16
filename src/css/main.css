@@ -42,7 +42,7 @@
     padding-left: 8px;
 }
 .startButton {
-    margin-top: 32px;
+    margin-top: 24px;
     margin-left: 12px;
 }
 
@@ -51,6 +51,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     align-items: flex-start;
+    align-content: start;
     justify-content: center;
 
     padding-top: 16px;
@@ -59,18 +60,19 @@
     grid-row: 1 / 2;
 }
 .gameCell {
-    margin-top: 4px;
+    margin-top: 8px;
     margin-left: 8px;
 }
 
 .presetEditView {
-    padding-top: 16px;
-    padding-left: 8px;
-
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: flex-start;
+    align-content: center;
+
+    padding-top: 16px;
+    padding-left: 8px;
     grid-column: 2 / 2;
     grid-row: 1 / 2;
 
