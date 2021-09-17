@@ -26,7 +26,10 @@ module.exports = {
     ],
 
     devServer: {
-        contentBase: "./dist",
+        static: {
+            directory: "./dist"
+        },
+        // contentBase: "./dist",
         port: 4500
     },
 
