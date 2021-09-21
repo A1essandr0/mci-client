@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography } from '@material-ui/core';
 import { auth } from '../code/auth';
-import { TealButton } from './ColoredButtons';
+import { BlueButton } from './ColoredButtons';
 
 
 export const ToolBar = function(props) {
@@ -10,51 +10,51 @@ export const ToolBar = function(props) {
     return (
         <div className="toolBar">
             <div className="navButton">
-                {!props.gameInProgress && <TealButton variant="contained" color="primary"
+                {!props.gameInProgress && <BlueButton size="large" variant="contained" color="primary"
                         onClick={() => { props.setView('play') }}
-                >Play</TealButton>}
-                {props.gameInProgress && <TealButton variant="contained" color="primary"
+                >Game</BlueButton>}
+                {props.gameInProgress && <BlueButton size="large" variant="contained" color="primary"
                         onClick={() => { 
                             let result = confirm('Stop the game?');
                             if (result) props.setGlobalStateParameter('gameInProgress', false);                            
                         }}
-                >Stop</TealButton>}
+                >Stop</BlueButton>}
             </div>
 
             <div className="navButton">
-                <TealButton variant="contained" color="primary"
+                <BlueButton size="large" variant="contained" color="primary"
                         onClick={() => { props.setView('presets') }}
                         disabled={props.gameInProgress}
-                >Presets</TealButton>
+                >Presets</BlueButton>
             </div>
 
             {!userIsAuthenticated && <div className="navButton toolBarRight">
-                <TealButton variant="contained" color="primary"
+                <BlueButton size="large" variant="contained" color="primary"
                         onClick={() => { props.toggleSignup(!props.signupActive)} }
-                >Sign up</TealButton>
+                >Sign up</BlueButton>
             </div>}
             {!userIsAuthenticated && <div className="navButton">
-                <TealButton variant="contained" color="primary"
+                <BlueButton size="large" variant="contained" color="primary"
                         onClick={() => { props.toggleSignin(!props.signinActive)} }
-                >Sign in</TealButton>
+                >Sign in</BlueButton>
             </div>}
 
             {userIsAuthenticated && <div className="toolBarRight navWrittenElement">
                 <Typography>{userIsAuthenticated.user.name}</Typography>
             </div>}
             {userIsAuthenticated && <div className="navButton">
-                <TealButton variant="contained" color="primary"
+                <BlueButton size="large" variant="contained" color="primary"
                         onClick={() => {auth.signOut( () => {
                             props.setView('play')
                         })}}
-                >Log out</TealButton>
+                >Log out</BlueButton>
             </div>}
 
             {userIsAuthenticated && !props.gameInProgress &&
             <div className="navButton">
-                <TealButton variant="contained" disabled={false} color="primary"
+                <BlueButton size="large" variant="contained" disabled={false} color="primary"
                         onClick={() => { props.setView('users') }}
-                >Users</TealButton>
+                >Users</BlueButton>
             </div>}
         </div>
     )

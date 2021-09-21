@@ -8,7 +8,7 @@ import { CreateNewPreset } from './CreateNewPreset';
 import { UploadPreset } from './UploadPreset';
 import { EditPreset } from './EditPreset'; 
 import { DeletePreset } from './DeletePreset';
-import { BlueButton, RedButton } from './ColoredButtons';
+import { BlueButton, RedButton, GreenButton } from './ColoredButtons';
 
 
 export const ControlPanel = function(props) {
@@ -94,7 +94,7 @@ export const ControlPanel = function(props) {
                 </ListItem>                    
                 
                 {!props.gameInProgress && <div className="startButton">
-                    <BlueButton variant="contained" color="secondary" 
+                    <GreenButton variant="contained" color="secondary" size="large"
                                 onClick={() => {
                                     let result = confirm('Start the game?');
                                     if (result) {
@@ -107,15 +107,15 @@ export const ControlPanel = function(props) {
                                         )
                                     }
                                 }} 
-                    >Start</BlueButton>
+                    >Start</GreenButton>
                 </div>}
 
                 {props.gameInProgress && <div className="startButton">
-                    <BlueButton onClick={()=>{
+                    <RedButton size="large" onClick={()=>{
                         let result = confirm('Stop the game?');
                         if (result) props.setGlobalStateParameter('gameInProgress', false)                        
                     }} 
-                        variant="contained" color="secondary">Stop</BlueButton>
+                        variant="contained" color="secondary">Stop</RedButton>
                 </div>}
 
             </div>

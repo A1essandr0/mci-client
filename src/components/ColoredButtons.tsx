@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core/styles';
-import { teal, blue, red } from '@material-ui/core/colors';
+import { teal, blue, red, green } from '@material-ui/core/colors';
 import { Button } from '@material-ui/core';
 
 
@@ -25,12 +25,13 @@ export const RedButton = withStyles((theme) => ({
 }))(Button);
 
 
-export const TealButton = withStyles((theme) => ({
-    root: {
-      color: theme.palette.getContrastText(teal[500]),
-      backgroundColor: teal[500],
-      '&:hover': {
-        backgroundColor: teal[700],
-      },
+export const GreenButton = withStyles((theme) => ({
+  root: {
+    color: theme.palette.getContrastText(teal[500]),
+    backgroundColor: green[700],
+    '&:hover': {
+      backgroundColor: green[900],
     },
+  },
 }))(Button);
+

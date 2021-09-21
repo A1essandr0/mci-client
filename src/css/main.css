@@ -40,6 +40,7 @@
     grid-row: 1 / 1;
     padding-top: 16px;
     padding-left: 8px;
+    font-size: large;
 }
 .startButton {
     margin-top: 24px;
@@ -105,10 +106,13 @@
     flex-direction: row;
     flex-wrap: wrap;
     align-items: flex-start;
+
+    font-size: large;
 }
 .consoleMessage {
     align-self: flex-end;
     padding-right: 16px;
+    font-size: large;
 }
 
 
