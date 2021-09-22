@@ -28,6 +28,9 @@ class GeneralLayout extends React.Component {
                     (item: IPreset) => item.viewableByAll || item.viewableByUsers && user || user && user.id === item.owner
                 );
 
+                // preset id from props defines current preset here
+                console.log(this.props['path']);
+
                 this.setState({
                     playablePresets: playablePresetsData,
                     viewablePresets: viewablePresetsData,

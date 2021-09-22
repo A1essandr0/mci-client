@@ -30,7 +30,8 @@ module.exports = {
             directory: "./dist"
         },
         // contentBase: "./dist",
-        port: 4500
+        port: 4500,
+        historyApiFallback: true
     },
 
     performance : { hints : false },
