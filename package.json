@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack serve --config webpack.config.js",
-    "build": "webpack --config webpack.config.production.js"
+    "compile": "webpack --config webpack.config.production.js",
+    "build": "webpack --config webpack.config.production.js && bash copy-static.sh"
+
   },
   "keywords": [],
   "author": "",
