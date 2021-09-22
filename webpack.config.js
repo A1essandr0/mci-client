@@ -29,7 +29,6 @@ module.exports = {
         static: {
             directory: "./dist"
         },
-        // contentBase: "./dist",
         port: 4500,
         historyApiFallback: true
     },

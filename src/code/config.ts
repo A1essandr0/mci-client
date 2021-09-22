@@ -4,6 +4,7 @@ export const config = {
 
     local_server_url: 'https://localhost:3003',
     azurevm_server_url: 'https://api.memoricci.fun:3003',
+    application_url: 'https://www.memoricci.fun',
 
     gameStartingDelay: 7,
     gameDelayOnShow: 400,

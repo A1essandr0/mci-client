@@ -27,14 +27,21 @@ class GeneralLayout extends React.Component {
                 let viewablePresetsData: IPreset[] = data.filter(
                     (item: IPreset) => item.viewableByAll || item.viewableByUsers && user || user && user.id === item.owner
                 );
-
-                // preset id from props defines current preset here
-                console.log(this.props['path']);
-
+                
+                let path = this.props['path'].split('=');
+                let chosenPreset;
+                if (path[0] === '/preset' && path[1]) {
+                    const presetViaLink = playablePresetsData.filter(item => 
+                        item['presetId'] === Number(path[1])
+                    )
+                    if (presetViaLink.length === 1) chosenPreset = presetViaLink[0]
+                        else chosenPreset = playablePresetsData[0];                
+                } else chosenPreset = playablePresetsData[0];
+                
                 this.setState({
                     playablePresets: playablePresetsData,
                     viewablePresets: viewablePresetsData,
-                    currentPlayedPreset: playablePresetsData[0],
+                    currentPlayedPreset: chosenPreset,
                     currentViewedPreset: viewablePresetsData[0]
                 })
             }
