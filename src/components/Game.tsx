@@ -62,7 +62,7 @@ export class Game extends React.Component {
                 
                 <Console gameInProgress={this.props['gameInProgress']}
                                 currentView={this.props['currentView']}
-                                {...this.state}
+                                messageQueue={this.state['messageQueue']}
                 />
 
                 <Descriptions gameInProgress={this.props['gameInProgress']} 
