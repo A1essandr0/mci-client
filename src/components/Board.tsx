@@ -1,7 +1,7 @@
 import React from 'react';
 import { server_url} from '../code/urls';
 import { Users } from './Users';
-import { Card } from '@material-ui/core';
+import Card from '@material-ui/core/Card';
 
 
 export const Board = function(props) {

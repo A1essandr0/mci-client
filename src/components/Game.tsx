@@ -6,7 +6,7 @@ import { Console } from './Console';
 import { Descriptions } from './Descriptions';
 import { createGameState } from '../code/state';
 import { shuffleArray } from '../code/lib';
-import { Paper } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
 
 
 export class Game extends React.Component {

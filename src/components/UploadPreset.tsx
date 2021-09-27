@@ -1,5 +1,13 @@
 import React from 'react';
-import { Input, Dialog, DialogContent, DialogContentText, DialogActions, Button, TextField } from '@material-ui/core';
+
+import Input from '@material-ui/core/Input';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+
 import { BlueButton, RedButton } from './ColoredButtons';
 import { UploadPresetFile } from './UploadPresetFile';
 import { uploadPreset } from '../code/presets';

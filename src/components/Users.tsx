@@ -1,8 +1,13 @@
 import React from 'react';
-import { 
-    Paper, List, ListItem, ListItemAvatar, Avatar, 
-    ListItemText, ListItemSecondaryAction, IconButton
-} from '@material-ui/core';
+
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import Avatar from '@material-ui/core/Avatar';
+import Paper from '@material-ui/core/Paper';
+import IconButton from '@material-ui/core/IconButton';
 
 import Person from '@material-ui/icons/Person';
 import ArrowForward from '@material-ui/icons/ArrowForward';

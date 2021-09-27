@@ -1,7 +1,12 @@
 import React from 'react';
-import { 
-    ListItem, FormControl, InputLabel, Select, MenuItem, Typography
-} from '@material-ui/core';
+
+import ListItem from '@material-ui/core/ListItem';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import Typography from '@material-ui/core/Typography';
+import MenuItem from '@material-ui/core/MenuItem';
+
 import { auth } from '../code/auth';
 import { sleep, arrayRange } from '../code/lib';
 import { CreateNewPreset } from './CreateNewPreset';

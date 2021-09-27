@@ -1,6 +1,9 @@
 import React from 'react';
 import { server_url} from '../code/urls';
-import { Card, Link, Button } from '@material-ui/core';
+
+import Button from '@material-ui/core/Button';
+import Link from '@material-ui/core/Link';
+import Card from '@material-ui/core/Card';
 
 import { AboutTheMemoricci } from './AboutTheMemoricci';
 import { config } from '../code/config';
