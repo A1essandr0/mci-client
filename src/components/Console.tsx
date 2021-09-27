@@ -6,7 +6,8 @@ export const Console = function(props) {
     if (!props.gameInProgress)
         return (
             <div className="infoPanelConsole">
-                <div className="consoleMessage">No game in progress</div>
+                <div className="consoleMessage">SHOW to see the card pairs</div>
+                <div className="consoleMessage">START to start the game</div>
             </div>
         )
 
@@ -17,7 +18,7 @@ export const Console = function(props) {
                         ? props.messageQueue.slice(props.messageQueue.length - config.messageQueueLength)
                         : props.messageQueue
                     ).map(
-                        (msg, reactKey) => <div key={reactKey} className="consoleMessage">{msg}</div>
+                        (msg, reactKey) => <div key={reactKey} className="consoleMessageLeft">{msg}</div>
                     )}
             </div>
         )

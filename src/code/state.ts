@@ -25,6 +25,7 @@ export function createGlobalState(parentComponent) {
     return {
         currentView: "play",
         gameInProgress: false,
+        showIsOn: false,
 
         signinActive: false,
         signupActive: false,

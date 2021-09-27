@@ -13,7 +13,7 @@ export function AboutTheMemoricci(props) {
             So playing the set several times helps to learn these connections by hand.
             <br /><br />
             Registered users can create, upload and manage access to their own sets of cards (presets).
-            Got an idea? Contact me at a1esssandr0(chiocciola)yandex.ru
+            Got an idea? DM @memoriccigame on Instagram.
         </div>
     )
 }

@@ -23,7 +23,7 @@ export const ControlPanel = function(props) {
     if (props.currentView === "play")
         return (
             <div className="controlPanel">
-                <FormControl disabled={props.gameInProgress} fullWidth>
+                <FormControl disabled={props.gameInProgress || props.showIsOn} fullWidth>
                     <InputLabel id="select-preset-label">Preset for game</InputLabel>
                     <Select
                         labelId="select-preset-label"
@@ -40,7 +40,7 @@ export const ControlPanel = function(props) {
                 </FormControl>                    
 
                 <ListItem>
-                    <FormControl disabled={props.gameInProgress || modifyGameSettingsRestricted} fullWidth>
+                    <FormControl disabled={props.gameInProgress || props.showIsOn || modifyGameSettingsRestricted} fullWidth>
                         <InputLabel id="select-start-delay-label">Starting delay</InputLabel>
                         <Select
                             labelId="select-start-delay-label"
@@ -58,7 +58,7 @@ export const ControlPanel = function(props) {
                 </ListItem>
 
                 <ListItem>
-                    <FormControl disabled={props.gameInProgress || modifyGameSettingsRestricted} fullWidth>
+                    <FormControl disabled={props.gameInProgress  || props.showIsOn || modifyGameSettingsRestricted} fullWidth>
                         <InputLabel id="select-onshow-delay-label">Delay on show</InputLabel>
                         <Select
                             labelId="select-onshow-delay-label"
@@ -76,7 +76,7 @@ export const ControlPanel = function(props) {
                 </ListItem>
 
                 <ListItem>
-                    <FormControl disabled={props.gameInProgress || modifyGameSettingsRestricted} fullWidth>
+                    <FormControl disabled={props.gameInProgress  || props.showIsOn || modifyGameSettingsRestricted} fullWidth>
                         <InputLabel id="select-starting-score-label">Starting score</InputLabel>
                         <Select
                             labelId="select-starting-score-label"
@@ -92,9 +92,17 @@ export const ControlPanel = function(props) {
                         </Select>
                     </FormControl>                     
                 </ListItem>                    
-                
+
+                {<div className="startButton">
+                    <BlueButton variant="contained" size="large" disabled={props.gameInProgress}
+                        onClick={() => {
+                            props.setGlobalStateParameter('showIsOn', !props.showIsOn);
+                        }}
+                    >{props.showIsOn ? "Hide" : "Show"}</BlueButton>
+                </div>}
+                                
                 {!props.gameInProgress && <div className="startButton">
-                    <GreenButton variant="contained" color="secondary" size="large"
+                    <GreenButton variant="contained" size="large" disabled={props.showIsOn}
                                 onClick={() => {
                                     let result = confirm('Start the game?');
                                     if (result) {
@@ -114,8 +122,9 @@ export const ControlPanel = function(props) {
                     <RedButton size="large" onClick={()=>{
                         let result = confirm('Stop the game?');
                         if (result) props.setGlobalStateParameter('gameInProgress', false)                        
-                    }} 
-                        variant="contained" color="secondary">Stop</RedButton>
+                        }} 
+                        variant="contained" color="secondary"
+                    >Stop</RedButton>
                 </div>}
 
             </div>

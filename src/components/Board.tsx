@@ -35,7 +35,10 @@ export const Board = function(props) {
                         props.currentPlayedPreset.cards.map((item, reactKey) => {
                             return (
                                 <Card key={reactKey} className="gameCell">
-                                    <img src={`${server_url}${props.currentPlayedPreset.cardBack}`}/>
+                                    <img src={`${server_url}${
+                                        props.showIsOn ? item.filename : props.currentPlayedPreset.cardBack
+                                        }
+                                    `}/>
                                 </Card>
                             )
                         })

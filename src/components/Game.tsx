@@ -53,6 +53,7 @@ export class Game extends React.Component {
                 </Paper>
 
                 <Board gameInProgress={this.props['gameInProgress']}
+                    showIsOn={this.props['showIsOn']}
                     currentView={this.props['currentView']}
                     currentViewedPreset={this.props['currentViewedPreset']}
                     currentPlayedPreset={this.props['currentPlayedPreset']}

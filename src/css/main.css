@@ -95,6 +95,7 @@
 
     display: flex;
     flex-direction: column;
+    font-size: large;
 }
 .infoPanelDescriptions {
     grid-column: 2 / 2;
@@ -120,9 +121,12 @@
     padding-bottom: 16px;
 }
 .consoleMessage {
+    align-self: flex-start;
+    padding-right: 16px;
+}
+.consoleMessageLeft {
     align-self: flex-end;
     padding-right: 16px;
-    font-size: large;
 }
 
 
