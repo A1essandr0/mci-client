@@ -112,6 +112,8 @@ export const ControlPanel = function(props) {
                                     let result = confirm('Start the game?');
                                     if (result) {
                                         props.setGlobalStateParameter('gameInProgress', true);
+                                        if (userIsAuthenticated) 
+                                            props.setGameStateParameter('userIsPlaying', userIsAuthenticated.user);
 
                                         // opening all the cards to show them on start, then closing them
                                         props.setGameStateParameter('gameJustStarted', true);
@@ -124,9 +126,13 @@ export const ControlPanel = function(props) {
                 </div>}
 
                 {props.gameInProgress && <div className="startButton">
-                    <RedButton size="large" onClick={()=>{
-                        let result = confirm('Stop the game?');
-                        if (result) props.setGlobalStateParameter('gameInProgress', false)                        
+                    <RedButton size="large" onClick={ () => {
+                            let result = confirm('Stop the game?');
+                            if (result) {
+                                props.setGlobalStateParameter('gameInProgress', false)
+                                if (userIsAuthenticated) 
+                                    props.setGameStateParameter('userIsPlaying', undefined);
+                            }
                         }} 
                         variant="contained" color="secondary"
                     >Stop</RedButton>

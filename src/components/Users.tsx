@@ -57,7 +57,7 @@ export class Users extends React.Component {
                         {this.state['users'] && this.state['users'].map(
                             (item, reactKey) => {
                                 return (
-                                    <ListItem button={true} key={reactKey}>
+                                    <ListItem button={false} key={reactKey}>
                                         <ListItemAvatar>
                                             <Avatar>
                                                 <Person />

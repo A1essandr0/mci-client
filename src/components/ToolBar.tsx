@@ -16,7 +16,11 @@ export const ToolBar = function(props) {
                 {props.gameInProgress && <BlueButton size="large" variant="contained" color="primary"
                         onClick={() => { 
                             let result = confirm('Stop the game?');
-                            if (result) props.setGlobalStateParameter('gameInProgress', false);                            
+                            if (result) {
+                                props.setGlobalStateParameter('gameInProgress', false);
+                                if (userIsAuthenticated) 
+                                    props.setGameStateParameter('userIsPlaying', undefined);                                
+                            }
                         }}
                 >Stop</BlueButton>}
             </div>

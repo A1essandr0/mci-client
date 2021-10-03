@@ -23,7 +23,7 @@ export interface IPreset {
 
 export function createGlobalState(parentComponent) {
     return {
-        currentView: "play",
+        currentView: "play", // "play" | "presets" | "users"
         gameInProgress: false,
         showIsOn: false,
 
@@ -99,6 +99,7 @@ export function createGameState(gameComponent) {
         cards: [],
 
         gameJustStarted: false,
+        userIsPlaying: undefined,
         // gameHasEnded: false,
 
         // cardsOut: [],
@@ -172,7 +173,7 @@ export function createGameState(gameComponent) {
                     }
 
                     // checking whether wrong amount of cards is opened at the moment
-                    // this could happen due to fast clicking
+                    // this could happen due to fast clicking, which is viewed as cheating
                     if (this.state['cardsOpenedAtm'] > 0) {
                         this.state.flipAllCards(false);
                         this.setState({
@@ -188,8 +189,13 @@ export function createGameState(gameComponent) {
                         this.state.messageAddToQueue(`You've won, mate.`);
                         this.state.messageAddToQueue(`End score: ${this.state['currentScore']}`);
                         this.state.messageAddToQueue(`Great success.`);
+
+                        console.log("User has won", this.state.userIsPlaying)
+                        // TODO logic to record game results for user
+
                         this.setState({
-                            gameHasEnded: true
+                            gameHasEnded: true,
+                            userIsPlaying: undefined
                         });
                     }
 
@@ -197,8 +203,13 @@ export function createGameState(gameComponent) {
                     if (this.state['currentScore'] < 1) {
                         this.state.messageAddToQueue(`No points left. Game over.`);
                         this.state.messageAddToQueue(`You can continue clicking mate, but what's the point?`);
+
+                        console.log("User has lost", this.state.userIsPlaying)
+                        // TODO logic to record game results for user
+
                         this.setState({
-                            gameHasEnded: true
+                            gameHasEnded: true,
+                            userIsPlaying: undefined
                         });
                     }
 

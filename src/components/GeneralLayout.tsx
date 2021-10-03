@@ -18,6 +18,8 @@ class GeneralLayout extends React.Component {
 
     componentDidMount() {
         let user = auth.isAuthenticated().user;
+
+        // TODO receive dictionary instead of array, presetName as key
         getPresets(user && user.id).then((data) => {
             if (data.error) console.log(data.error)
             else {
@@ -29,7 +31,7 @@ class GeneralLayout extends React.Component {
                 );
                 
                 let path = this.props['path'].split('=');
-                let chosenPreset;
+                let chosenPreset: IPreset;
                 if (path[0] === '/preset' && path[1]) {
                     const presetViaLink = playablePresetsData.filter(item => 
                         item['presetId'] === Number(path[1])
