@@ -13,7 +13,7 @@ const apiUrl = `${tConfig.server_host}:${tConfig.server_port}`;
 
 
 // TODO relying on exact text responses = fragility
-describe('General suite', function() {
+describe('Functional tests for api endpoints', function() {
     let testUserId: Promise<number>;
     let testUserToken: Promise<string>;
     
@@ -50,7 +50,7 @@ describe('General suite', function() {
             testUserId = Promise.resolve(signupRequest.data['id']);
         })
 
-        it('#signing up with the same email', async function() {
+        it('#signing up again with the same email', async function() {
             await testUserId;
             await axios.post(
                 `${apiUrl}/api/users`, {
@@ -126,7 +126,6 @@ describe('General suite', function() {
 
 
     describe('editing user profile', function() {
-
         it('#modifying profile', async function() {
             let userId = await testUserId;
             let token = await testUserToken;
@@ -147,11 +146,25 @@ describe('General suite', function() {
             assert.strictEqual(modifyRequest.data['name'][0]['name'], "Toaster")
         })
 
+        it('#modifying wrong profile', async function() {
+            let token = await testUserToken;
 
-        it.skip('#modifying wrong profile', async function() {
-
+            await axios({
+                method: 'PUT',
+                url: `${apiUrl}/api/users/1`, 
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                data: {
+                    id: 1,
+                    name: 'Notadmin',
+                    email: 'notadmin@notadmin.com'
+                }
+            }).catch((errData: any) => {
+                assert.strictEqual(errData.response.status, 401);
+                assert.strictEqual(errData.response.data['error'], "not authorized");
+            })
         })
-
 
         it('#deleting user', async function() {
             let userId = await testUserId;
@@ -166,9 +179,7 @@ describe('General suite', function() {
             )
             assert.strictEqual(deleteRequest.status, 200);
             assert.strictEqual(deleteRequest.data['message'], `User with id=${userId} deleted`);
-        })
-        
+        })        
     })
 
-    
 })
