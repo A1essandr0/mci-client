@@ -8,7 +8,7 @@ import tConfig from './testConfig';
 
 axios.defaults.headers.common['Accept'] = 'application/json';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
-axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false }); // local use only
+axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false }); // for local use only
 const apiUrl = `${tConfig.server_host}:${tConfig.server_port}`;
 
 

@@ -1,1 +1,2 @@
-# memoricci-client
+# mci-client
+Source for MCI client
