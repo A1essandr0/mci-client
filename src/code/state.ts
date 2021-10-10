@@ -34,8 +34,8 @@ export function createGlobalState(parentComponent) {
         deletePresetActive: false,
         editPresetActive: false,
 
-        playablePresets: [],
-        viewablePresets: [],
+        playablePresets: {},
+        viewablePresets: {},
         currentPlayedPreset: "",
         currentViewedPreset: "",
 
@@ -69,8 +69,7 @@ export function createGlobalState(parentComponent) {
         }.bind(parentComponent),
 
         setPlayedPreset: function(presetName: string) {
-            let preset = this.state.playablePresets
-                .filter(item => item.presetName === presetName)[0] // O(n) search
+            let preset = this.state.playablePresets[presetName];
             this.setState({ 
                 currentPlayedPreset: preset,
                 gameStartingDelay: config.gameStartingDelay, // to avoid cheating
@@ -80,8 +79,7 @@ export function createGlobalState(parentComponent) {
         }.bind(parentComponent),
 
         setViewedPreset: function(presetName: string) {
-            let preset = this.state.viewablePresets
-                .filter(item => item.presetName === presetName)[0] // O(n) search
+            let preset = this.state.viewablePresets[presetName];
             this.setState({ currentViewedPreset: preset})
         }.bind(parentComponent),
 

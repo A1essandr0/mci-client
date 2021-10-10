@@ -38,8 +38,8 @@ export const ControlPanel = function(props) {
                             props.setPlayedPreset(event.target.value)
                         }}
                     >
-                        {props.playablePresets.map(
-                            (item, reactKey) => <MenuItem key={reactKey} value={item.presetName}>{item.presetName}</MenuItem>
+                        {Object.keys(props.playablePresets).map(
+                            (item, reactKey) => <MenuItem key={reactKey} value={item}>{item}</MenuItem>
                         )}
                     </Select>
                 </FormControl>                    
@@ -180,8 +180,8 @@ export const ControlPanel = function(props) {
                             props.setViewedPreset(event.target.value)
                         }}
                     >
-                        {props.viewablePresets.map(
-                            (item, reactKey) => <MenuItem key={reactKey} value={item.presetName}>{item.presetName}</MenuItem>
+                        {Object.keys(props.viewablePresets).map(
+                            (item, reactKey) => <MenuItem key={reactKey} value={item}>{item}</MenuItem>
                         )}
                     </Select>
                 </FormControl>

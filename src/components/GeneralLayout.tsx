@@ -19,7 +19,6 @@ class GeneralLayout extends React.Component {
     componentDidMount() {
         let user = auth.isAuthenticated().user;
 
-        // TODO receive dictionary instead of array, presetName as key
         getPresets(user && user.id).then((data) => {
             if (data.error) console.log(data.error)
             else {
@@ -39,10 +38,24 @@ class GeneralLayout extends React.Component {
                     if (presetViaLink.length === 1) chosenPreset = presetViaLink[0]
                         else chosenPreset = playablePresetsData[0];                
                 } else chosenPreset = playablePresetsData[0];
-                
+
+                // it is better to have presets in dictionary, indexed by presetName
+                let playablePresetsDict = {};
+                for (let pr of playablePresetsData) {
+                    playablePresetsDict = {...playablePresetsDict,
+                        [pr.presetName]: pr
+                    }
+                }
+                let viewablePresetsDict = {};
+                for (let pr of viewablePresetsData) {
+                    viewablePresetsDict = {...viewablePresetsDict,
+                        [pr.presetName]: pr
+                    }
+                }
+
                 this.setState({
-                    playablePresets: playablePresetsData,
-                    viewablePresets: viewablePresetsData,
+                    playablePresets: playablePresetsDict,
+                    viewablePresets: viewablePresetsDict,
                     currentPlayedPreset: chosenPreset,
                     currentViewedPreset: viewablePresetsData[0]
                 })
