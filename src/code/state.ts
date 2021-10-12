@@ -27,6 +27,8 @@ export function createGlobalState(parentComponent) {
         gameInProgress: false,
         showIsOn: false,
 
+        
+        // TODO refactor to single object dialogActive
         signinActive: false,
         signupActive: false,
         createPresetActive: false,
@@ -44,6 +46,7 @@ export function createGlobalState(parentComponent) {
         gameStartingScore: config.gameStartingScore,
 
 
+        // TODO refactor to single function toggleDialog
         toggleSignin: function(value: boolean): void { 
             this.setState({ signinActive: value })
         }.bind(parentComponent),
