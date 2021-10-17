@@ -47,7 +47,7 @@ export class Signup extends React.Component {
                 if (data.error) this.setState({error: data.error})
                 else {
                     this.setState({error: ""});
-                    this.props['toggleSignup'](false);
+                    this.props['setGlobalStateParameter']('signupActive', false);
                     alert(`User ${user.email} created`)
                 }
             }
@@ -57,7 +57,8 @@ export class Signup extends React.Component {
 
     render() {
         return (
-            <Dialog open={this.props['signupActive']} onClose={()=>{this.props['toggleSignup'](false)}}>
+            <Dialog open={this.props['signupActive']} onClose={
+                    () => { this.props['setGlobalStateParameter']('signupActive', false)}}>
                 <DialogContent>
                     <DialogContentText>
                         Register
@@ -87,7 +88,9 @@ export class Signup extends React.Component {
 
                 <DialogActions>
                     <Button onClick={this.clickSubmit}>Sign up</Button>
-                    <Button onClick={()=>{this.props['toggleSignup'](false)}}>Close</Button>
+                    <Button onClick={
+                        () => { this.props['setGlobalStateParameter']('signupActive', false)}}
+                    >Close</Button>
                 </DialogActions>
             </Dialog>           
         )

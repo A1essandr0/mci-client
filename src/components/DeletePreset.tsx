@@ -34,7 +34,7 @@ export class DeletePreset extends React.Component {
                 if (!data || data.error) this.setState({error: data.error})
                 else {
                     this.setState({error: ""});
-                    this.props['toggleDeletePreset'](false);
+                    this.props['setGlobalStateParameter']('deletePresetActive', false);
                     alert(`Preset with  id=${this.state['presetId']} deleted`);
                 }
         })  
@@ -43,7 +43,8 @@ export class DeletePreset extends React.Component {
 
     render() {
         return (
-            <Dialog open={this.props['deletePresetActive']} onClose={()=>{this.props['toggleDeletePreset'](false)}}>
+            <Dialog open={this.props['deletePresetActive']} onClose={
+                () => { this.props['setGlobalStateParameter']('deletePresetActive', false)}}>
                 <DialogContent>
                     <DialogContentText>Delete preset {this.state['email']}? This can't be undone</DialogContentText>
                     
@@ -52,7 +53,9 @@ export class DeletePreset extends React.Component {
 
                 <DialogActions>
                     <Button onClick={this.clickSubmit} color="primary">Delete</Button>
-                    <Button onClick={()=>{this.props['toggleDeletePreset'](false)}}>Close</Button>
+                    <Button onClick={
+                        () => { this.props['setGlobalStateParameter']('deletePresetActive', false)}}
+                    >Close</Button>
                 </DialogActions>                
             </Dialog>
         )

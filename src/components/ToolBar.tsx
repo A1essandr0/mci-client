@@ -34,12 +34,12 @@ export const ToolBar = function(props) {
 
             {!userIsAuthenticated && <div className="navButton toolBarRight">
                 <BlueButton size="large" variant="contained" color="primary"
-                        onClick={() => { props.toggleSignup(!props.signupActive)} }
+                        onClick={() => { props.setGlobalStateParameter('signupActive', !props.signupActive)} }
                 >Sign up</BlueButton>
             </div>}
             {!userIsAuthenticated && <div className="navButton">
                 <BlueButton size="large" variant="contained" color="primary"
-                        onClick={() => { props.toggleSignin(!props.signinActive)} }
+                        onClick={() => { props.setGlobalStateParameter('signinActive', !props.signinActive)} }
                 >Sign in</BlueButton>
             </div>}
 

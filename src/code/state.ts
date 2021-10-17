@@ -28,7 +28,6 @@ export function createGlobalState(parentComponent) {
         showIsOn: false,
 
         
-        // TODO refactor to single object dialogActive
         signinActive: false,
         signupActive: false,
         createPresetActive: false,
@@ -44,27 +43,6 @@ export function createGlobalState(parentComponent) {
         gameStartingDelay: config.gameStartingDelay,
         gameDelayOnShow: config.gameDelayOnShow,
         gameStartingScore: config.gameStartingScore,
-
-
-        // TODO refactor to single function toggleDialog
-        toggleSignin: function(value: boolean): void { 
-            this.setState({ signinActive: value })
-        }.bind(parentComponent),
-        toggleSignup: function(value: boolean): void 
-            { this.setState({ signupActive: value })
-        }.bind(parentComponent),
-        toggleCreatePreset: function(value: boolean): void { 
-            this.setState({ createPresetActive: value })
-        }.bind(parentComponent),
-        toggleUploadPreset: function(value: boolean): void { 
-            this.setState({ uploadPresetActive: value })
-        }.bind(parentComponent),
-        toggleEditPreset: function(value: boolean): void { 
-            this.setState({ editPresetActive: value })
-        }.bind(parentComponent),
-        toggleDeletePreset: function(value: boolean): void { 
-            this.setState({ deletePresetActive: value })
-        }.bind(parentComponent),
 
 
         setView: function(viewName: string) {

@@ -144,12 +144,12 @@ export const ControlPanel = function(props) {
 
     else if (props.currentView === "presets") {
         let propsToCreatePreset = {
-            toggleCreatePreset: props.toggleCreatePreset,
-            createPresetActive: props.createPresetActive
+            createPresetActive: props.createPresetActive,
+            setGlobalStateParameter: props.setGlobalStateParameter,
         };
         let propsToUploadPreset = {
-            toggleUploadPreset: props.toggleUploadPreset,
-            uploadPresetActive: props.uploadPresetActive
+            uploadPresetActive: props.uploadPresetActive,
+            setGlobalStateParameter: props.setGlobalStateParameter,
         };
         let propsToEditPreset = {
             presetId: props.currentViewedPreset.presetId,
@@ -158,14 +158,14 @@ export const ControlPanel = function(props) {
             viewableByAll: Boolean(props.currentViewedPreset.viewableByAll),
             viewableByUsers: Boolean(props.currentViewedPreset.viewableByUsers),
 
-            toggleEditPreset: props.toggleEditPreset,
-            editPresetActive: props.editPresetActive
+            editPresetActive: props.editPresetActive,
+            setGlobalStateParameter: props.setGlobalStateParameter,
         };
         let propsToDeletePreset = {
             presetId: props.currentViewedPreset.presetId,
 
-            toggleDeletePreset: props.toggleDeletePreset,
-            deletePresetActive: props.deletePresetActive            
+            deletePresetActive: props.deletePresetActive,
+            setGlobalStateParameter: props.setGlobalStateParameter,
         };
 
         return (
@@ -188,22 +188,22 @@ export const ControlPanel = function(props) {
 
                 {userIsAuthenticated && <div className="startButton">
                     <BlueButton variant="contained" disabled={props.gameInProgress}
-                            onClick={ () => { props.toggleUploadPreset(true) }}
+                            onClick={ () => { props.setGlobalStateParameter('uploadPresetActive', true) }}
                     >Upload</BlueButton>
                     </div>}
                 {userIsAuthenticated && <div className="startButton">
                     <BlueButton variant="contained" disabled={props.gameInProgress}
-                            onClick={ () => { props.toggleCreatePreset(true) }}
+                            onClick={ () => { props.setGlobalStateParameter('createPresetActive', true) }}
                     >Create</BlueButton>
                     </div>}
                 {userIsAuthenticated && <div className="startButton">
                     <RedButton variant="contained" disabled={props.gameInProgress}
-                            onClick={()=>{ props.toggleEditPreset(true) }}
+                            onClick={()=>{ props.setGlobalStateParameter('editPresetActive', true) }}
                     >Modify</RedButton>
                 </div>}
                 {userIsAuthenticated && <div className="startButton">
                     <RedButton variant="contained" disabled={props.gameInProgress}
-                            onClick={()=>{ props.toggleDeletePreset(true) }}
+                            onClick={()=>{ props.setGlobalStateParameter('deletePresetActive', true) }}
                     >Delete</RedButton>
                 </div>}
 

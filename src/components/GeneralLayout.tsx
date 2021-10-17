@@ -88,20 +88,17 @@ class GeneralLayout extends React.Component {
         };
 
         const propsToSignin = {
-            toggleSignin: this.state['toggleSignin'],
-            signinActive: this.state['signinActive']
-
+            signinActive: this.state['signinActive'],
+            setGlobalStateParameter: this.state['setGlobalStateParameter'],
         };
         const propsToSignup = {
-            toggleSignup: this.state['toggleSignup'],
-            signupActive: this.state['signupActive']
+            signupActive: this.state['signupActive'],
+            setGlobalStateParameter: this.state['setGlobalStateParameter'],
         };
         const propsToToolBar = {
             gameInProgress: this.state['gameInProgress'],
             setView: this.state['setView'],
             setGlobalStateParameter: this.state['setGlobalStateParameter'],
-            toggleSignin: this.state['toggleSignin'],
-            toggleSignup: this.state['toggleSignup'],
             signupActive: this.state['signupActive'],
             signinActive: this.state['signinActive']
         }

@@ -58,7 +58,7 @@ export class EditPreset extends React.Component {
                 if (!data || data.error) this.setState({error: data.error})
                 else {
                     this.setState({error: ""});
-                    this.props['toggleEditPreset'](false);
+                    this.props['setGlobalStateParameter']('editPresetActive', false);
                     alert(`Preset with id=${this.state['presetId']} modified`);
                 }
             }
@@ -68,7 +68,8 @@ export class EditPreset extends React.Component {
 
     render() {
         return (
-            <Dialog open={this.props['editPresetActive']} onClose={()=>{this.props['toggleEditPreset'](false)}}
+            <Dialog open={this.props['editPresetActive']} onClose={
+                () => { this.props['setGlobalStateParameter']('editPresetActive', false)}}
                     maxWidth="xl"
             >
                 <DialogContent>
@@ -97,7 +98,9 @@ export class EditPreset extends React.Component {
 
                 <DialogActions>
                     <Button onClick={this.clickSubmit} color="primary">Apply changes</Button>
-                    <Button onClick={() => {this.props['toggleEditPreset'](false)}}>Close</Button>
+                    <Button onClick={
+                        () => { this.props['setGlobalStateParameter']('editPresetActive', false)}}
+                    >Close</Button>
                 </DialogActions>
 
             </Dialog>

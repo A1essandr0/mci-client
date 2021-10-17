@@ -42,7 +42,7 @@ export class Signin extends React.Component {
                 else {
                     this.setState({error: ""});
                     auth.authenticate(data, () => {
-                        this.props['toggleSignin'](false);
+                        this.props['setGlobalStateParameter']('signinActive', false);
                         this.setState({ password: '', email: '', error: '' })
                     })
                 }
@@ -53,7 +53,8 @@ export class Signin extends React.Component {
 
     render() {
         return (
-            <Dialog open={this.props['signinActive']} onClose={()=>{this.props['toggleSignin'](false)}}>
+            <Dialog open={this.props['signinActive']} onClose={
+                    () => { this.props['setGlobalStateParameter']('signinActive', false)} }>
                 <DialogContent>
                     <DialogContentText>
                         Sign in
@@ -74,7 +75,9 @@ export class Signin extends React.Component {
 
                 <DialogActions>
                     <Button onClick={this.clickSubmit}>Sign in</Button>
-                    <Button onClick={()=>{this.props['toggleSignin'](false)}}>Close</Button>
+                    <Button onClick={
+                        () => { this.props['setGlobalStateParameter']('signinActive', false)}}
+                    >Close</Button>
                 </DialogActions>
             </Dialog>
         )

@@ -128,7 +128,7 @@ export class UploadPreset extends React.Component {
                         cardFiles: new FormData(),
                         backFiles: new FormData()                        
                     });
-                    this.props['toggleUploadPreset'](false);
+                    this.props['setGlobalStateParameter']('uploadPresetActive', false);
                     alert(`Preset named '${uploadedPreset.presetName}' uploaded, refresh the page`);
                 }
             }
@@ -140,7 +140,7 @@ export class UploadPreset extends React.Component {
         return (
             <Dialog open={this.props['uploadPresetActive']} maxWidth="xl"
                     onClose={ () => {
-                        this.props['toggleUploadPreset'](false);
+                        this.props['setGlobalStateParameter']('uploadPresetActive', false);
                         this.setState({
                             cardFiles: new FormData(),
                             backFiles: new FormData()
@@ -223,7 +223,7 @@ export class UploadPreset extends React.Component {
                     <Button onClick={this.clickSubmit} color="primary">Upload preset</Button>
 
                     <Button onClick={ () => {
-                                this.props['toggleUploadPreset'](false);
+                                this.props['setGlobalStateParameter']('uploadPresetActive', false);
                                 this.setState({
                                     cardFiles: new FormData(),
                                     backFiles: new FormData()

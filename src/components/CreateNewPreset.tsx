@@ -106,7 +106,7 @@ export class CreateNewPreset extends React.Component {
                 if (!data || data.error) this.setState({error: data.error})
                 else {
                     this.setState({error: ""});
-                    this.props['toggleCreatePreset'](false);
+                    this.props['setGlobalStateParameter']('createPresetActive', false);
                     alert(`Preset named '${newPreset.presetName}' created`);                    
                 }
             }
@@ -117,7 +117,8 @@ export class CreateNewPreset extends React.Component {
     render() {
         return (
             <Dialog open={this.props['createPresetActive']} maxWidth="xl"
-                    onClose={()=>{this.props['toggleCreatePreset'](false)}}>
+                    onClose={
+                        () => { this.props['setGlobalStateParameter']('createPresetActive', false)}}>
                         <DialogContent>
                             <DialogContentText>
                                 Create new preset
@@ -205,7 +206,9 @@ export class CreateNewPreset extends React.Component {
 
                         <DialogActions>
                             <Button onClick={this.clickSubmit} color="primary">Create preset</Button>
-                            <Button onClick={()=>{this.props['toggleCreatePreset'](false)}}>Close</Button>
+                            <Button onClick={
+                                () => { this.props['setGlobalStateParameter']('createPresetActive', false)}}
+                            >Close</Button>
                         </DialogActions>
             </Dialog>
         )
