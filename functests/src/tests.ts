@@ -12,27 +12,11 @@ axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false }); // f
 const apiUrl = `${tConfig.server_host}:${tConfig.server_port}`;
 
 
-// TODO relying on exact text responses = fragility
+// TODO relying on exact text responses = fragility, rework with assert.match
 describe('Functional tests for api endpoints', function() {
     let testUserId: Promise<number>;
     let testUserToken: Promise<string>;
     
-    describe('admin', function() {
-        it('#correct admin', async function() {
-            let correctResponse = await axios.get(`${apiUrl}/api/users/1`)
-            assert.strictEqual(correctResponse.status, 200)
-            assert.strictEqual(correctResponse.data['name'], 'admin')
-        })
-        it('#incorrect admin', async function() {
-            await axios.get(`${apiUrl}/api/users/0`
-            ).catch((errData: any) => {
-                assert.strictEqual(errData.response.status, 404)
-                assert.strictEqual(errData.response.data.error, 
-                    'User with id=0 not found or database settings are invalid')
-            })
-        })
-    })
-
 
     describe('signing up', function() {
         it('#signing up as tester', async function() {
@@ -124,6 +108,44 @@ describe('Functional tests for api endpoints', function() {
     });
 
 
+    describe('admin', function() {
+        it('#getting user info without signin is not allowed', async function() {
+            let response = await axios.get(
+                `${apiUrl}/api/users/1`
+            ).catch((errData: any) => {
+                assert.strictEqual(errData.response.status, 401)
+            })
+        })
+
+        it('#correct admin', async function() {
+            let token = await testUserToken;
+
+            let correctResponse = await axios({
+                method: 'GET',
+                url: `${apiUrl}/api/users/1`,
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                }
+            })
+            assert.strictEqual(correctResponse.status, 200)
+            assert.strictEqual(correctResponse.data['name'], 'admin')
+        })
+        it('#incorrect admin', async function() {
+            let token = await testUserToken;
+
+            await axios({
+                method: 'GET',
+                url: `${apiUrl}/api/users/0`,
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                }
+            }).catch((errData: any) => {
+                assert.strictEqual(errData.response.status, 404);
+                assert.strictEqual(errData.response.data.error, 
+                    'User with id=0 not found or database settings are invalid')
+            })
+        })
+    })
 
     describe('editing user profile', function() {
         it('#modifying profile', async function() {

@@ -14,17 +14,23 @@ const createUser = function(user) {
     }).catch((err) => console.log(err));
 }
 
-const listUsers = function() {
+const listUsers = function(credentials) {
     return fetch(get_users_url, {
         method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + credentials.t
+        }
     }).then((response) => {
         return response.json()
     }).catch((err) => console.log(err))
 }
 
-const getUser = function(userId: number) {
+const getUser = function(userId: number, credentials) {
     return fetch(`${get_users_url}/${userId}`, {
         method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + credentials.t
+        }
     }).then((response) => {
         return response.json()  
     }).catch((err) => console.log(err))

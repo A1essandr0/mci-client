@@ -40,7 +40,10 @@ export class Users extends React.Component {
     }
 
     componentDidMount() {
-        listUsers().then((data) => {
+        const jwt = auth.isAuthenticated();
+        if (!jwt) return;
+
+        listUsers({t: jwt.token}).then((data) => {
             if (data.error) console.log(data.error)
             else this.setState({ users: data })            
         })
