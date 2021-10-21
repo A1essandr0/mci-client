@@ -11,6 +11,7 @@ import { createPreset } from '../code/presets';
 import { auth } from '../code/auth';
 
 
+// to be deprecated after MakePreset comes into the mix
 export class CreateNewPreset extends React.Component {
     constructor(props) {
         super(props);

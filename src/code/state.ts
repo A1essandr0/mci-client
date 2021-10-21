@@ -27,9 +27,9 @@ export function createGlobalState(parentComponent) {
         gameInProgress: false,
         showIsOn: false,
 
-        
         signinActive: false,
         signupActive: false,
+        makePresetActive: false,
         createPresetActive: false,
         uploadPresetActive: false,
         deletePresetActive: false,

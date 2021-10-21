@@ -13,6 +13,12 @@ const getPresets = function(userId) {
     ).catch((err) => console.log(err));
 }
 
+
+const makePreset = function(data, credentials) {
+
+}
+
+
 const createPreset = function(newPreset, credentials) {
     return fetch(create_preset_url, {
         method: 'POST',
@@ -75,4 +81,4 @@ const deletePreset = function(presetId: number, credentials) {
 }
 
 
-export { getPresets, createPreset, uploadPreset, editPreset, deletePreset }
+export { getPresets, makePreset, createPreset, uploadPreset, editPreset, deletePreset }

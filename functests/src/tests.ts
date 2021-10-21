@@ -95,10 +95,7 @@ describe('Functional tests for api endpoints', function() {
 
 
 
-    describe.skip('#uploading preset', function() {
-    });
-
-    describe.skip('#creating preset', function() {
+    describe.skip('#making preset', function() {
     });
 
     describe.skip('#managing preset', function() {

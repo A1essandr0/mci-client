@@ -9,6 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import { auth } from '../code/auth';
 import { sleep, arrayRange } from '../code/lib';
+import { MakePreset } from './MakePreset';
 import { CreateNewPreset } from './CreateNewPreset';
 import { UploadPreset } from './UploadPreset';
 import { EditPreset } from './EditPreset'; 
@@ -143,6 +144,10 @@ export const ControlPanel = function(props) {
 
 
     else if (props.currentView === "presets") {
+        let propsToMakePreset = {
+            makePresetActive: props.makePresetActive,
+            setGlobalStateParameter: props.setGlobalStateParameter,
+        };
         let propsToCreatePreset = {
             createPresetActive: props.createPresetActive,
             setGlobalStateParameter: props.setGlobalStateParameter,
@@ -187,6 +192,12 @@ export const ControlPanel = function(props) {
                 </FormControl>
 
                 {userIsAuthenticated && <div className="startButton">
+                    <GreenButton variant="contained" disabled={props.gameInProgress}
+                            onClick={ () => { props.setGlobalStateParameter('makePresetActive', true) }}
+                    >New preset</GreenButton>
+                    </div>}
+
+                {userIsAuthenticated && <div className="startButton">
                     <BlueButton variant="contained" disabled={props.gameInProgress}
                             onClick={ () => { props.setGlobalStateParameter('uploadPresetActive', true) }}
                     >Upload</BlueButton>
@@ -196,6 +207,7 @@ export const ControlPanel = function(props) {
                             onClick={ () => { props.setGlobalStateParameter('createPresetActive', true) }}
                     >Create</BlueButton>
                     </div>}
+
                 {userIsAuthenticated && <div className="startButton">
                     <RedButton variant="contained" disabled={props.gameInProgress}
                             onClick={()=>{ props.setGlobalStateParameter('editPresetActive', true) }}
@@ -211,6 +223,7 @@ export const ControlPanel = function(props) {
                     <Typography>Sign in to upload or create new presets</Typography>
                 </div>}
 
+                <MakePreset {...propsToMakePreset} />
                 <CreateNewPreset {...propsToCreatePreset} />
                 <UploadPreset {...propsToUploadPreset} />
                 <EditPreset {...propsToEditPreset} />

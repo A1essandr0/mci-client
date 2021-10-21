@@ -130,6 +130,7 @@
 }
 
 
+
 .dialogMenuBox {
     display: flex;
     flex-direction: row;
@@ -139,15 +140,19 @@
     padding-bottom: 5px;
 }
 .dialogMenuItem {
-    padding-left: 15px;
-}
+    /* padding-left: 15px; */
+    margin-left: 10px;
+    /* margin-right: 10px; */
+    /* max-width: 50%; */
+} 
 .dialogMenuItemRight {
     margin-left: auto;
     padding-right: 15px;
 }
-.dialogMenuFile {
-    max-width: 40%;
-}
+
+
+
+/* to be deprecated  */
 .dialogMenuFileText {
-    max-width: 20%;
+    max-width: 40%;
 }

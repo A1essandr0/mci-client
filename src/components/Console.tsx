@@ -14,8 +14,7 @@ export const Console = function(props) {
         else if (props.currentView === 'presets')
             return (
                 <div className="infoPanelConsole">
-                    <div className="consoleMessage">UPLOAD to make new preset from your files</div>
-                    <div className="consoleMessage">CREATE to generate images from words</div>
+                    <div className="consoleMessage">NEW PRESET to create your own preset</div>
                     <div className="consoleMessage">MODIFY to manage access rights</div>
                 </div>                
             )

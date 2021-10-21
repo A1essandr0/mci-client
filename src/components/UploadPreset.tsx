@@ -16,6 +16,7 @@ import { arrayRange } from '../code/lib';
 import { config } from '../code/config';
 
 
+// to be deprecated after MakePreset comes into the mix
 export class UploadPreset extends React.Component {
     constructor(props) {
         super(props);
@@ -161,9 +162,7 @@ export class UploadPreset extends React.Component {
                         onChange={this.handleChange('presetDescription')}
                     />
 
-                    {Array.from(
-                        {length: this.state['cardPairsNum']}, (a, b) => b+1
-                    ).map(
+                    {arrayRange(this.state['cardPairsNum'], 1).map(
                         (nrow, reactKey) => {
                             return (<UploadPresetFile row={nrow} key={reactKey}
                                     handleFileSelection={this.handleFileSelection}
