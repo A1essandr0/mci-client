@@ -8,6 +8,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
+import Typography from '@material-ui/core/Typography';
 
 import { BlueButton, RedButton } from './ColoredButtons';
 import { MakePresetRow } from './MakePresetRow';
@@ -36,31 +37,31 @@ export class MakePreset extends React.Component {
             cardPairsNum: 2,
 
             cardData: new FormData(),
-            backFiles: new FormData(),
+            backFileName: 'No file selected',
+            emptyFileName: 'No file selected',
 
             error: ''
         }
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSelection = this.handleSelection.bind(this);
-        this.handleBackFileSelection = this.handleBackFileSelection.bind(this);
         this.handleChangeNumberOfPairs = this.handleChangeNumberOfPairs.bind(this);
         this.clickSubmit = this.clickSubmit.bind(this);
     }
 
-    handleChange(field) {
+    handleChange(field: string) {
         return (event) => { 
             this.setState({ [field]: event.target.value })
         }
     }
 
-    handleToggleChange(field) {
+    handleToggleChange(field: string) {
         return (event) => {
             this.setState({ [field]: !this.state[field] })
         }
     }
 
-    handleChangeNumberOfPairs(num) {
+    handleChangeNumberOfPairs(num: number) {
         return (event) => {
             if (this.state['cardPairsNum'] === 1 && num === -1 ||
                     this.state['cardPairsNum'] === config.maxCardPairNum && num === 1)
@@ -70,17 +71,27 @@ export class MakePreset extends React.Component {
     }
 
 
-
-    handleBackFileSelection(fileField) {
+    handleSelection(field: string, fieldType: string) {
         return (event) => {
+            switch (fieldType) {
+                case 'file':
+                    if (event.target.files && event.target.files[0]) {
+                        this.state['cardData'].set(field, event.target.files[0]);
+                    }
+                    break;
+                case 'text':
+                    this.state['cardData'].set(field, event.target.value)
+                    break;
+                case 'info':
+                    this.state['cardData'].set(field, event.target.value)
+                    break;
+                case 'cardtype':
+                    console.log(field);
+                    // this.state['cardData'].set(field, fieldType)
+                    break;
+            }
 
-        }
-    }
 
-
-    handleSelection(field, type) {
-        return (event) => {
-            
         }
     }
 
@@ -89,8 +100,10 @@ export class MakePreset extends React.Component {
     clickSubmit() {
         const jwt = auth.isAuthenticated();
 
+        // TODO check data
+
         alert('submitting...');
-        console.log(this.state);
+        for (let item of this.state['cardData'].entries()) console.log(item);
     
     }
 
@@ -101,7 +114,6 @@ export class MakePreset extends React.Component {
                     onClose={ () => { 
                         this.props['setGlobalStateParameter']('makePresetActive', false)
                         this.setState({
-                            backFiles: new FormData(),
                             cardData: new FormData(),
                         })
                     }}>
@@ -129,8 +141,8 @@ export class MakePreset extends React.Component {
 
                     {arrayRange(this.state['cardPairsNum'], 1).map(
                         (row, reactKey) => <MakePresetRow key={reactKey} row={row} 
-                                                            handleSelection={this.handleSelection} 
-                        />
+                                                handleSelection={this.handleSelection}
+                                            />
                     )}
 
 
@@ -149,19 +161,34 @@ export class MakePreset extends React.Component {
 
 
                     <div className="dialogMenuBox">
-                        <Input className="dialogMenuFile" inputProps={{ 
-                            accept: "image/gif, image/png, image/jpeg, image/jpg",
-                            type: "file"}}
-                            onChange={this.handleBackFileSelection('backImg')}
-                        />
-                        <DialogContentText>Card back (optional)</DialogContentText>
-                    </div>
-                    <div className="dialogMenuBox">
-                        <Input className="dialogMenuFile" inputProps={{
-                            accept: "image/gif, image/png, image/jpeg, image/jpg",
-                            type: "file"}}
-                            onChange={this.handleBackFileSelection('emptyImg')}
-                        /><DialogContentText>Empty card (optional)</DialogContentText>
+                        <div className="dialogMenuItem">
+                            <input id={"file_cardback"} type="file" accept="image/gif, image/png, image/jpeg, image/jpg" 
+                                    style={{ display: 'none' }} 
+                                    onChange={(event) => {
+                                        if (event.target.files[0]) this.setState({ backFileName: event.target.files[0].name})
+                                        this.handleSelection('imgFileCardBack', 'file')(event)
+                                    }} 
+                            />
+                            <label htmlFor={"file_cardback"}>
+                                <Button variant="contained" component="span">Back image (optional)</Button>
+                            </label>
+                        </div>
+                        <Typography variant='caption' className="dialogMenuText" component="span">{this.state['backFileName']}</Typography>
+
+                        <div className="dialogMenuItem">
+                            <input id={"file_cardempty"} type="file" accept="image/gif, image/png, image/jpeg, image/jpg" 
+                                    style={{ display: 'none' }} 
+                                    onChange={(event) => {
+                                        if (event.target.files[0]) this.setState({ emptyFileName: event.target.files[0].name})
+                                        this.handleSelection('imgFileCardEmpty', 'file')(event)
+                                    }} 
+                            />
+                            <label htmlFor={"file_cardempty"}>
+                                <Button variant="contained" component="span">Empty image (optional)</Button>
+                            </label>
+                        </div>
+                        <Typography variant='caption' className="dialogMenuText" component="span">{this.state['emptyFileName']}</Typography>
+
                     </div>
                     
                     <div className="dialogMenuBox">
@@ -215,7 +242,6 @@ export class MakePreset extends React.Component {
                     <Button onClick={ () => { 
                                 this.props['setGlobalStateParameter']('makePresetActive', false)
                                 this.setState({
-                                    backFiles: new FormData(),
                                     cardData: new FormData(),
                                 })
                             }}

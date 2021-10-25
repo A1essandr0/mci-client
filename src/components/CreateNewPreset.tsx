@@ -133,9 +133,7 @@ export class CreateNewPreset extends React.Component {
                                 required margin="normal"
                                 onChange={this.handleChange('presetDescription')}
                             />
-
-                            {/* TODO determine what kind of interface users are more comfortable with 
-                                and implement it */}
+                            
                             <TextField id="cardValues" value={this.state['cardValues']} label="Words on cards"
                                 required fullWidth variant="outlined" margin="normal" multiline rows={4}
                                 placeholder="Enter card values separated by ';' "

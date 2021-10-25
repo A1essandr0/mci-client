@@ -132,27 +132,25 @@
 
 
 .dialogMenuBox {
+    /* border-style: groove; */
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     flex-wrap: wrap;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
+
 .dialogMenuItem {
-    /* padding-left: 15px; */
+    /* border-style: groove; */
     margin-left: 10px;
-    /* margin-right: 10px; */
-    /* max-width: 50%; */
-} 
+}
+.dialogMenuText {
+    padding-left: 6px;
+    padding-right: 6px;
+}
 .dialogMenuItemRight {
+    /* border-style: groove; */
     margin-left: auto;
     padding-right: 15px;
-}
-
-
-
-/* to be deprecated  */
-.dialogMenuFileText {
-    max-width: 40%;
 }
