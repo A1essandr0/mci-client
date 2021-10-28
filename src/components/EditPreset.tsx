@@ -39,9 +39,13 @@ export class EditPreset extends React.Component {
         }
     }
 
-    handleToggleChange(field) {
+    handleToggleChange(field: string) {
         return (event) => {
-            this.setState({ [field]: !this.state[field] })
+            this.setState((state) => {
+                return {
+                    [field]: !state[field]
+                }
+            })
         }
     }
 

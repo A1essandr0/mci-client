@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Input from '@material-ui/core/Input';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -16,6 +15,11 @@ import { makePreset } from '../code/presets';
 import { auth } from '../code/auth';
 import { config } from '../code/config';
 import { arrayRange } from '../code/lib';
+
+
+const makeFieldName = function(a, b) {
+    return String(a) + '_' + String(b);
+}
 
 
 export class MakePreset extends React.Component {
@@ -36,17 +40,22 @@ export class MakePreset extends React.Component {
 
             cardPairsNum: 2,
 
-            cardData: new FormData(),
+            cardTypes: {},
+            cardFiles: {},
+            cardTexts: {},
+
             backFileName: 'No file selected',
             emptyFileName: 'No file selected',
 
             error: ''
         }
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSelection = this.handleSelection.bind(this);
-        this.handleChangeNumberOfPairs = this.handleChangeNumberOfPairs.bind(this);
         this.clickSubmit = this.clickSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleChangeNumberOfPairs = this.handleChangeNumberOfPairs.bind(this);
+        this.handleFileSelection = this.handleFileSelection.bind(this);
+        this.handleTypeSelection = this.handleTypeSelection.bind(this);
+        this.handleTextSelection = this.handleTextSelection.bind(this);
     }
 
     handleChange(field: string) {
@@ -57,7 +66,11 @@ export class MakePreset extends React.Component {
 
     handleToggleChange(field: string) {
         return (event) => {
-            this.setState({ [field]: !this.state[field] })
+            this.setState((state) => {
+                return {
+                    [field]: !state[field]
+                }
+            })
         }
     }
 
@@ -66,32 +79,52 @@ export class MakePreset extends React.Component {
             if (this.state['cardPairsNum'] === 1 && num === -1 ||
                     this.state['cardPairsNum'] === config.maxCardPairNum && num === 1)
                 return;
-            this.setState({ cardPairsNum: this.state['cardPairsNum'] + num})
+            this.setState((state) => {
+                return {
+                    cardPairsNum: state['cardPairsNum'] + num
+                }
+            })
         }
     }
 
-
-    handleSelection(field: string, fieldType: string) {
+    handleTypeSelection(row: number, column: number, type: string) {
         return (event) => {
-            switch (fieldType) {
-                case 'file':
-                    if (event.target.files && event.target.files[0]) {
-                        this.state['cardData'].set(field, event.target.files[0]);
-                    }
-                    break;
-                case 'text':
-                    this.state['cardData'].set(field, event.target.value)
-                    break;
-                case 'info':
-                    this.state['cardData'].set(field, event.target.value)
-                    break;
-                case 'cardtype':
-                    console.log(field);
-                    // this.state['cardData'].set(field, fieldType)
-                    break;
+            let fieldName = makeFieldName(row, column);
+            let cardTypesNew = {
+                ...this.state['cardTypes'],
+                [fieldName]: type
+            };
+            this.setState({
+                cardTypes: cardTypesNew
+            })
+        }
+    }
+
+    handleFileSelection(row: number, column: number) {
+        return (event) => {
+            if (event.target.files && event.target.files[0]) {
+                let fieldName = makeFieldName(row, column);
+                let cardFilesNew = {
+                    ...this.state['cardFiles'],
+                    [fieldName]: event.target.files[0]
+                }
+                this.setState({
+                    cardFiles: cardFilesNew
+                })
             }
+        }
+    }
 
-
+    handleTextSelection(row: number, column: number) {
+        return (event) => {
+            let fieldName = makeFieldName(row, column);
+            let cardTextsNew = {
+                ...this.state['cardTexts'],
+                [fieldName]: event.target.value
+            }
+            this.setState({
+                cardTexts: cardTextsNew
+            })
         }
     }
 
@@ -100,10 +133,27 @@ export class MakePreset extends React.Component {
     clickSubmit() {
         const jwt = auth.isAuthenticated();
 
-        // TODO check data
+        let newPreset = {
+            presetName: this.state['presetName'] || undefined,
+            presetDescription: this.state['presetDescription'] || undefined,
 
-        alert('submitting...');
-        for (let item of this.state['cardData'].entries()) console.log(item);
+            bgColorOne: this.state['bgColorOne'],
+            bgColorTwo: this.state['bgColorTwo'],
+            backColor: this.state['backColor'],
+            emptyColor: this.state['emptyColor'],
+
+            isPlayableByAll: this.state['isPlayableByAll'],
+            isViewableByAll: this.state['isViewableByAll'],
+            isViewableByUsers: this.state['isViewableByUsers'],
+        };
+
+        ['Types', 'Files', 'Texts'].map(item => {
+            console.log(`${item}: `, this.state['card'+item])
+        })
+
+        // TODO remove redundant data
+        // TODO check data: pairs, integrity
+        // TODO merge data into single object
     
     }
 
@@ -114,7 +164,7 @@ export class MakePreset extends React.Component {
                     onClose={ () => { 
                         this.props['setGlobalStateParameter']('makePresetActive', false)
                         this.setState({
-                            cardData: new FormData(),
+                            cardFiles: {},
                         })
                     }}>
 
@@ -141,7 +191,9 @@ export class MakePreset extends React.Component {
 
                     {arrayRange(this.state['cardPairsNum'], 1).map(
                         (row, reactKey) => <MakePresetRow key={reactKey} row={row} 
-                                                handleSelection={this.handleSelection}
+                                                handleFileSelection={this.handleFileSelection}
+                                                handleTypeSelection={this.handleTypeSelection}
+                                                handleTextSelection={this.handleTextSelection}
                                             />
                     )}
 
@@ -166,7 +218,7 @@ export class MakePreset extends React.Component {
                                     style={{ display: 'none' }} 
                                     onChange={(event) => {
                                         if (event.target.files[0]) this.setState({ backFileName: event.target.files[0].name})
-                                        this.handleSelection('imgFileCardBack', 'file')(event)
+                                        this.handleFileSelection(0, 0)(event)
                                     }} 
                             />
                             <label htmlFor={"file_cardback"}>
@@ -180,7 +232,7 @@ export class MakePreset extends React.Component {
                                     style={{ display: 'none' }} 
                                     onChange={(event) => {
                                         if (event.target.files[0]) this.setState({ emptyFileName: event.target.files[0].name})
-                                        this.handleSelection('imgFileCardEmpty', 'file')(event)
+                                        this.handleFileSelection(0, 1)(event)
                                     }} 
                             />
                             <label htmlFor={"file_cardempty"}>
@@ -242,7 +294,7 @@ export class MakePreset extends React.Component {
                     <Button onClick={ () => { 
                                 this.props['setGlobalStateParameter']('makePresetActive', false)
                                 this.setState({
-                                    cardData: new FormData(),
+                                    cardFiles: {},
                                 })
                             }}
                     >Close</Button>

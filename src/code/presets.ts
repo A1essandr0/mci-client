@@ -1,5 +1,5 @@
 import { 
-    get_presets_url, upload_preset_url, delete_preset_url, edit_preset_url, create_preset_url 
+    get_presets_url, make_preset_url, upload_preset_url, delete_preset_url, edit_preset_url, create_preset_url 
 } from './urls';
 
 
@@ -14,7 +14,20 @@ const getPresets = function(userId) {
 }
 
 
-const makePreset = function(data, credentials) {
+const makePreset = function(formContent, credentials) {
+
+    // TODO merge formContent to FormData object
+
+
+    return fetch(make_preset_url, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + credentials.t,
+        },
+        body: new FormData() // TODO
+    }).then(response => { return response.json() }
+    ).catch((err) => console.log(err))
 
 }
 

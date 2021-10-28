@@ -18,7 +18,7 @@ export function MakePresetRow(props) {
                 <input type="radio" name={props.row + "_one"} checked={imageSelected1} 
                         onChange={(event) => {
                             setImageSelected1(true);
-                            props.handleSelection('imgType' + 'one_one' + props.row, 'cardtype')(event)
+                            props.handleTypeSelection(props.row, 1, 'img')(event)
                         }}
                 />
                 
@@ -26,7 +26,7 @@ export function MakePresetRow(props) {
                         style={{ display: 'none' }} disabled={!imageSelected1}
                         onChange={(event) => {
                             if (event.target.files[0]) setImageName1(event.target.files[0].name);
-                            props.handleSelection('imgFile' + 'one' + props.row, 'file')(event)
+                            props.handleFileSelection(props.row, 1)(event)
                         }}
                 />
                 <label htmlFor={"file_" + props.row + "_one"}>
@@ -37,11 +37,11 @@ export function MakePresetRow(props) {
                 <input type="radio" name={props.row + "_one"} checked={!imageSelected1} 
                         onChange={(event) => {
                             setImageSelected1(false);
-                            props.handleSelection('imgType' + 'one_two' + props.row, 'cardtype')(event)
+                            props.handleTypeSelection(props.row, 1, 'text')(event)
                         }}
                 />
                 <TextField disabled={imageSelected1} placeholder="Word" margin="dense" 
-                        onChange={props.handleSelection('imgText' + 'one' + props.row, 'text')}
+                        onChange={props.handleTextSelection(props.row, 1)}
                 />
             </div>
 
@@ -49,7 +49,7 @@ export function MakePresetRow(props) {
             <div className="dialogMenuItem">
                 <TextField placeholder="info (optional)" size="small"
                         margin="dense"
-                        onChange={props.handleSelection('imgInfo' + props.row, 'info')}
+                        onChange={props.handleTextSelection(props.row, 0)}
                 />
             </div>
 
@@ -58,8 +58,7 @@ export function MakePresetRow(props) {
                 <input type="radio" name={props.row + "_two"} checked={imageSelected2} 
                         onChange={(event) => {
                             setImageSelected2(true);
-                            props.handleSelection('imgType' + 'two_one' + props.row, 'cardtype')(event)
-
+                            props.handleTypeSelection(props.row, 2, 'img')(event);
                         }}
                 />
 
@@ -67,7 +66,7 @@ export function MakePresetRow(props) {
                         style={{ display: 'none' }} disabled={!imageSelected2} 
                         onChange={(event) => {
                             if (event.target.files[0]) setImageName2(event.target.files[0].name);
-                            props.handleSelection('imgFile' + 'two' + props.row, 'file')(event)
+                            props.handleFileSelection(props.row, 2)(event);
                         }}
                 />
                 <label htmlFor={"file_" + props.row + "_two"}>
@@ -78,11 +77,11 @@ export function MakePresetRow(props) {
                 <input type="radio" name={props.row + "_two"} checked={!imageSelected2}
                         onChange={(event) => {
                             setImageSelected2(false);
-                            props.handleSelection('imgType' + 'two_two' + props.row, 'cardtype')(event)
+                            props.handleTypeSelection(props.row, 2, 'text')(event)
                         }}
                 />
                 <TextField disabled={imageSelected2} placeholder="Word" margin="dense"
-                        onChange={props.handleSelection('imgText' + 'two' + props.row, 'text')}
+                        onChange={props.handleTextSelection(props.row, 2)}
                 />
             </div>
             
