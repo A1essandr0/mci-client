@@ -11,15 +11,16 @@ export const ToolBar = function(props) {
         <div className="toolBar">
             <div className="navButton">
                 {!props.gameInProgress && <BlueButton size="large" variant="contained" color="primary"
-                        onClick={() => { props.setView('play') }}
+                        onClick={() => { props.setGlobalStateParameter('currentView', 'play') }}
                 >Game</BlueButton>}
                 {props.gameInProgress && <BlueButton size="large" variant="contained" color="primary"
                         onClick={() => { 
                             let result = confirm('Stop the game?');
                             if (result) {
                                 props.setGlobalStateParameter('gameInProgress', false);
-                                if (userIsAuthenticated) 
-                                    props.setGameStateParameter('userIsPlaying', undefined);                                
+                                // unaccessible from this component for now
+                                // if (userIsAuthenticated)                                    
+                                    // props.setGameStateParameter('userIsPlaying', undefined);                                
                             }
                         }}
                 >Stop</BlueButton>}
@@ -27,7 +28,7 @@ export const ToolBar = function(props) {
 
             <div className="navButton">
                 <BlueButton size="large" variant="contained" color="primary"
-                        onClick={() => { props.setView('presets') }}
+                        onClick={() => { props.setGlobalStateParameter('currentView', 'presets') }}
                         disabled={props.gameInProgress}
                 >Presets</BlueButton>
             </div>
@@ -49,7 +50,7 @@ export const ToolBar = function(props) {
             {userIsAuthenticated && <div className="navButton">
                 <BlueButton size="large" variant="contained" color="primary"
                         onClick={() => {auth.signOut( () => {
-                            props.setView('play')
+                            props.setGlobalStateParameter('currentView', 'play');
                         })}}
                 >Log out</BlueButton>
             </div>}
@@ -57,7 +58,7 @@ export const ToolBar = function(props) {
             {userIsAuthenticated && !props.gameInProgress &&
             <div className="navButton">
                 <BlueButton size="large" variant="contained" disabled={false} color="primary"
-                        onClick={() => { props.setView('users') }}
+                        onClick={() => { props.setGlobalStateParameter('currentView', 'users') }}
                 >Users</BlueButton>
             </div>}
         </div>

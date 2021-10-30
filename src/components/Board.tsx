@@ -4,6 +4,7 @@ import { Users } from './Users';
 import Card from '@material-ui/core/Card';
 
 
+// TODO extract components
 export const Board = function(props) {
     if (props.currentView === "play") {
         if (props.gameInProgress) {

@@ -13,38 +13,33 @@ const getPresets = function(userId) {
     ).catch((err) => console.log(err));
 }
 
+const makePreset = function(formContent, formFiles, credentials) {
+    // data has to be sent as FormData object
+    let presetAsForm = new FormData();
+    
+    for (let key of Object.keys(formFiles)) {
+        presetAsForm.set(key, formFiles[key]);
+    }
 
-const makePreset = function(formContent, credentials) {
-
-    // TODO merge formContent to FormData object
-
-
+    for (let key of Object.keys(formContent)) {
+        if (key === 'types' || key === 'texts') 
+            presetAsForm.set(key, JSON.stringify(formContent[key]))
+        else
+            presetAsForm.set(key, formContent[key])
+    }
+        
     return fetch(make_preset_url, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Authorization': 'Bearer ' + credentials.t,
         },
-        body: new FormData() // TODO
-    }).then(response => { return response.json() }
-    ).catch((err) => console.log(err))
-
-}
-
-
-const createPreset = function(newPreset, credentials) {
-    return fetch(create_preset_url, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + credentials.t
-        },
-        body: JSON.stringify(newPreset)
+        body: presetAsForm
     }).then(response => { return response.json() }
     ).catch((err) => console.log(err))
 }
 
+// to be deprecated
 const uploadPreset = function(uploadedPreset, uploadedPresetFiles, uploadedBackFiles, credentials) {
     // data has to be sent as FormData object
     let uploadedPresetFinal = uploadedPresetFiles;
@@ -62,6 +57,20 @@ const uploadPreset = function(uploadedPreset, uploadedPresetFiles, uploadedBackF
             'Authorization': 'Bearer ' + credentials.t,
         },
         body: uploadedPresetFinal
+    }).then(response => { return response.json() }
+    ).catch((err) => console.log(err))
+}
+
+// to be deprecated
+const createPreset = function(newPreset, credentials) {
+    return fetch(create_preset_url, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + credentials.t
+        },
+        body: JSON.stringify(newPreset)
     }).then(response => { return response.json() }
     ).catch((err) => console.log(err))
 }

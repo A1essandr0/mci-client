@@ -47,8 +47,7 @@ export function MakePresetRow(props) {
 
 
             <div className="dialogMenuItem">
-                <TextField placeholder="info (optional)" size="small"
-                        margin="dense"
+                <TextField placeholder="info (optional)" size="small" margin="dense"
                         onChange={props.handleTextSelection(props.row, 0)}
                 />
             </div>

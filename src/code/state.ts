@@ -44,11 +44,6 @@ export function createGlobalState(parentComponent) {
         gameDelayOnShow: config.gameDelayOnShow,
         gameStartingScore: config.gameStartingScore,
 
-
-        setView: function(viewName: string) {
-            this.setState({ currentView: viewName})
-        }.bind(parentComponent),
-
         setPlayedPreset: function(presetName: string) {
             let preset = this.state.playablePresets[presetName];
             this.setState({ 
@@ -63,7 +58,6 @@ export function createGlobalState(parentComponent) {
             let preset = this.state.viewablePresets[presetName];
             this.setState({ currentViewedPreset: preset})
         }.bind(parentComponent),
-
 
         setGlobalStateParameter: function(paramName: string, paramValue: any): void {
             this.setState({ [paramName]: paramValue })
@@ -104,26 +98,26 @@ export function createGameState(gameComponent) {
 
         takeCardOut: function(card) {
             card.isInGame = false;
-            this.setState({
-                cardsOut: [card, ...this.state.cardsOut],
-                cardsOpenedAtm: this.state['cardsOpenedAtm'] - 1
-            })
+            this.setState((state) => {return {
+                cardsOut: [card, ...state.cardsOut],
+                cardsOpenedAtm: state['cardsOpenedAtm'] - 1
+            }})
         }.bind(gameComponent),
 
         messageAddToQueue: function(msg: string) {
-            this.setState({
-                messageQueue: [...this.state.messageQueue, msg]
-            })
+            this.setState((state) => { return {
+                messageQueue: [...state.messageQueue, msg]
+            }})
         }.bind(gameComponent),
 
 
         // main game logic
         manageGameBoard: function(card) {
             card.isOpened = !card.isOpened;
-            this.setState({
-                cardsFlipped: this.state['cardsFlipped'] + 1,
-                cardsOpenedAtm: this.state['cardsOpenedAtm'] + 1
-            });
+            this.setState((state) => { return {
+                cardsFlipped: state['cardsFlipped'] + 1,
+                cardsOpenedAtm: state['cardsOpenedAtm'] + 1
+            }});
 
 
             if (this.state['checkingPair'] === null) this.state['checkingPair'] = card
@@ -144,10 +138,10 @@ export function createGameState(gameComponent) {
                     else {
                         this.state['checkingPair'].isOpened = false;
                         card.isOpened = false;
-                        this.setState({
-                            currentScore: this.state.currentScore - 1,
-                            cardsOpenedAtm: this.state['cardsOpenedAtm'] - 2
-                        })
+                        this.setState((state) => {return {
+                            currentScore: state.currentScore - 1,
+                            cardsOpenedAtm: state['cardsOpenedAtm'] - 2
+                        }})
                         this.state.messageAddToQueue(`not matched, score: ${this.state.currentScore}`);
                     }
 
@@ -155,10 +149,10 @@ export function createGameState(gameComponent) {
                     // this could happen due to fast clicking, which is viewed as cheating
                     if (this.state['cardsOpenedAtm'] > 0) {
                         this.state.flipAllCards(false);
-                        this.setState({
-                            currentScore: this.state.currentScore - 1,
+                        this.setState((state) => {return {
+                            currentScore: state.currentScore - 1,
                             cardsOpenedAtm: 0
-                        })
+                        }})
                         this.state.messageAddToQueue(`fast clicking penalty, score: ${this.state.currentScore}`);
                     }
 

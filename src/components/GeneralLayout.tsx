@@ -40,6 +40,7 @@ class GeneralLayout extends React.Component {
                 } else chosenPreset = playablePresetsData[0];
 
                 // it is better to have presets in dictionary, indexed by presetName
+                // TODO extract method
                 let playablePresetsDict = {};
                 for (let pr of playablePresetsData) {
                     playablePresetsDict = {...playablePresetsDict,
@@ -97,7 +98,6 @@ class GeneralLayout extends React.Component {
         };
         const propsToToolBar = {
             gameInProgress: this.state['gameInProgress'],
-            setView: this.state['setView'],
             setGlobalStateParameter: this.state['setGlobalStateParameter'],
             signupActive: this.state['signupActive'],
             signinActive: this.state['signinActive']
