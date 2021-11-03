@@ -19,6 +19,7 @@ export const ToolBar = function(props) {
                             if (result) {
                                 props.setGlobalStateParameter('gameInProgress', false);
                                 // unaccessible from this component for now
+                                // TODO lift userIsPlaying to global state
                                 // if (userIsAuthenticated)                                    
                                     // props.setGameStateParameter('userIsPlaying', undefined);                                
                             }

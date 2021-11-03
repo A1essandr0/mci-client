@@ -1,5 +1,5 @@
 import { 
-    get_presets_url, make_preset_url, upload_preset_url, delete_preset_url, edit_preset_url, create_preset_url 
+    get_presets_url, make_preset_url, delete_preset_url, edit_preset_url 
 } from './urls';
 
 
@@ -39,42 +39,6 @@ const makePreset = function(formContent, formFiles, credentials) {
     ).catch((err) => console.log(err))
 }
 
-// to be deprecated
-const uploadPreset = function(uploadedPreset, uploadedPresetFiles, uploadedBackFiles, credentials) {
-    // data has to be sent as FormData object
-    let uploadedPresetFinal = uploadedPresetFiles;
-    for (let [key, value] of Object.entries(uploadedPreset))
-        uploadedPresetFinal.set(key, value)
-    
-    for (let [key, value] of uploadedBackFiles.entries()) 
-        uploadedPresetFinal.set(key, value)
-
-
-    return fetch(upload_preset_url, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Authorization': 'Bearer ' + credentials.t,
-        },
-        body: uploadedPresetFinal
-    }).then(response => { return response.json() }
-    ).catch((err) => console.log(err))
-}
-
-// to be deprecated
-const createPreset = function(newPreset, credentials) {
-    return fetch(create_preset_url, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + credentials.t
-        },
-        body: JSON.stringify(newPreset)
-    }).then(response => { return response.json() }
-    ).catch((err) => console.log(err))
-}
-
 const editPreset = function(presetId: number, modifiedAttributes, credentials) {
     return fetch(`${edit_preset_url}/${presetId}`, {
         method: 'PUT',
@@ -103,4 +67,4 @@ const deletePreset = function(presetId: number, credentials) {
 }
 
 
-export { getPresets, makePreset, createPreset, uploadPreset, editPreset, deletePreset }
+export { getPresets, makePreset, editPreset, deletePreset }

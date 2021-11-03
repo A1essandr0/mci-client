@@ -30,8 +30,6 @@ export function createGlobalState(parentComponent) {
         signinActive: false,
         signupActive: false,
         makePresetActive: false,
-        createPresetActive: false,
-        uploadPresetActive: false,
         deletePresetActive: false,
         editPresetActive: false,
 

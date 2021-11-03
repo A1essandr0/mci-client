@@ -20,6 +20,7 @@ import { EditUserProfile } from './EditUserProfile';
 import { DeleteUserProfile } from './DeleteUserProfile';
 
 
+// TODO rewrite to hooks
 export class Users extends React.Component {
     constructor(props) {
         super(props);

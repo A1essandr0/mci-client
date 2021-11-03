@@ -10,8 +10,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { auth } from '../code/auth';
 import { sleep, arrayRange } from '../code/lib';
 import { MakePreset } from './MakePreset';
-import { CreateNewPreset } from './CreateNewPreset';
-import { UploadPreset } from './UploadPreset';
 import { EditPreset } from './EditPreset'; 
 import { DeletePreset } from './DeletePreset';
 import { BlueButton, RedButton, GreenButton } from './ColoredButtons';
@@ -148,14 +146,6 @@ export const ControlPanel = function(props) {
             makePresetActive: props.makePresetActive,
             setGlobalStateParameter: props.setGlobalStateParameter,
         };
-        let propsToCreatePreset = {
-            createPresetActive: props.createPresetActive,
-            setGlobalStateParameter: props.setGlobalStateParameter,
-        };
-        let propsToUploadPreset = {
-            uploadPresetActive: props.uploadPresetActive,
-            setGlobalStateParameter: props.setGlobalStateParameter,
-        };
         let propsToEditPreset = {
             presetId: props.currentViewedPreset.presetId,
             presetName: props.currentViewedPreset.presetName,
@@ -199,19 +189,8 @@ export const ControlPanel = function(props) {
 
                 {userIsAuthenticated && <div className="startButton">
                     <BlueButton variant="contained" disabled={props.gameInProgress}
-                            onClick={ () => { props.setGlobalStateParameter('uploadPresetActive', true) }}
-                    >Upload</BlueButton>
-                    </div>}
-                {userIsAuthenticated && <div className="startButton">
-                    <BlueButton variant="contained" disabled={props.gameInProgress}
-                            onClick={ () => { props.setGlobalStateParameter('createPresetActive', true) }}
-                    >Create</BlueButton>
-                    </div>}
-
-                {userIsAuthenticated && <div className="startButton">
-                    <RedButton variant="contained" disabled={props.gameInProgress}
                             onClick={()=>{ props.setGlobalStateParameter('editPresetActive', true) }}
-                    >Modify</RedButton>
+                    >Modify</BlueButton>
                 </div>}
                 {userIsAuthenticated && <div className="startButton">
                     <RedButton variant="contained" disabled={props.gameInProgress}
@@ -220,12 +199,10 @@ export const ControlPanel = function(props) {
                 </div>}
 
                 {!userIsAuthenticated && <div className="startButton">
-                    <Typography>Sign in to upload or create new presets</Typography>
+                    <Typography>Sign in to create new presets</Typography>
                 </div>}
 
                 <MakePreset {...propsToMakePreset} />
-                <CreateNewPreset {...propsToCreatePreset} />
-                <UploadPreset {...propsToUploadPreset} />
                 <EditPreset {...propsToEditPreset} />
                 <DeletePreset {...propsToDeletePreset} />
             </div>
