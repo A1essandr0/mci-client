@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect } from 'react';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -20,45 +20,44 @@ import { EditUserProfile } from './EditUserProfile';
 import { DeleteUserProfile } from './DeleteUserProfile';
 
 
-// TODO rewrite to hooks
-export class Users extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { 
-            users: [],
-            
-            userId: -10,
-            editDialogOpen: false,
-            deleteDialogOpen: false,
+// TODO extract User component
+export const Users = function(props) {
+    let [userId, setUserId] = useState(-10);
+    let [editDialogOpen, setEditDialogOpen] = useState(false);
+    let [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    let [users, setUsers] = useState([]);
 
-            toggleEditOpen: function(value: boolean): void {
-                this.setState({ editDialogOpen: value})
-            }.bind(this),
-            toggleDeleteOpen: function(value: boolean): void {
-                this.setState({ deleteDialogOpen: value})
-            }.bind(this)
-        }
-    }
-
-    componentDidMount() {
+    useEffect(() => {
         const jwt = auth.isAuthenticated();
         if (!jwt) return;
 
-        listUsers({t: jwt.token}).then((data) => {
-            if (data.error) console.log(data.error)
-            else this.setState({ users: data })            
-        })
-    }
+        listUsers({t: jwt.token}).then(
+                (data) => { 
+                    if (data.error) console.log(data.error)
+                    else setUsers(data);
+                })
+    }, []);
 
+    let userIsAuthenticated = auth.isAuthenticated();
 
-    render() {
-        let userIsAuthenticated = auth.isAuthenticated();
+    let propsToEditUser = {
+        users: users,
+        userId: userId,
+        editDialogOpen: editDialogOpen,
+        toggleEditOpen: function(value: boolean):void {setEditDialogOpen(value)}
+    };
+    let propsToDeleteUser = {
+        users: users,
+        userId: userId,
+        deleteDialogOpen: deleteDialogOpen,
+        toggleDeleteOpen: function(value: boolean):void {setDeleteDialogOpen(value)}
+    };
 
-        return (
+    return (
             <div className="usersEditView">
                 <Paper elevation={4}>
                     <List dense>
-                        {this.state['users'] && this.state['users'].map(
+                        {users && users.map(
                             (item, reactKey) => {
                                 return (
                                     <ListItem button={false} key={reactKey}>
@@ -76,17 +75,19 @@ export class Users extends React.Component {
                                             {(userIsAuthenticated.user.is_admin === 1 || 
                                                 userIsAuthenticated.user.id === item.id) && 
                                             <IconButton color="primary"
-                                                        onClick={()=>{ this.setState({ 
-                                                            userId: item.id, editDialogOpen: true
-                                                        })}}
+                                                        onClick={()=>{ 
+                                                            setUserId(item.id);
+                                                            setEditDialogOpen(true);
+                                                        }}
                                             ><Edit /></IconButton>}
 
                                             {(userIsAuthenticated.user.is_admin === 1 ||
                                                 userIsAuthenticated.user.id === item.id) &&
                                             <IconButton color="secondary"
-                                                        onClick={()=>{ this.setState({
-                                                            userId: item.id, deleteDialogOpen: true
-                                                        })}}
+                                                        onClick={()=>{
+                                                            setUserId(item.id);
+                                                            setDeleteDialogOpen(true);
+                                                        }}
                                             ><Delete /></IconButton>}
 
                                             <IconButton>
@@ -99,9 +100,8 @@ export class Users extends React.Component {
                     </List>
                 </Paper>
 
-                <EditUserProfile {...this.state} />
-                <DeleteUserProfile {...this.state} />
-            </div>
-        )
-    }
+                <EditUserProfile {...propsToEditUser} />
+                <DeleteUserProfile {...propsToDeleteUser} />
+        </div>
+    )
 }

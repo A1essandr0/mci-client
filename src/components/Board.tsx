@@ -63,6 +63,8 @@ export const Board = function(props) {
 
     else if (props.currentView === "users")
             return (
-                <Users />
+                <div>
+                    <Users />
+                </div>
             )
 }

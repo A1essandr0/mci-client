@@ -290,7 +290,7 @@ export class MakePreset extends React.Component {
 
                     <div className="dialogMenuBox">
                         <div className="dialogMenuItem">
-                            <input id={"file_cardback"} type="file" accept="image/gif, image/png, image/jpeg, image/jpg" 
+                            <input id={"file_cardback"} type="file" accept="image/png, image/jpeg, image/jpg" 
                                     style={{ display: 'none' }} 
                                     onChange={(event) => {
                                         if (event.target.files[0]) this.setState({ backFileName: event.target.files[0].name})
@@ -304,7 +304,7 @@ export class MakePreset extends React.Component {
                         <Typography variant='caption' className="dialogMenuText" component="span">{this.state['backFileName']}</Typography>
 
                         <div className="dialogMenuItem">
-                            <input id={"file_cardempty"} type="file" accept="image/gif, image/png, image/jpeg, image/jpg" 
+                            <input id={"file_cardempty"} type="file" accept="image/png, image/jpeg, image/jpg" 
                                     style={{ display: 'none' }} 
                                     onChange={(event) => {
                                         if (event.target.files[0]) this.setState({ emptyFileName: event.target.files[0].name})

@@ -22,7 +22,7 @@ export function MakePresetRow(props) {
                         }}
                 />
                 
-                <input id={"file_" + props.row + "_one"} type="file" accept="image/gif, image/png, image/jpeg, image/jpg" 
+                <input id={"file_" + props.row + "_one"} type="file" accept="image/png, image/jpeg, image/jpg" 
                         style={{ display: 'none' }} disabled={!imageSelected1}
                         onChange={(event) => {
                             if (event.target.files[0]) setImageName1(event.target.files[0].name);
