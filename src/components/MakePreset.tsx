@@ -239,7 +239,6 @@ export class MakePreset extends React.Component {
     }
 
 
-    // TODO extract components
     render() {
         return (
             <Dialog open={this.props['makePresetActive']} maxWidth="xl"
@@ -319,6 +318,7 @@ export class MakePreset extends React.Component {
                     </div>
                     
                     <div className="dialogMenuBox">
+                        {/* TODO extract component and ['bgColorOne', '...'].map() */}
                         <div className="dialogMenuItem">
                             <input type="color" id="bgColorOne" value={this.state['bgColorOne']}
                                     onChange={this.handleChange('bgColorOne')}
@@ -344,6 +344,7 @@ export class MakePreset extends React.Component {
                     <Divider />
 
                     <div className="dialogMenuBox">
+                        {/* TODO extract component ['isPlayableByAll', '...'].map() */}
                         <div className="dialogMenuItem">
                             <input type="checkbox" checked={this.state['isPlayableByAll']}
                                     onChange={this.handleToggleChange('isPlayableByAll')}

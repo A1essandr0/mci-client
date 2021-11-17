@@ -4,7 +4,6 @@ import { Users } from './Users';
 import Card from '@material-ui/core/Card';
 
 
-// TODO extract components
 export const Board = function(props) {
     if (props.currentView === "play") {
         if (props.gameInProgress) {
@@ -53,8 +52,12 @@ export const Board = function(props) {
         return (
             <div className="presetEditView">
                 {props.currentViewedPreset.cards && 
-                    props.currentViewedPreset.cards.map((item, reactKey) => {
-                        return <img key={reactKey} className="gameCell" src={`${server_url}${item.filename}`} />
+                    props.currentViewedPreset.cards.map((card, reactKey) => {
+                        return (
+                            <img key={reactKey} className="gameCell" src={`${server_url}${card.filename}`}
+                                    onClick={() => { alert(card.info) }}
+                            />
+                        )
                     })                
                 }
             </div>
