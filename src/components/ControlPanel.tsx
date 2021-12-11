@@ -16,6 +16,7 @@ import { BlueButton, RedButton, GreenButton } from './ColoredButtons';
 
 
 export const ControlPanel = function(props: any) {
+    console.log('control panel props', props)
     const userIsAuthenticated = auth.isAuthenticated();
 
     const userOwnsPreset = userIsAuthenticated && props.currentPlayedPreset.owner === userIsAuthenticated.user.id;

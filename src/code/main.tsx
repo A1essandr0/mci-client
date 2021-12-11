@@ -4,10 +4,7 @@ import ReactDOM from 'react-dom';
 import GeneralLayout from '../components/GeneralLayout';
 
 
-let generalLayoutProps = {
-    path: window.location.pathname
-}
-
-const baseComponent = ReactDOM.render(
-    <GeneralLayout {...generalLayoutProps} />, document.getElementById('root')
+ReactDOM.render(
+    <GeneralLayout path={window.location.pathname} />, 
+    document.getElementById('root')
 );

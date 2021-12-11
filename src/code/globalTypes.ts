@@ -22,6 +22,8 @@ export interface IPreset {
     presetId: number;
 }
 
+// @TODO game ready preset
+
 
 // @TODO user type, credentials type
 

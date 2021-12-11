@@ -5,17 +5,83 @@ import { Signup } from './Signup';
 import { Signin } from './Signin';
 import { Game } from './Game';
 
-import { createGlobalState } from '../code/state';
 import { IPreset } from 'src/code/globalTypes';
 import { auth } from '../code/auth';
 import { getPresets } from "../code/presets";
+import { config } from '../code/config';
 
 
-class GeneralLayout extends React.Component<any, any> {
+type CurrentViewTypes = "play" | "presets" | "users";
+type GeneralLayoutState = {
+    currentView: CurrentViewTypes;
+    gameInProgress: boolean,
+    showIsOn: boolean,
+    signinActive: boolean,
+    signupActive: boolean,
+    makePresetActive: boolean,
+    deletePresetActive: boolean,
+    editPresetActive: boolean,
+    gameStartingDelay: number,
+    gameDelayOnShow: number,
+    gameStartingScore: number,
+
+    playablePresets: any,
+    viewablePresets: any,
+    currentPlayedPreset: any,
+    currentViewedPreset: any,
+}
+type GeneralLayoutProps = {
+    path: string
+}
+
+
+class GeneralLayout extends React.Component<GeneralLayoutProps, GeneralLayoutState> {
     constructor(props: any) {
         super(props);
-        this.state = createGlobalState(this);
+        this.state = {
+            currentView: "play",
+            gameInProgress: false,
+            showIsOn: false,
+    
+            signinActive: false,
+            signupActive: false,
+            makePresetActive: false,
+            deletePresetActive: false,
+            editPresetActive: false,
+    
+            playablePresets: {},
+            viewablePresets: {},
+            currentPlayedPreset: "",
+            currentViewedPreset: "",
+    
+            gameStartingDelay: config.gameStartingDelay,
+            gameDelayOnShow: config.gameDelayOnShow,
+            gameStartingScore: config.gameStartingScore,
+        }
+        this.setPlayedPreset = this.setPlayedPreset.bind(this);
+        this.setViewedPreset = this.setViewedPreset.bind(this);
+        this.setGlobalStateParameter = this.setGlobalStateParameter.bind(this);
     }
+
+    setPlayedPreset(presetName: string) {
+        let preset = this.state.playablePresets[presetName];
+        this.setState({ 
+            currentPlayedPreset: preset,
+            gameStartingDelay: config.gameStartingDelay, // to avoid cheating
+            gameDelayOnShow: config.gameDelayOnShow,
+            gameStartingScore: config.gameStartingScore
+        })
+    }
+    
+    setViewedPreset(presetName: string) {
+        let preset = this.state.viewablePresets[presetName];
+        this.setState({ currentViewedPreset: preset})
+    }
+    
+    setGlobalStateParameter(paramName: string, paramValue: any): void {
+        this.setState({ ...this.state, [paramName]: paramValue}) // suspicion for slowing down
+    }
+
 
     componentDidMount() {
         let user = auth.isAuthenticated().user;
@@ -30,7 +96,7 @@ class GeneralLayout extends React.Component<any, any> {
                     (item: IPreset) => item.viewableByAll || item.viewableByUsers && user || user && user.id === item.owner
                 );
                 
-                let path = this.props['path'].split('=');
+                let path = this.props.path.split('=');
                 let chosenPreset: IPreset;
                 if (path[0] === '/preset' && path[1]) {
                     const presetViaLink = playablePresetsData.filter(item => 
@@ -69,8 +135,8 @@ class GeneralLayout extends React.Component<any, any> {
         // giving the game its initial state based on the chosen preset and game settings
         // since it is in the render(), happens every time the state of GeneralLayout changes
         const propsToGame = {
-            cards: this.state['currentPlayedPreset']['cards'] ? 
-                        this.state['currentPlayedPreset']['cards'].map(
+            cards: this.state.currentPlayedPreset.cards ? 
+                        this.state.currentPlayedPreset.cards.map(
                             (item: any) => {
                                 return {
                                     value: item.value,
@@ -82,26 +148,29 @@ class GeneralLayout extends React.Component<any, any> {
                             }
                         ) : undefined, 
 
-            currentScore: this.state['gameStartingScore'],
-            cardBack: this.state['currentPlayedPreset'] ? this.state['currentPlayedPreset']['cardBack'] : undefined,
-            cardEmpty: this.state['currentPlayedPreset'] ? this.state['currentPlayedPreset']['cardEmpty'] : undefined,
-            presetName: this.state['currentPlayedPreset'] ? this.state['currentPlayedPreset']['presetName'] : undefined,
-            presetDescription: this.state['currentPlayedPreset'] ? this.state['currentPlayedPreset']['description'] : undefined
+            currentScore: this.state.gameStartingScore,
+            cardBack: this.state.currentPlayedPreset ? this.state.currentPlayedPreset.cardBack : undefined,
+            cardEmpty: this.state.currentPlayedPreset ? this.state.currentPlayedPreset.cardEmpty : undefined,
+            presetName: this.state.currentPlayedPreset ? this.state.currentPlayedPreset.presetName : undefined,
+            presetDescription: this.state.currentPlayedPreset ? this.state.currentPlayedPreset.description : undefined,
+            setGlobalStateParameter: this.setGlobalStateParameter,
+            setPlayedPreset: this.setPlayedPreset,
+            setViewedPreset: this.setViewedPreset
         };
 
         const propsToSignin = {
-            signinActive: this.state['signinActive'],
-            setGlobalStateParameter: this.state['setGlobalStateParameter'],
+            signinActive: this.state.signinActive,
+            setGlobalStateParameter: this.setGlobalStateParameter,
         };
         const propsToSignup = {
-            signupActive: this.state['signupActive'],
-            setGlobalStateParameter: this.state['setGlobalStateParameter'],
+            signupActive: this.state.signupActive,
+            setGlobalStateParameter: this.setGlobalStateParameter,
         };
         const propsToToolBar = {
-            gameInProgress: this.state['gameInProgress'],
-            setGlobalStateParameter: this.state['setGlobalStateParameter'],
-            signupActive: this.state['signupActive'],
-            signinActive: this.state['signinActive']
+            gameInProgress: this.state.gameInProgress,
+            signupActive: this.state.signupActive,
+            signinActive: this.state.signinActive,
+            setGlobalStateParameter: this.setGlobalStateParameter
         }
 
         return (

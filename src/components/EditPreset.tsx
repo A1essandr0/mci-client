@@ -57,8 +57,8 @@ export class EditPreset extends React.Component<any, EditPresetState> {
         return () => {
             this.setState((state: EditPresetState) => {
                 return {
+                    ...state,
                     [field]: !state[field],
-                    ...state
                 }
             })
         }
