@@ -3,7 +3,7 @@ import {
 } from './urls';
 
 
-const getPresets = function(userId) {
+const getPresets = function(userId: string) {
     return fetch(get_presets_url, {
         method: 'GET',
         headers: {
@@ -13,7 +13,7 @@ const getPresets = function(userId) {
     ).catch((err) => console.log(err));
 }
 
-const makePreset = function(formContent, formFiles, credentials) {
+const makePreset = function(formContent: any, formFiles: any, credentials: any) {
     // data has to be sent as FormData object
     let presetAsForm = new FormData();
     
@@ -39,7 +39,7 @@ const makePreset = function(formContent, formFiles, credentials) {
     ).catch((err) => console.log(err))
 }
 
-const editPreset = function(presetId: number, modifiedAttributes, credentials) {
+const editPreset = function(presetId: number, modifiedAttributes: any, credentials: any) {
     return fetch(`${edit_preset_url}/${presetId}`, {
         method: 'PUT',
         headers: {
@@ -53,7 +53,7 @@ const editPreset = function(presetId: number, modifiedAttributes, credentials) {
     }).catch((err) => console.log(err))
 }
 
-const deletePreset = function(presetId: number, credentials) {
+const deletePreset = function(presetId: number, credentials: any) {
     return fetch(`${delete_preset_url}/${presetId}`, {
         method: 'DELETE',
         headers: {

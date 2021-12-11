@@ -10,18 +10,18 @@ import { removeUser } from '../code/users';
 import { auth } from '../code/auth';
 
 
-export class DeleteUserProfile extends React.Component {
-    constructor(props) {
+export class DeleteUserProfile extends React.Component<any, {id: number, email: string, error: string}> {
+    constructor(props: any) {
         super(props);
         this.state = { id: -100, email: "", error: "" }
 
         this.clickSubmit = this.clickSubmit.bind(this);
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps: any) {
         if (this.props['userId'] !== prevProps['userId']) {
             let user = this.props['users']
-                .filter(item => item.id === this.props['userId']) // O(n) search
+                .filter((item: any) => item.id === this.props['userId']) // O(n) search
                 [0];
             this.setState({
                 id: this.props['userId'],

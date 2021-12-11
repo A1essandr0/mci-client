@@ -5,13 +5,14 @@ import { Signup } from './Signup';
 import { Signin } from './Signin';
 import { Game } from './Game';
 
-import { createGlobalState, IPreset } from '../code/state';
+import { createGlobalState } from '../code/state';
+import { IPreset } from 'src/code/globalTypes';
 import { auth } from '../code/auth';
 import { getPresets } from "../code/presets";
 
 
-class GeneralLayout extends React.Component {
-    constructor(props) {
+class GeneralLayout extends React.Component<any, any> {
+    constructor(props: any) {
         super(props);
         this.state = createGlobalState(this);
     }
@@ -70,7 +71,7 @@ class GeneralLayout extends React.Component {
         const propsToGame = {
             cards: this.state['currentPlayedPreset']['cards'] ? 
                         this.state['currentPlayedPreset']['cards'].map(
-                            (item) => {
+                            (item: any) => {
                                 return {
                                     value: item.value,
                                     filename: item.filename,

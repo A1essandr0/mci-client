@@ -1,27 +1,11 @@
+import React from 'react';
+
 import { sleep } from './lib';
 import { config } from './config';
+import { ICard, IPreset } from './globalTypes';
 
 
-export interface ICard {
-    filename: string,
-    info: string,
-    value: string
-}
-
-export interface IPreset {
-    owner: number,
-    presetName: string,
-    cardBack: string,
-    cardEmpty: string,
-    description: string,
-    cards: ICard[],
-    playableByAll: number,
-    viewableByAll: number,
-    viewableByUsers: number
-}
-
-
-export function createGlobalState(parentComponent) {
+export function createGlobalState(parentComponent: React.Component) {
     return {
         currentView: "play", // "play" | "presets" | "users"
         gameInProgress: false,
@@ -60,12 +44,11 @@ export function createGlobalState(parentComponent) {
         setGlobalStateParameter: function(paramName: string, paramValue: any): void {
             this.setState({ [paramName]: paramValue })
         }.bind(parentComponent),
-
     }
 }
 
 
-export function createGameState(gameComponent) {
+export function createGameState(gameComponent: React.Component) {
     return {
         cards: [],
 

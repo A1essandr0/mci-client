@@ -10,15 +10,15 @@ import { deletePreset } from '../code/presets';
 import { auth } from '../code/auth';
 
 
-export class DeletePreset extends React.Component {
-    constructor(props) {
+export class DeletePreset extends React.Component<any, {presetId: number, error: string}> {
+    constructor(props: any) {
         super(props);
         this.state = { presetId: this.props['presetId'], error: "" }
 
         this.clickSubmit = this.clickSubmit.bind(this);
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps: any) {
         if (this.props['presetId'] !== prevProps['presetId']) {
             this.setState({
                 presetId: this.props['presetId'],
@@ -46,7 +46,7 @@ export class DeletePreset extends React.Component {
             <Dialog open={this.props['deletePresetActive']} onClose={
                 () => { this.props['setGlobalStateParameter']('deletePresetActive', false)}}>
                 <DialogContent>
-                    <DialogContentText>Delete preset {this.state['email']}? This can't be undone</DialogContentText>
+                    <DialogContentText>Delete this preset? This can't be undone</DialogContentText>
                     
                     {this.state['error'] && <div>{this.state['error']}</div>}
                 </DialogContent>

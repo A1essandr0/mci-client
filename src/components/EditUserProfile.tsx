@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -11,8 +11,8 @@ import { auth } from '../code/auth';
 import { updateUser } from '../code/users';
 
 
-export class EditUserProfile extends React.Component {
-    constructor(props) {
+export class EditUserProfile extends React.Component<any, any> {
+    constructor(props: any) {
         super(props)
         this.state = { id: -100, name: "", email: "", error: "" }
 
@@ -20,10 +20,10 @@ export class EditUserProfile extends React.Component {
         this.clickSubmit = this.clickSubmit.bind(this);
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps: any) {
         if (this.props['userId'] !== prevProps['userId']) {
             let user = this.props['users']
-                .filter(item => item.id === this.props['userId'])[0];
+                .filter((item: any) => item.id === this.props['userId'])[0];
             this.setState({
                 id: this.props['userId'],
                 name: user && user['name'],
@@ -33,7 +33,7 @@ export class EditUserProfile extends React.Component {
     }
 
     handleChange(field: string) {
-        return (event) => {
+        return (event: ChangeEvent<HTMLInputElement>) => {
             this.setState({ [field]: event.target.value })
         }
     }

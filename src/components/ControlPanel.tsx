@@ -15,7 +15,7 @@ import { DeletePreset } from './DeletePreset';
 import { BlueButton, RedButton, GreenButton } from './ColoredButtons';
 
 
-export const ControlPanel = function(props) {
+export const ControlPanel = function(props: any) {
     const userIsAuthenticated = auth.isAuthenticated();
 
     const userOwnsPreset = userIsAuthenticated && props.currentPlayedPreset.owner === userIsAuthenticated.user.id;
@@ -211,4 +211,7 @@ export const ControlPanel = function(props) {
 
     else if (props.currentView === "users")
         return <div className="controlPanel">Manage user accounts</div>
+    
+
+    return <div></div> // unreachable, but helps to maintain JSX.Element type
 }

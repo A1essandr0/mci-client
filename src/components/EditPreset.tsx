@@ -10,8 +10,22 @@ import { editPreset } from '../code/presets'
 import { auth } from '../code/auth';
 
 
-export class EditPreset extends React.Component {
-    constructor(props) {
+type EditPresetBooleanFieldNames = 'isPlayableByAll' | 'isViewableByAll' | 'isViewableByUsers';
+type EditPresetState = {
+    presetId: number; 
+    presetName: string; 
+    error: string;
+    isPlayableByAll: boolean; 
+    isViewableByAll: boolean; 
+    isViewableByUsers: boolean;
+}
+type EditPresetProps = {
+
+}
+
+
+export class EditPreset extends React.Component<any, EditPresetState> {
+    constructor(props: any) {
         super(props);
 
         this.state = { 
@@ -27,7 +41,7 @@ export class EditPreset extends React.Component {
         this.clickSubmit = this.clickSubmit.bind(this);
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps: any) {
         if (this.props['presetId'] !== prevProps['presetId']) {
             this.setState({
                 presetId: this.props['presetId'],
@@ -39,11 +53,12 @@ export class EditPreset extends React.Component {
         }
     }
 
-    handleToggleChange(field: string) {
-        return (event) => {
-            this.setState((state) => {
+    handleToggleChange(field: EditPresetBooleanFieldNames) {
+        return () => {
+            this.setState((state: EditPresetState) => {
                 return {
-                    [field]: !state[field]
+                    [field]: !state[field],
+                    ...state
                 }
             })
         }

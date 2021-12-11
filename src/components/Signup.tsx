@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -10,8 +10,8 @@ import TextField from '@material-ui/core/TextField';
 import { createUser } from '../code/users';
 
 
-export class Signup extends React.Component {
-    constructor(props) {
+export class Signup extends React.Component<any, any> {
+    constructor(props: any) {
         super(props);
         this.state = { name: '', email: '', password: '', passwordRepeat: '', error: '' }
 
@@ -19,8 +19,8 @@ export class Signup extends React.Component {
         this.clickSubmit = this.clickSubmit.bind(this);
     }
 
-    handleChange(field) {
-        return (event) => { 
+    handleChange(field: "password" | "email" | "error" | "passwordRepeat" | "name") {
+        return (event: ChangeEvent<HTMLInputElement>) => { 
             this.setState({ [field]: event.target.value })
         }
     }

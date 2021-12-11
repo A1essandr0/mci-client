@@ -17,3 +17,11 @@ export function arrayRange(len: number, from: number = 0, step: number = 1): Arr
     )
 }
 
+export function expandFormData(form: FormData) {
+    const result: any = {};
+    form.forEach((value: any, key: any) => {
+        result.key = value;
+    })
+    return result;
+}
+

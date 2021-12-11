@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 
-export function MakePresetRow(props) {
+export function MakePresetRow(props: any) {
     let [imageSelected1, setImageSelected1] = useState(true);
     let [imageSelected2, setImageSelected2] = useState(true);
     let [imageName1, setImageName1] = useState('No file selected')
@@ -24,7 +24,7 @@ export function MakePresetRow(props) {
                 
                 <input id={"file_" + props.row + "_one"} type="file" accept="image/png, image/jpeg, image/jpg" 
                         style={{ display: 'none' }} disabled={!imageSelected1}
-                        onChange={(event) => {
+                        onChange={(event: any) => {
                             if (event.target.files[0]) setImageName1(event.target.files[0].name);
                             props.handleFileSelection(props.row, 1)(event)
                         }}
@@ -63,7 +63,7 @@ export function MakePresetRow(props) {
 
                 <input id={"file_" + props.row + "_two"} type="file" accept="image/gif, image/png, image/jpeg, image/jpg" 
                         style={{ display: 'none' }} disabled={!imageSelected2} 
-                        onChange={(event) => {
+                        onChange={(event: any) => {
                             if (event.target.files[0]) setImageName2(event.target.files[0].name);
                             props.handleFileSelection(props.row, 2)(event);
                         }}

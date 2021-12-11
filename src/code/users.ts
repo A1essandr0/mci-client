@@ -1,7 +1,7 @@
 import { create_user_url, get_users_url } from './urls'
 
 
-const createUser = function(user) {
+const createUser = function(user: any) {
     return fetch(create_user_url, {
         method: 'POST',
         headers: {
@@ -14,7 +14,7 @@ const createUser = function(user) {
     }).catch((err) => console.log(err));
 }
 
-const listUsers = function(credentials) {
+const listUsers = function(credentials: any) {
     return fetch(get_users_url, {
         method: 'GET',
         headers: {
@@ -25,7 +25,7 @@ const listUsers = function(credentials) {
     }).catch((err) => console.log(err))
 }
 
-const getUser = function(userId: number, credentials) {
+const getUser = function(userId: number, credentials: any) {
     return fetch(`${get_users_url}/${userId}`, {
         method: 'GET',
         headers: {
@@ -37,7 +37,7 @@ const getUser = function(userId: number, credentials) {
 
 }
 
-const removeUser = function(userId: number, credentials) {
+const removeUser = function(userId: number, credentials: any) {
     return fetch(`${get_users_url}/${userId}`, {
         method: 'DELETE',
         headers: {
@@ -50,7 +50,7 @@ const removeUser = function(userId: number, credentials) {
     }).catch((err) => console.log(err))
 }
 
-const updateUser = function(user, credentials) {
+const updateUser = function(user: any, credentials: any) {
     return fetch(`${get_users_url}/${user.id}`, {
         method: 'PUT',
         headers: {

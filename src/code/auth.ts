@@ -2,7 +2,7 @@ import { auth_signin_url, auth_signout_url } from './urls';
 
 
 const auth = {
-    authenticate: function(jwt, callback: Function) {
+    authenticate: function(jwt: any, callback: Function) {
         if (typeof window !== "undefined")
             localStorage.setItem('jwt', JSON.stringify(jwt));
 
@@ -11,8 +11,9 @@ const auth = {
 
     isAuthenticated: function() {
         if (typeof window == "undefined") return false;
-        if (localStorage.getItem('jwt'))
-            return JSON.parse(localStorage.getItem('jwt'))
+        const jwtObject: string | null = localStorage.getItem('jwt');
+        if (jwtObject)
+            return JSON.parse(jwtObject)
         else
             return false;
     },
@@ -29,7 +30,7 @@ const auth = {
 }
 
 
-const signinRequest = function(user) {
+const signinRequest = function(user: any) {
     return fetch(auth_signin_url, {
         method: 'POST',
         headers: {

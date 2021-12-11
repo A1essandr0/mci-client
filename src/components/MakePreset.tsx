@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent, MouseEventHandler } from 'react';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -17,13 +17,13 @@ import { config } from '../code/config';
 import { arrayRange } from '../code/lib';
 
 
-const makeFieldName = function(a, b) {
+const makeFieldName = function(a: number, b: number) {
     return String(a) + '_' + String(b);
 }
 
 
-export class MakePreset extends React.Component {
-    constructor(props) {
+export class MakePreset extends React.Component<any, any> {
+    constructor(props: any) {
         super(props);
         this.state = {
             presetName: '',
@@ -71,14 +71,14 @@ export class MakePreset extends React.Component {
     }
 
     handleChange(field: string) {
-        return (event) => { 
+        return (event: ChangeEvent<HTMLInputElement>) => { 
             this.setState({ [field]: event.target.value })
         }
     }
 
     handleToggleChange(field: string) {
-        return (event) => {
-            this.setState((state) => {
+        return () => {
+            this.setState((state: any) => {
                 return {
                     [field]: !state[field]
                 }
@@ -87,11 +87,11 @@ export class MakePreset extends React.Component {
     }
 
     handleChangeNumberOfPairs(num: number) {
-        return (event) => {
+        return () => {
             if (this.state['cardPairsNum'] === 1 && num === -1 ||
                     this.state['cardPairsNum'] === config.maxCardPairNum && num === 1)
                 return;
-            this.setState((state) => {
+            this.setState((state: any) => {
                 return {
                     cardPairsNum: state['cardPairsNum'] + num
                 }
@@ -100,7 +100,7 @@ export class MakePreset extends React.Component {
     }
 
     handleTypeSelection(row: number, column: number, type: string) {
-        return (event) => {
+        return (event: ChangeEvent<HTMLInputElement>) => {
             let fieldName = makeFieldName(row, column);
             let cardTypesNew = {
                 ...this.state['cardTypes'],
@@ -113,7 +113,7 @@ export class MakePreset extends React.Component {
     }
 
     handleFileSelection(row: number, column: number) {
-        return (event) => {
+        return (event: ChangeEvent<HTMLInputElement>) => {
             if (event.target.files && event.target.files[0]) {
                 let fieldName = makeFieldName(row, column);
                 let cardFilesNew = {
@@ -128,7 +128,7 @@ export class MakePreset extends React.Component {
     }
 
     handleTextSelection(row: number, column: number) {
-        return (event) => {
+        return (event: ChangeEvent<HTMLInputElement>) => {
             let fieldName = makeFieldName(row, column);
             let cardTextsNew = {
                 ...this.state['cardTexts'],
@@ -144,7 +144,7 @@ export class MakePreset extends React.Component {
     clickSubmit() {
         const jwt = auth.isAuthenticated();
 
-        let newPreset = {
+        let newPreset: any = {
             presetName: this.state['presetName'] || undefined,
             presetDescription: this.state['presetDescription'] || undefined,
 
@@ -170,7 +170,7 @@ export class MakePreset extends React.Component {
         }
 
         // checking whether all image files are taken into account
-        let newTypesRecords = {};
+        let newTypesRecords: {[key in string]: string} = {};
         for (let key in this.state['cardFiles']) {
             let fileRecordExists = key in this.state['cardTypes'];
             if (!fileRecordExists) {
@@ -291,7 +291,7 @@ export class MakePreset extends React.Component {
                         <div className="dialogMenuItem">
                             <input id={"file_cardback"} type="file" accept="image/png, image/jpeg, image/jpg" 
                                     style={{ display: 'none' }} 
-                                    onChange={(event) => {
+                                    onChange={(event: any) => {
                                         if (event.target.files[0]) this.setState({ backFileName: event.target.files[0].name})
                                         this.handleFileSelection(0, 0)(event)
                                     }} 
@@ -305,7 +305,7 @@ export class MakePreset extends React.Component {
                         <div className="dialogMenuItem">
                             <input id={"file_cardempty"} type="file" accept="image/png, image/jpeg, image/jpg" 
                                     style={{ display: 'none' }} 
-                                    onChange={(event) => {
+                                    onChange={(event: any) => {
                                         if (event.target.files[0]) this.setState({ emptyFileName: event.target.files[0].name})
                                         this.handleFileSelection(0, 1)(event)
                                     }} 

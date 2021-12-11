@@ -9,7 +9,7 @@ import { AboutTheMemoricci } from './AboutTheMemoricci';
 import { config } from '../code/config';
 
 
-export const Descriptions = function(props) {
+export const Descriptions = function(props: any) {
     if (!props.gameInProgress) {
         if (props.currentView === "presets") {
             const presetUrl = `${config.application_url}/preset=${props.currentViewedPreset.presetId}`;
@@ -34,7 +34,7 @@ export const Descriptions = function(props) {
 
     else return (
             <div className="infoPanelDescriptions">
-                    {props.cardsOut && props.cardsOut.map((card, reactKey) => {
+                    {props.cardsOut && props.cardsOut.map((card: any, reactKey: number) => {
                         return (
                             <Card key={reactKey} className="gameCell" raised>
                                 <img src={`${server_url}${card.filename}`}

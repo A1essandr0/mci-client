@@ -4,12 +4,12 @@ import { Users } from './Users';
 import Card from '@material-ui/core/Card';
 
 
-export const Board = function(props) {
+export const Board = function(props: any) {
     if (props.currentView === "play") {
         if (props.gameInProgress) {
             return (
                 <div className="gameBoard">
-                    {props.cards && props.cards.map((card, reactKey) => {
+                    {props.cards && props.cards.map((card: any, reactKey: number) => {
                         if (!card.isInGame || props.gameHasEnded) 
                             return (
                                 <Card key={reactKey} className="gameCell">
@@ -32,7 +32,7 @@ export const Board = function(props) {
         else return (
                 <div className="gameBoard" >
                     {props.currentPlayedPreset.cards && 
-                        props.currentPlayedPreset.cards.map((item, reactKey) => {
+                        props.currentPlayedPreset.cards.map((item: any, reactKey: number) => {
                             return (
                                 <Card key={reactKey} className="gameCell">
                                     <img src={`${server_url}${
@@ -52,7 +52,7 @@ export const Board = function(props) {
         return (
             <div className="presetEditView">
                 {props.currentViewedPreset.cards && 
-                    props.currentViewedPreset.cards.map((card, reactKey) => {
+                    props.currentViewedPreset.cards.map((card: any, reactKey: number) => {
                         return (
                             <img key={reactKey} className="gameCell" src={`${server_url}${card.filename}`}
                                     onClick={() => { alert(card.info) }}
@@ -70,4 +70,6 @@ export const Board = function(props) {
                     <Users />
                 </div>
             )
+    
+    return <div></div> // unreachable, but helps to maintain JSX.Element type
 }

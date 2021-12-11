@@ -2,7 +2,7 @@ import React from 'react';
 import { config } from '../code/config';
 
 
-export const Console = function(props) {
+export const Console = function(props: any) {
     if (!props.gameInProgress) {
         if (props.currentView === 'play')
             return (
@@ -31,8 +31,11 @@ export const Console = function(props) {
                         ? props.messageQueue.slice(props.messageQueue.length - config.messageQueueLength)
                         : props.messageQueue
                     ).map(
-                        (msg, reactKey) => <div key={reactKey} className="consoleMessageLeft">{msg}</div>
+                        (msg: string, reactKey: number) => <div key={reactKey} className="consoleMessageLeft">{msg}</div>
                     )}
             </div>
         )
+    
+    
+    return <div></div> // unreachable, but helps to maintain JSX.Element type
 }

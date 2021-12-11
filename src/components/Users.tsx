@@ -21,7 +21,7 @@ import { DeleteUserProfile } from './DeleteUserProfile';
 
 
 // TODO extract User component
-export const Users = function(props) {
+export const Users = function(props: any) {
     let [userId, setUserId] = useState(-10);
     let [editDialogOpen, setEditDialogOpen] = useState(false);
     let [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -58,7 +58,7 @@ export const Users = function(props) {
                 <Paper elevation={4}>
                     <List dense>
                         {users && users.map(
-                            (item, reactKey) => {
+                            (item: any, reactKey) => {
                                 return (
                                     <ListItem button={false} key={reactKey}>
                                         <ListItemAvatar>

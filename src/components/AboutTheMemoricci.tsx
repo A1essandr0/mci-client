@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-export function AboutTheMemoricci(props) {
+export function AboutTheMemoricci() {
     return (
         <div className="infoPanelDescriptions">
             Memoricci is a memory game. There is a set of cards lying on the table with their backs up. 

@@ -4,7 +4,7 @@ import { auth } from '../code/auth';
 import { BlueButton } from './ColoredButtons';
 
 
-export const ToolBar = function(props) {
+export const ToolBar = function(props: any) {
     let userIsAuthenticated = auth.isAuthenticated();
 
     return (

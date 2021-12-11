@@ -9,13 +9,13 @@ import { shuffleArray } from '../code/lib';
 import Paper from '@material-ui/core/Paper';
 
 
-export class Game extends React.Component {
-    constructor(props) {
+export class Game extends React.Component<any, any> {
+    constructor(props: any) {
         super(props);
         this.state = createGameState(this);
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps: any) {
         if (this.props != prevProps)  {
             let cards = [...this.props['cards']];
             
