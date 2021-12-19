@@ -1,8 +1,9 @@
 import { auth_signin_url, auth_signout_url } from './urls';
+import { User } from 'src/code/globalTypes';
 
 
 const auth = {
-    authenticate: function(jwt: any, callback: Function) {
+    authenticate: function(jwt: {token: string}, callback: () => void) {
         if (typeof window !== "undefined")
             localStorage.setItem('jwt', JSON.stringify(jwt));
 
@@ -18,12 +19,12 @@ const auth = {
             return false;
     },
 
-    signOut: function(callback: Function) {
+    signOut: function(callback: () => void) {
         if(typeof window !== "undefined")
             localStorage.removeItem('jwt');
 
         callback();
-        signoutRequest().then((data) => {
+        signoutRequest().then(() => {
             document.cookie = "t=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
         })
     }

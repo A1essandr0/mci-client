@@ -10,8 +10,15 @@ import TextField from '@material-ui/core/TextField';
 import { createUser } from '../code/users';
 
 
-export class Signup extends React.Component<any, any> {
-    constructor(props: any) {
+type SignupProps = {
+    signupActive: boolean;
+    setGlobalStateParameter: (paramName: string, paramValue: any) => void;
+}
+type FieldType = "password" | "email" | "error" | "passwordRepeat" | "name";
+type SignupState = { [key in FieldType]: string }
+
+export class Signup extends React.Component<SignupProps, SignupState> {
+    constructor(props: SignupProps) {
         super(props);
         this.state = { name: '', email: '', password: '', passwordRepeat: '', error: '' }
 
@@ -19,18 +26,18 @@ export class Signup extends React.Component<any, any> {
         this.clickSubmit = this.clickSubmit.bind(this);
     }
 
-    handleChange(field: "password" | "email" | "error" | "passwordRepeat" | "name") {
+    handleChange(field: FieldType) {
         return (event: ChangeEvent<HTMLInputElement>) => { 
-            this.setState({ [field]: event.target.value })
+            this.setState((state) => ({ ...state, [field]: event.target.value}))
         }
     }
 
     clickSubmit() {
         const user = {
-            name: this.state['name'] || undefined,
-            email: this.state['email'] || undefined,
-            password: this.state['password'] || undefined,
-            passwordRepeat: this.state['passwordRepeat'] || undefined
+            name: this.state.name || undefined,
+            email: this.state.email || undefined,
+            password: this.state.password || undefined,
+            passwordRepeat: this.state.passwordRepeat || undefined
         }
 
         if (!user.email || !user.password || !user.name || !user.passwordRepeat) {
@@ -47,7 +54,7 @@ export class Signup extends React.Component<any, any> {
                 if (data.error) this.setState({error: data.error})
                 else {
                     this.setState({error: ""});
-                    this.props['setGlobalStateParameter']('signupActive', false);
+                    this.props.setGlobalStateParameter('signupActive', false);
                     alert(`User ${user.email} created`)
                 }
             }
@@ -57,8 +64,8 @@ export class Signup extends React.Component<any, any> {
 
     render() {
         return (
-            <Dialog open={this.props['signupActive']} onClose={
-                    () => { this.props['setGlobalStateParameter']('signupActive', false)}}>
+            <Dialog open={this.props.signupActive} onClose={
+                    () => { this.props.setGlobalStateParameter('signupActive', false)}}>
                 <DialogContent>
                     <DialogContentText>
                         Register
@@ -89,7 +96,7 @@ export class Signup extends React.Component<any, any> {
                 <DialogActions>
                     <Button onClick={this.clickSubmit}>Sign up</Button>
                     <Button onClick={
-                        () => { this.props['setGlobalStateParameter']('signupActive', false)}}
+                        () => { this.props.setGlobalStateParameter('signupActive', false)}}
                     >Close</Button>
                 </DialogActions>
             </Dialog>           

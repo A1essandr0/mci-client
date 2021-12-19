@@ -6,26 +6,27 @@ import { Console } from './Console';
 import { Descriptions } from './Descriptions';
 import { shuffleArray, sleep } from '../code/lib';
 import Paper from '@material-ui/core/Paper';
+import { ICard, User } from 'src/code/globalTypes'
 
 
 type GameState = {
-    cards: any[],
+    cards: ICard[];
 
-    gameJustStarted: boolean,
-    userIsPlaying: any,
-    gameHasEnded: boolean,
+    gameJustStarted: boolean;
+    userIsPlaying: User | undefined;
+    gameHasEnded: boolean;
 
-    cardsOut: any[],
-    checkingPair: any,
-    cardsFlipped: number,
-    cardsOpenedAtm: number,
-    currentScore: number,
-    messageQueue: string[],
+    cardsOut: ICard[];
+    checkingPair: ICard | null;
+    cardsFlipped: number;
+    cardsOpenedAtm: number;
+    currentScore: number;
+    messageQueue: string[];
 
-    cardBack: any,
-    cardEmpty: any,
-    presetName: any,
-    presetDescription: any 
+    cardBack: string;
+    cardEmpty: string;
+    presetName: string;
+    presetDescription: string;
 }
 type GameProps = {
 
@@ -62,31 +63,31 @@ export class Game extends React.Component<any, GameState> {
     }
 
     setGameStateParameter(paramName: string, paramValue: any): void {
-        this.setState({ ...this.state, [paramName]: paramValue }) // suspicion for slowing down
+        this.setState((state) => ({ ...state, [paramName]: paramValue }))
     }
 
     flipAllCards(value: boolean): void {
         for (let card of this.state.cards) card.isOpened = value;
     }
 
-    takeCardOut(card: any) {
+    takeCardOut(card: ICard) {
         card.isInGame = false;
-        this.setState((state: any) => {return {
+        this.setState((state) => {return {
             cardsOut: [card, ...state.cardsOut],
             cardsOpenedAtm: state.cardsOpenedAtm - 1
         }})
     }
 
     messageAddToQueue(msg: string) {
-        this.setState((state: any) => { return {
+        this.setState((state) => { return {
             messageQueue: [...state.messageQueue, msg]
         }})
     }
 
     // main game logic resides here
-    manageGameBoard(card: any) {
+    manageGameBoard(card: ICard) {
         card.isOpened = !card.isOpened;
-        this.setState((state: any) => { return {
+        this.setState((state) => { return {
             cardsFlipped: state.cardsFlipped + 1,
             cardsOpenedAtm: state.cardsOpenedAtm + 1
         }});
@@ -100,7 +101,7 @@ export class Game extends React.Component<any, GameState> {
 
                 // matching case: pair leaves the game and goes to cardsOut
                 if (this.state.checkingPair != card &&
-                        this.state.checkingPair.value === card.value) {
+                        this.state.checkingPair?.value === card.value) {
                     this.messageAddToQueue(`matched, score: ${this.state.currentScore}`);
                     this.takeCardOut(this.state.checkingPair);
                     this.takeCardOut(card);
@@ -108,9 +109,9 @@ export class Game extends React.Component<any, GameState> {
 
                 // non-matching case: pair flips back
                 else {
-                    this.state.checkingPair.isOpened = false;
+                    if (this.state.checkingPair) this.state.checkingPair.isOpened = false;
                     card.isOpened = false;
-                    this.setState((state: any) => {return {
+                    this.setState((state) => {return {
                         currentScore: state.currentScore - 1,
                         cardsOpenedAtm: state.cardsOpenedAtm - 2
                     }})
@@ -121,7 +122,7 @@ export class Game extends React.Component<any, GameState> {
                 // this could happen due to fast clicking, which is viewed as cheating
                 if (this.state.cardsOpenedAtm > 0) {
                     this.flipAllCards(false);
-                    this.setState((state: any) => {return {
+                    this.setState((state) => {return {
                         currentScore: state.currentScore - 1,
                         cardsOpenedAtm: 0
                     }})
@@ -171,7 +172,7 @@ export class Game extends React.Component<any, GameState> {
 
     componentDidUpdate(prevProps: any) {
         if (this.props != prevProps)  {
-            let cards = [...this.props.cards];
+            let cards: ICard[] = [...this.props.cards];
             
             // on game start (and only then) we have to shuffle the cards
             if (this.props.gameInProgress && !prevProps.gameInProgress)
@@ -198,6 +199,7 @@ export class Game extends React.Component<any, GameState> {
 
 
     render() {
+        // console.log(this.state)
         return (
             <div className="gameArea">
                 <Paper elevation={4}>
@@ -207,12 +209,17 @@ export class Game extends React.Component<any, GameState> {
                 </Paper>
 
                 <Board gameInProgress={this.props.gameInProgress}
-                    showIsOn={this.props.showIsOn}
-                    currentView={this.props.currentView}
-                    currentViewedPreset={this.props.currentViewedPreset}
-                    currentPlayedPreset={this.props.currentPlayedPreset}
-                    manageGameBoard={this.manageGameBoard}
-                    {...this.state}
+                        showIsOn={this.props.showIsOn}
+                        currentView={this.props.currentView}
+                        currentViewedPreset={this.props.currentViewedPreset}
+                        currentPlayedPreset={this.props.currentPlayedPreset}
+                        manageGameBoard={this.manageGameBoard}
+
+                        gameHasEnded={this.state.gameHasEnded}
+                        gameJustStarted={this.state.gameJustStarted}
+                        cardEmpty={this.state.cardEmpty}
+                        cardBack={this.state.cardBack}
+                        cards={this.state.cards}
                 />
                 
                 <Console gameInProgress={this.props.gameInProgress}
@@ -223,7 +230,7 @@ export class Game extends React.Component<any, GameState> {
                 <Descriptions gameInProgress={this.props.gameInProgress} 
                                 currentView={this.props.currentView}
                                 currentViewedPreset={this.props.currentViewedPreset}
-                                {...this.state}
+                                cardsOut={this.state.cardsOut}
                 />
             </div>
         )

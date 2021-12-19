@@ -21,7 +21,7 @@ import { DeleteUserProfile } from './DeleteUserProfile';
 
 
 // TODO extract User component
-export const Users = function(props: any) {
+export const Users = function() {
     let [userId, setUserId] = useState(-10);
     let [editDialogOpen, setEditDialogOpen] = useState(false);
     let [deleteDialogOpen, setDeleteDialogOpen] = useState(false);

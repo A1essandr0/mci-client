@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { config } from '../code/config';
+import { CurrentViewTypes } from 'src/components/GeneralLayout';
 
 
-export const Console = function(props: any) {
+type ConsoleProps = {
+    gameInProgress: boolean;
+    currentView: CurrentViewTypes;
+    messageQueue: string[];
+}
+
+export const Console: FC<ConsoleProps> = function(props) {
     if (!props.gameInProgress) {
         if (props.currentView === 'play')
             return (
@@ -31,7 +38,7 @@ export const Console = function(props: any) {
                         ? props.messageQueue.slice(props.messageQueue.length - config.messageQueueLength)
                         : props.messageQueue
                     ).map(
-                        (msg: string, reactKey: number) => <div key={reactKey} className="consoleMessageLeft">{msg}</div>
+                        (msg, reactKey) => <div key={reactKey} className="consoleMessageLeft">{msg}</div>
                     )}
             </div>
         )

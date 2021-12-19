@@ -5,13 +5,13 @@ import { Signup } from './Signup';
 import { Signin } from './Signin';
 import { Game } from './Game';
 
-import { IPreset } from 'src/code/globalTypes';
+import { ICard, IPreset } from 'src/code/globalTypes';
 import { auth } from '../code/auth';
 import { getPresets } from "../code/presets";
 import { config } from '../code/config';
 
 
-type CurrentViewTypes = "play" | "presets" | "users";
+export type CurrentViewTypes = "play" | "presets" | "users";
 type GeneralLayoutState = {
     currentView: CurrentViewTypes;
     gameInProgress: boolean,
@@ -25,8 +25,8 @@ type GeneralLayoutState = {
     gameDelayOnShow: number,
     gameStartingScore: number,
 
-    playablePresets: any,
-    viewablePresets: any,
+    playablePresets: { [key in string]: IPreset},
+    viewablePresets: { [key in string]: IPreset},
     currentPlayedPreset: any,
     currentViewedPreset: any,
 }
@@ -36,7 +36,7 @@ type GeneralLayoutProps = {
 
 
 class GeneralLayout extends React.Component<GeneralLayoutProps, GeneralLayoutState> {
-    constructor(props: any) {
+    constructor(props: GeneralLayoutProps) {
         super(props);
         this.state = {
             currentView: "play",
@@ -79,7 +79,7 @@ class GeneralLayout extends React.Component<GeneralLayoutProps, GeneralLayoutSta
     }
     
     setGlobalStateParameter(paramName: string, paramValue: any): void {
-        this.setState({ ...this.state, [paramName]: paramValue}) // suspicion for slowing down
+        this.setState((state) => ({ ...state, [paramName]: paramValue}))
     }
 
 
@@ -137,8 +137,7 @@ class GeneralLayout extends React.Component<GeneralLayoutProps, GeneralLayoutSta
         const propsToGame = {
             cards: this.state.currentPlayedPreset.cards ? 
                         this.state.currentPlayedPreset.cards.map(
-                            (item: any) => {
-                                return {
+                            (item: ICard) => { return {
                                     value: item.value,
                                     filename: item.filename,
                                     info: item.info,
@@ -158,27 +157,24 @@ class GeneralLayout extends React.Component<GeneralLayoutProps, GeneralLayoutSta
             setViewedPreset: this.setViewedPreset
         };
 
-        const propsToSignin = {
-            signinActive: this.state.signinActive,
-            setGlobalStateParameter: this.setGlobalStateParameter,
-        };
-        const propsToSignup = {
-            signupActive: this.state.signupActive,
-            setGlobalStateParameter: this.setGlobalStateParameter,
-        };
-        const propsToToolBar = {
-            gameInProgress: this.state.gameInProgress,
-            signupActive: this.state.signupActive,
-            signinActive: this.state.signinActive,
-            setGlobalStateParameter: this.setGlobalStateParameter
-        }
-
         return (
             <div className="appContainer">
-                <ToolBar {...propsToToolBar}/>
-                <Game {...propsToGame} {...this.state}/>
-                <Signup {...propsToSignup}/>                
-                <Signin {...propsToSignin}/>
+                <ToolBar gameInProgress={this.state.gameInProgress}
+                            signupActive={this.state.signupActive}
+                            signinActive={this.state.signinActive}
+                            setGlobalStateParameter={this.setGlobalStateParameter}
+                />
+
+                <Game {...propsToGame} 
+                        {...this.state} // TODO no need to pass on all the state
+                />
+
+                <Signup signupActive={this.state.signupActive}
+                        setGlobalStateParameter={this.setGlobalStateParameter}
+                />                
+                <Signin signinActive={this.state.signinActive}
+                        setGlobalStateParameter={this.setGlobalStateParameter}
+                />
             </div>
         )
     }

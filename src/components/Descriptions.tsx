@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { server_url} from '../code/urls';
 
 import Button from '@material-ui/core/Button';
@@ -7,9 +7,18 @@ import Card from '@material-ui/core/Card';
 
 import { AboutTheMemoricci } from './AboutTheMemoricci';
 import { config } from '../code/config';
+import { CurrentViewTypes } from 'src/components/GeneralLayout';
+import { IPreset, ICard } from 'src/code/globalTypes'
 
 
-export const Descriptions = function(props: any) {
+type DescriptionsProps = {
+    gameInProgress: boolean;
+    currentView: CurrentViewTypes;
+    currentViewedPreset: IPreset;
+    cardsOut: ICard[];
+}
+
+export const Descriptions: FC<DescriptionsProps> = function(props: DescriptionsProps) {
     if (!props.gameInProgress) {
         if (props.currentView === "presets") {
             const presetUrl = `${config.application_url}/preset=${props.currentViewedPreset.presetId}`;
@@ -34,7 +43,7 @@ export const Descriptions = function(props: any) {
 
     else return (
             <div className="infoPanelDescriptions">
-                    {props.cardsOut && props.cardsOut.map((card: any, reactKey: number) => {
+                    {props.cardsOut && props.cardsOut.map((card, reactKey) => {
                         return (
                             <Card key={reactKey} className="gameCell" raised>
                                 <img src={`${server_url}${card.filename}`}

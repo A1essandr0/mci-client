@@ -15,8 +15,12 @@ import { DeletePreset } from './DeletePreset';
 import { BlueButton, RedButton, GreenButton } from './ColoredButtons';
 
 
+type ControlPanelProps = {
+
+}
+
 export const ControlPanel = function(props: any) {
-    console.log('control panel props', props)
+    // console.log(props);
     const userIsAuthenticated = auth.isAuthenticated();
 
     const userOwnsPreset = userIsAuthenticated && props.currentPlayedPreset.owner === userIsAuthenticated.user.id;

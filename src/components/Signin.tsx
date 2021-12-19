@@ -10,7 +10,15 @@ import TextField from '@material-ui/core/TextField';
 import { auth, signinRequest } from '../code/auth';
 
 
-export class Signin extends React.Component<any, any> {
+type SigninProps = {
+    signinActive: boolean;
+    setGlobalStateParameter: (paramName: string, paramValue: any) => void;
+}
+type FieldType = "password" | "email" | "error";
+type SigninState = { [key in FieldType]: string }
+
+
+export class Signin extends React.Component<SigninProps, SigninState> {
     constructor(props: any) {
         super(props);
         this.state = { password: '', email: '', error: '' };
@@ -19,16 +27,16 @@ export class Signin extends React.Component<any, any> {
         this.clickSubmit = this.clickSubmit.bind(this);
     }
     
-    handleChange(field: "password" | "email" | "error") {
+    handleChange(field: FieldType) {
         return (event: ChangeEvent<HTMLInputElement>) => { 
-            this.setState({ [field]: event.target.value })
+            this.setState((state) => ({ ...state, [field]: event.target.value }))
         }
     }
 
     clickSubmit() {
         const user = {
-            email: this.state['email'] || undefined,
-            password: this.state['password'] || undefined
+            email: this.state.email || undefined,
+            password: this.state.password || undefined
         }
 
         if (!user.email || !user.password) {
@@ -42,7 +50,7 @@ export class Signin extends React.Component<any, any> {
                 else {
                     this.setState({error: ""});
                     auth.authenticate(data, () => {
-                        this.props['setGlobalStateParameter']('signinActive', false);
+                        this.props.setGlobalStateParameter('signinActive', false);
                         this.setState({ password: '', email: '', error: '' })
                     })
                 }
@@ -54,7 +62,7 @@ export class Signin extends React.Component<any, any> {
     render() {
         return (
             <Dialog open={this.props['signinActive']} onClose={
-                    () => { this.props['setGlobalStateParameter']('signinActive', false)} }>
+                    () => { this.props.setGlobalStateParameter('signinActive', false)} }>
                 <DialogContent>
                     <DialogContentText>
                         Sign in
@@ -76,7 +84,7 @@ export class Signin extends React.Component<any, any> {
                 <DialogActions>
                     <Button onClick={this.clickSubmit}>Sign in</Button>
                     <Button onClick={
-                        () => { this.props['setGlobalStateParameter']('signinActive', false)}}
+                        () => { this.props.setGlobalStateParameter('signinActive', false)}}
                     >Close</Button>
                 </DialogActions>
             </Dialog>

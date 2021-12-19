@@ -1,29 +1,36 @@
-// just received card
 export interface ICard {
     filename: string;
     info: string;
     value: string;
+    isInGame?: boolean;
+    isOpened?: boolean;
 }
 
-// @TODO game ready card
-
-
-// just received preset
 export interface IPreset {
-    owner: number;
-    presetName: string;
     cardBack: string;
     cardEmpty: string;
-    description: string;
     cards: ICard[];
+    description: string;
+    owner: number;
+    presetName: string;
     playableByAll: number;
     viewableByAll: number;
     viewableByUsers: number;
     presetId: number;
+    ownerName?: string;
 }
 
-// @TODO game ready preset
+export type User = {
+    email: string;
+    id: number;
+    is_admin: number;
+    name: string;
+}
+export type StorageContent = {
+    token: string;
+    user: User;
+}
 
 
-// @TODO user type, credentials type
+// @TODO credentials type
 

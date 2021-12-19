@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { auth } from '../code/auth';
 import { BlueButton } from './ColoredButtons';
 
 
-export const ToolBar = function(props: any) {
+type ToolBarProps = {
+    gameInProgress: boolean;
+    signupActive: boolean;
+    signinActive: boolean;
+    setGlobalStateParameter: (paramName: string, paramValue: any) => void;
+}
+
+export const ToolBar: FC<ToolBarProps> = function(props) {
     let userIsAuthenticated = auth.isAuthenticated();
 
     return (
