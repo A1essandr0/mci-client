@@ -18,14 +18,14 @@ import { listUsers } from '../code/users';
 import { auth } from '../code/auth';
 import { EditUserProfile } from './EditUserProfile';
 import { DeleteUserProfile } from './DeleteUserProfile';
+import { User } from 'src/code/globalTypes';
 
 
-// TODO extract User component
 export const Users = function() {
     let [userId, setUserId] = useState(-10);
     let [editDialogOpen, setEditDialogOpen] = useState(false);
     let [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-    let [users, setUsers] = useState([]);
+    let [users, setUsers] = useState<User[]>([]);
 
     useEffect(() => {
         const jwt = auth.isAuthenticated();
@@ -40,25 +40,12 @@ export const Users = function() {
 
     let userIsAuthenticated = auth.isAuthenticated();
 
-    let propsToEditUser = {
-        users: users,
-        userId: userId,
-        editDialogOpen: editDialogOpen,
-        toggleEditOpen: function(value: boolean):void {setEditDialogOpen(value)}
-    };
-    let propsToDeleteUser = {
-        users: users,
-        userId: userId,
-        deleteDialogOpen: deleteDialogOpen,
-        toggleDeleteOpen: function(value: boolean):void {setDeleteDialogOpen(value)}
-    };
-
     return (
             <div className="usersEditView">
                 <Paper elevation={4}>
                     <List dense>
                         {users && users.map(
-                            (item: any, reactKey) => {
+                            (item: User, reactKey) => {
                                 return (
                                     <ListItem button={false} key={reactKey}>
                                         <ListItemAvatar>
@@ -100,8 +87,16 @@ export const Users = function() {
                     </List>
                 </Paper>
 
-                <EditUserProfile {...propsToEditUser} />
-                <DeleteUserProfile {...propsToDeleteUser} />
+                <EditUserProfile users={users}
+                                    userId={userId}
+                                    editDialogOpen={editDialogOpen}
+                                    toggleEditOpen={(value: boolean): void => setEditDialogOpen(value)}
+                />
+                <DeleteUserProfile users={users}
+                                    userId={userId}
+                                    deleteDialogOpen={deleteDialogOpen}
+                                    toggleDeleteOpen={(value: boolean): void => setDeleteDialogOpen(value)}
+                />
         </div>
     )
 }

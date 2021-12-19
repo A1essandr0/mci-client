@@ -147,10 +147,6 @@ export const ControlPanel = function(props: any) {
 
 
     else if (props.currentView === "presets") {
-        let propsToMakePreset = {
-            makePresetActive: props.makePresetActive,
-            setGlobalStateParameter: props.setGlobalStateParameter,
-        };
         let propsToEditPreset = {
             presetId: props.currentViewedPreset.presetId,
             presetName: props.currentViewedPreset.presetName,
@@ -159,12 +155,6 @@ export const ControlPanel = function(props: any) {
             viewableByUsers: Boolean(props.currentViewedPreset.viewableByUsers),
 
             editPresetActive: props.editPresetActive,
-            setGlobalStateParameter: props.setGlobalStateParameter,
-        };
-        let propsToDeletePreset = {
-            presetId: props.currentViewedPreset.presetId,
-
-            deletePresetActive: props.deletePresetActive,
             setGlobalStateParameter: props.setGlobalStateParameter,
         };
 
@@ -207,9 +197,14 @@ export const ControlPanel = function(props: any) {
                     <Typography>Sign in to create new presets</Typography>
                 </div>}
 
-                <MakePreset {...propsToMakePreset} />
+                <MakePreset makePresetActive={props.makePresetActive}
+                            setGlobalStateParameter={props.setGlobalStateParameter}
+                />
                 <EditPreset {...propsToEditPreset} />
-                <DeletePreset {...propsToDeletePreset} />
+                <DeletePreset presetId={props.currentViewedPreset.presetId}
+                                deletePresetActive={props.deletePresetActive}
+                                setGlobalStateParameter={props.setGlobalStateParameter}
+                />
             </div>
         )
     }

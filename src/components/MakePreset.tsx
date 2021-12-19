@@ -21,9 +21,16 @@ const makeFieldName = function(a: number, b: number) {
     return String(a) + '_' + String(b);
 }
 
+type MakePresetProps = {
+    makePresetActive: boolean;
+    setGlobalStateParameter: (paramName: string, paramValue: any) => void;   
+}
+type MakePresetState = {
+    
+}
 
-export class MakePreset extends React.Component<any, any> {
-    constructor(props: any) {
+export class MakePreset extends React.Component<MakePresetProps, any> {
+    constructor(props: MakePresetProps) {
         super(props);
         this.state = {
             presetName: '',

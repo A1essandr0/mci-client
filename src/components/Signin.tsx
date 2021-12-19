@@ -17,9 +17,9 @@ type SigninProps = {
 type FieldType = "password" | "email" | "error";
 type SigninState = { [key in FieldType]: string }
 
-
+// TODO refactor with hooks
 export class Signin extends React.Component<SigninProps, SigninState> {
-    constructor(props: any) {
+    constructor(props: SigninProps) {
         super(props);
         this.state = { password: '', email: '', error: '' };
 

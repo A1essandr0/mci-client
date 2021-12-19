@@ -10,6 +10,11 @@ import { deletePreset } from '../code/presets';
 import { auth } from '../code/auth';
 
 
+type DeletePresetProps = {
+
+}
+
+// TODO refactor with hooks
 export class DeletePreset extends React.Component<any, {presetId: number, error: string}> {
     constructor(props: any) {
         super(props);

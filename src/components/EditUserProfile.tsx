@@ -9,10 +9,25 @@ import TextField from '@material-ui/core/TextField';
 
 import { auth } from '../code/auth';
 import { updateUser } from '../code/users';
+import { User } from 'src/code/globalTypes';
 
 
-export class EditUserProfile extends React.Component<any, any> {
-    constructor(props: any) {
+type EditUserProfileProps = {
+    users: User[];
+    userId: number;
+    editDialogOpen: boolean;
+    toggleEditOpen: (value: boolean) => void;
+}
+type EditUserProfileState = {
+    id: number;
+    name: string;
+    email: string;
+    error: string;
+}
+
+// TODO refactor with hooks
+export class EditUserProfile extends React.Component<EditUserProfileProps, EditUserProfileState> {
+    constructor(props: EditUserProfileProps) {
         super(props)
         this.state = { id: -100, name: "", email: "", error: "" }
 
@@ -20,30 +35,30 @@ export class EditUserProfile extends React.Component<any, any> {
         this.clickSubmit = this.clickSubmit.bind(this);
     }
 
-    componentDidUpdate(prevProps: any) {
-        if (this.props['userId'] !== prevProps['userId']) {
-            let user = this.props['users']
-                .filter((item: any) => item.id === this.props['userId'])[0];
+    componentDidUpdate(prevProps: EditUserProfileProps) {
+        if (this.props.userId !== prevProps.userId) {
+            let user = this.props.users
+                .filter((item: User) => item.id === this.props.userId)[0];
             this.setState({
-                id: this.props['userId'],
-                name: user && user['name'],
-                email: user && user['email']
+                id: this.props.userId,
+                name: user && user.name,
+                email: user && user.email
             })
         }
     }
 
     handleChange(field: string) {
         return (event: ChangeEvent<HTMLInputElement>) => {
-            this.setState({ [field]: event.target.value })
+            this.setState((state) => ({ ...state, [field]: event.target.value }))
         }
     }
 
     clickSubmit() {
         const jwt = auth.isAuthenticated();
         const userModified = {
-            id: this.state['id'] || undefined,
-            name: this.state['name'] || undefined,
-            email: this.state['email'] || undefined
+            id: this.state.id || undefined,
+            name: this.state.name || undefined,
+            email: this.state.email || undefined
         };
         if (!userModified.email || !userModified.name) {
             this.setState({error: 'All fields are required'});
@@ -55,8 +70,8 @@ export class EditUserProfile extends React.Component<any, any> {
                 if (!data || data.error) this.setState({error: data.error})
                 else {
                     this.setState({error: ""});
-                    this.props['toggleEditOpen'](false);
-                    alert(`User ${this.state['email']} modified`);                    
+                    this.props.toggleEditOpen(false);
+                    alert(`User ${this.state.email} modified`);                    
                 }
             }
         )
@@ -65,23 +80,23 @@ export class EditUserProfile extends React.Component<any, any> {
         
     render() {
         return (
-            <Dialog open={this.props['editDialogOpen']} onClose={()=>{this.props['toggleEditOpen'](false)}}>
+            <Dialog open={this.props.editDialogOpen} onClose={()=>{this.props.toggleEditOpen(false)}}>
                 <DialogContent>
                     <DialogContentText>Edit user profile</DialogContentText>
 
-                    <TextField id="name" value={this.state['name']} label="UserName"
+                    <TextField id="name" value={this.state.name} label="UserName"
                                 required fullWidth variant="outlined" margin="normal"
                                 onChange={this.handleChange('name')}
                     />
-                    <TextField id="email" type="email" value={this.state['email']} label="UserEmail"
+                    <TextField id="email" type="email" value={this.state.email} label="UserEmail"
                                 required fullWidth variant="outlined" margin="normal"
                                 onChange={this.handleChange('email')}
                     />
-                    {this.state['error'] && <div>{this.state['error']}</div>}
+                    {this.state.error && <div>{this.state.error}</div>}
 
                     <DialogActions>
                             <Button onClick={this.clickSubmit} color="primary">Edit</Button>
-                            <Button onClick={()=>{this.props['toggleEditOpen'](false)}}>Close</Button>
+                            <Button onClick={()=>{this.props.toggleEditOpen(false)}}>Close</Button>
                     </DialogActions>
 
                 </DialogContent>

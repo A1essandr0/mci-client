@@ -17,6 +17,7 @@ type SignupProps = {
 type FieldType = "password" | "email" | "error" | "passwordRepeat" | "name";
 type SignupState = { [key in FieldType]: string }
 
+// TODO refactor with hooks
 export class Signup extends React.Component<SignupProps, SignupState> {
     constructor(props: SignupProps) {
         super(props);

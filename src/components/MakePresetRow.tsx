@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
+import React, { FC, ChangeEvent, useState } from 'react';
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 
-export function MakePresetRow(props: any) {
+type MakePresetRowProps = {
+    row: number;
+    handleFileSelection: (row: number, column: number) => 
+        (event: ChangeEvent<HTMLInputElement>) => void;
+    handleTypeSelection: (row: number, column: number, type: string) => 
+        (event: ChangeEvent<HTMLInputElement>) => void;
+    handleTextSelection: (row: number, column: number) => 
+        (event: ChangeEvent<HTMLInputElement>) => void;
+}
+
+export const MakePresetRow: FC<MakePresetRowProps> = function(props) {
     let [imageSelected1, setImageSelected1] = useState(true);
     let [imageSelected2, setImageSelected2] = useState(true);
     let [imageName1, setImageName1] = useState('No file selected')

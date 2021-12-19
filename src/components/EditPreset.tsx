@@ -23,7 +23,7 @@ type EditPresetProps = {
 
 }
 
-
+// TODO refactor with hooks
 export class EditPreset extends React.Component<any, EditPresetState> {
     constructor(props: any) {
         super(props);
