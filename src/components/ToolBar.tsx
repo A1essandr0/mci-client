@@ -2,13 +2,14 @@ import React, { FC } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { auth } from '../code/auth';
 import { BlueButton } from './ColoredButtons';
+import { HigherStateParameterChanger } from 'src/code/globalTypes';
 
 
 type ToolBarProps = {
     gameInProgress: boolean;
     signupActive: boolean;
     signinActive: boolean;
-    setGlobalStateParameter: (paramName: string, paramValue: any) => void;
+    setGlobalStateParameter: HigherStateParameterChanger;
 }
 
 export const ToolBar: FC<ToolBarProps> = function(props) {

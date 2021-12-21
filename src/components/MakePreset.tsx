@@ -15,6 +15,7 @@ import { makePreset } from '../code/presets';
 import { auth } from '../code/auth';
 import { config } from '../code/config';
 import { arrayRange } from '../code/lib';
+import { HigherStateParameterChanger } from 'src/code/globalTypes';
 
 
 const makeFieldName = function(a: number, b: number) {
@@ -23,13 +24,37 @@ const makeFieldName = function(a: number, b: number) {
 
 type MakePresetProps = {
     makePresetActive: boolean;
-    setGlobalStateParameter: (paramName: string, paramValue: any) => void;   
+    setGlobalStateParameter: HigherStateParameterChanger;
 }
 type MakePresetState = {
-    
-}
+    presetName: string;
+    presetDescription: string;
 
-export class MakePreset extends React.Component<MakePresetProps, any> {
+    bgColorOne: string;
+    bgColorTwo: string;
+    backColor: string;
+    emptyColor: string;
+
+    isPlayableByAll: boolean;
+    isViewableByAll: boolean;
+    isViewableByUsers: boolean;
+
+    cardPairsNum: number;
+
+    cardTypes: any;
+    cardFiles: any;
+    cardTexts: any;
+
+    backFileName: string;
+    emptyFileName: string;
+
+    error: string;
+}
+type toggleButtons = "isPlayableByAll" | "isViewableByAll" | "isViewableByUsers";
+
+
+// It seems like the best way to manage state for this component is to use class
+export class MakePreset extends React.Component<MakePresetProps, MakePresetState> {
     constructor(props: MakePresetProps) {
         super(props);
         this.state = {
@@ -79,14 +104,15 @@ export class MakePreset extends React.Component<MakePresetProps, any> {
 
     handleChange(field: string) {
         return (event: ChangeEvent<HTMLInputElement>) => { 
-            this.setState({ [field]: event.target.value })
+            this.setState((state) => ({ ...state, [field]: event.target.value }))
         }
     }
 
-    handleToggleChange(field: string) {
+    handleToggleChange(field: toggleButtons) {
         return () => {
-            this.setState((state: any) => {
+            this.setState((state) => {
                 return {
+                    ...state,
                     [field]: !state[field]
                 }
             })
@@ -98,7 +124,7 @@ export class MakePreset extends React.Component<MakePresetProps, any> {
             if (this.state['cardPairsNum'] === 1 && num === -1 ||
                     this.state['cardPairsNum'] === config.maxCardPairNum && num === 1)
                 return;
-            this.setState((state: any) => {
+            this.setState((state) => {
                 return {
                     cardPairsNum: state['cardPairsNum'] + num
                 }
@@ -107,7 +133,7 @@ export class MakePreset extends React.Component<MakePresetProps, any> {
     }
 
     handleTypeSelection(row: number, column: number, type: string) {
-        return (event: ChangeEvent<HTMLInputElement>) => {
+        return () => {
             let fieldName = makeFieldName(row, column);
             let cardTypesNew = {
                 ...this.state['cardTypes'],

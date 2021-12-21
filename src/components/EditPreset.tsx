@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -8,121 +8,94 @@ import Button from '@material-ui/core/Button';
 
 import { editPreset } from '../code/presets'
 import { auth } from '../code/auth';
+import { HigherStateParameterChanger } from 'src/code/globalTypes';
 
 
-type EditPresetBooleanFieldNames = 'isPlayableByAll' | 'isViewableByAll' | 'isViewableByUsers';
-type EditPresetState = {
-    presetId: number; 
-    presetName: string; 
-    error: string;
-    isPlayableByAll: boolean; 
-    isViewableByAll: boolean; 
-    isViewableByUsers: boolean;
-}
 type EditPresetProps = {
+    presetId: number;
+    presetName: string;
+    playableByAll: boolean;
+    viewableByAll: boolean;
+    viewableByUsers: boolean;
 
+    editPresetActive: boolean;
+    setGlobalStateParameter: HigherStateParameterChanger;
 }
 
-// TODO refactor with hooks
-export class EditPreset extends React.Component<any, EditPresetState> {
-    constructor(props: any) {
-        super(props);
+export const EditPreset: FC<EditPresetProps> = function(props) {
+    const [presetId, setPresetId] = useState(-10);
+    const [presetName, setPresetName] = useState("");
+    const [isPlayableByAll, setIsPlayableByAll] = useState(false);
+    const [isViewableByAll, setIsViewableByAll] = useState(false);
+    const [isViewableByUsers, setIsViewableByUsers] = useState(false);
 
-        this.state = { 
-            presetId: this.props['presetId'],
-            presetName: this.props['presetName'],
-            isPlayableByAll: this.props['playableByAll'],
-            isViewableByAll: this.props['viewableByAll'],
-            isViewableByUsers: this.props['viewableByUsers'],
+    const [error, setError] = useState("");
 
-            error: ""
-        };
+    useEffect(() => {
+        setPresetId(props.presetId);
+        setPresetName(props.presetName);
+        setIsPlayableByAll(props.playableByAll);
+        setIsViewableByAll(props.viewableByAll);
+        setIsViewableByUsers(props.viewableByUsers);
 
-        this.clickSubmit = this.clickSubmit.bind(this);
-    }
+    }, [props.presetId])
 
-    componentDidUpdate(prevProps: any) {
-        if (this.props['presetId'] !== prevProps['presetId']) {
-            this.setState({
-                presetId: this.props['presetId'],
-                presetName: this.props['presetName'],
-                isPlayableByAll: this.props['playableByAll'],
-                isViewableByAll: this.props['viewableByAll'],
-                isViewableByUsers: this.props['viewableByUsers'],
-            })
-        }
-    }
-
-    handleToggleChange(field: EditPresetBooleanFieldNames) {
-        return () => {
-            this.setState((state: EditPresetState) => {
-                return {
-                    ...state,
-                    [field]: !state[field],
-                }
-            })
-        }
-    }
-
-    clickSubmit() {
+    const clickSubmit = function() {
         const jwt = auth.isAuthenticated();
 
         const modifiedAttributes = {
-            isPlayableByAll: this.state['isPlayableByAll'],
-            isViewableByAll: this.state['isViewableByAll'],
-            isViewableByUsers: this.state['isViewableByUsers']
+            isPlayableByAll: isPlayableByAll,
+            isViewableByAll: isViewableByAll,
+            isViewableByUsers: isViewableByUsers
         }
-        editPreset(this.state['presetId'], modifiedAttributes, {t: jwt.token }).then(
+        editPreset(presetId, modifiedAttributes, {t: jwt.token }).then(
             (data: any) => {
-                if (!data || data.error) this.setState({error: data.error})
+                if (!data || data.error) setError(data.error)
                 else {
-                    this.setState({error: ""});
-                    this.props['setGlobalStateParameter']('editPresetActive', false);
-                    alert(`Preset with id=${this.state['presetId']} modified`);
+                    setError("");
+                    props.setGlobalStateParameter('editPresetActive', false);
+                    alert(`Preset with id=${presetId} modified`);
                 }
             }
         )
     }
 
+    return (
+        <Dialog open={props.editPresetActive} onClose={
+            () => { props.setGlobalStateParameter('editPresetActive', false)}}
+                maxWidth="xl"
+        >
+            <DialogContent>
+                <DialogContentText>Modify attributes of preset "{presetName}"</DialogContentText>
 
-    render() {
-        return (
-            <Dialog open={this.props['editPresetActive']} onClose={
-                () => { this.props['setGlobalStateParameter']('editPresetActive', false)}}
-                    maxWidth="xl"
-            >
-                <DialogContent>
-                    <DialogContentText>Modify attributes of preset "{this.state['presetName']}"</DialogContentText>
-
-                    <div className="dialogMenuBox">
-                        <div className="dialogMenuItem">
-                            <input type="checkbox" checked={this.state['isPlayableByAll']}
-                                    onChange={this.handleToggleChange('isPlayableByAll')}
-                            />&nbsp;Playable by everyone
-                        </div>
-                        <div className="dialogMenuItem">
-                            <input type="checkbox" checked={this.state['isViewableByAll']}
-                                    onChange={this.handleToggleChange('isViewableByAll')}
-                            />&nbsp;Viewable by everyone
-                        </div>
-                        <div className="dialogMenuItem">
-                            <input type="checkbox" checked={this.state['isViewableByUsers']}
-                                    onChange={this.handleToggleChange('isViewableByUsers')}
-                            />&nbsp;Viewable by any logged in user
-                        </div>
+                <div className="dialogMenuBox">
+                    <div className="dialogMenuItem">
+                        <input type="checkbox" checked={isPlayableByAll}
+                                onChange={() => setIsPlayableByAll(!isPlayableByAll)}
+                        />&nbsp;Playable by everyone
                     </div>
+                    <div className="dialogMenuItem">
+                        <input type="checkbox" checked={isViewableByAll}
+                                onChange={() => setIsViewableByAll(!isViewableByAll)}
+                        />&nbsp;Viewable by everyone
+                    </div>
+                    <div className="dialogMenuItem">
+                        <input type="checkbox" checked={isViewableByUsers}
+                                onChange={() => setIsViewableByUsers(!isViewableByUsers)}
+                        />&nbsp;Viewable by any logged in user
+                    </div>
+                </div>
 
-                    {this.state['error'] && <div>{this.state['error']}</div>} 
-                </DialogContent>
+                {error && <div>{error}</div>} 
+            </DialogContent>
 
-                <DialogActions>
-                    <Button onClick={this.clickSubmit} color="primary">Apply changes</Button>
-                    <Button onClick={
-                        () => { this.props['setGlobalStateParameter']('editPresetActive', false)}}
-                    >Close</Button>
-                </DialogActions>
+            <DialogActions>
+                <Button onClick={clickSubmit} color="primary">Apply changes</Button>
+                <Button onClick={
+                    () => { props.setGlobalStateParameter('editPresetActive', false)}}
+                >Close</Button>
+            </DialogActions>
 
-            </Dialog>
-        )
-    }
+        </Dialog>
+    )
 }

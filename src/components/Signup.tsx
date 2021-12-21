@@ -8,11 +8,12 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
 import { createUser } from '../code/users';
+import { HigherStateParameterChanger } from 'src/code/globalTypes';
 
 
 type SignupProps = {
     signupActive: boolean;
-    setGlobalStateParameter: (paramName: string, paramValue: any) => void;
+    setGlobalStateParameter: HigherStateParameterChanger;
 }
 type FieldType = "password" | "email" | "error" | "passwordRepeat" | "name";
 type SignupState = { [key in FieldType]: string }
