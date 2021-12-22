@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { FC, useState, ChangeEvent } from 'react';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -15,80 +15,69 @@ type SigninProps = {
     signinActive: boolean;
     setGlobalStateParameter: HigherStateParameterChanger;
 }
-type FieldType = "password" | "email" | "error";
-type SigninState = { [key in FieldType]: string }
 
-// TODO refactor with hooks
-export class Signin extends React.Component<SigninProps, SigninState> {
-    constructor(props: SigninProps) {
-        super(props);
-        this.state = { password: '', email: '', error: '' };
+export const Signin: FC<SigninProps> = function(props) {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
-        this.handleChange = this.handleChange.bind(this);
-        this.clickSubmit = this.clickSubmit.bind(this);
-    }
-    
-    handleChange(field: FieldType) {
-        return (event: ChangeEvent<HTMLInputElement>) => { 
-            this.setState((state) => ({ ...state, [field]: event.target.value }))
-        }
+    const clearFields = function() {
+        [setEmail, setPassword, setError].forEach(
+            func => func("")
+        )
     }
 
-    clickSubmit() {
+    const clickSubmit = function() {
         const user = {
-            email: this.state.email || undefined,
-            password: this.state.password || undefined
+            email: email || undefined,
+            password: password || undefined
         }
 
         if (!user.email || !user.password) {
-            this.setState({error: 'Both email and password are required'});
+            setError("Both email and password are required");
             return;
         }
 
         signinRequest(user).then(
             (data: any) => { 
-                if (data.error) this.setState({error: data.error})
+                if (data.error) setError(data.error)
                 else {
-                    this.setState({error: ""});
                     auth.authenticate(data, () => {
-                        this.props.setGlobalStateParameter('signinActive', false);
-                        this.setState({ password: '', email: '', error: '' })
+                        props.setGlobalStateParameter('signinActive', false);
+                        clearFields();
                     })
                 }
             }
         )
     }
 
+    return (
+        <Dialog open={props['signinActive']} onClose={
+                () => {props.setGlobalStateParameter('signinActive', false)} }>
+            <DialogContent>
+                <DialogContentText>
+                    Sign in
+                </DialogContentText>
+                <TextField id="email" type="email" label="Email" 
+                            value={email}
+                            required fullWidth variant="outlined" margin="normal"
+                            onChange={(event: ChangeEvent<HTMLInputElement>) => setEmail(event.target.value)}
+                />
+                
+                <TextField id="password" type="password" label="Password"
+                            value={password}
+                            required fullWidth variant="outlined" margin="normal"
+                            onChange={(event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
+                />
+                {error && <div>{error}</div>}                    
+            </DialogContent>
 
-    render() {
-        return (
-            <Dialog open={this.props['signinActive']} onClose={
-                    () => { this.props.setGlobalStateParameter('signinActive', false)} }>
-                <DialogContent>
-                    <DialogContentText>
-                        Sign in
-                    </DialogContentText>
-                    <TextField id="email" type="email" label="Email" 
-                                value={this.state['email']}
-                                required fullWidth variant="outlined" margin="normal"
-                                onChange={this.handleChange('email')}
-                    />
-                    
-                    <TextField id="password" type="password" label="Password"
-                                value={this.state['password']}
-                                required fullWidth variant="outlined" margin="normal"
-                                onChange={this.handleChange('password')}
-                    />
-                    {this.state['error'] && <div>{this.state['error']}</div>}                    
-                </DialogContent>
-
-                <DialogActions>
-                    <Button onClick={this.clickSubmit}>Sign in</Button>
-                    <Button onClick={
-                        () => { this.props.setGlobalStateParameter('signinActive', false)}}
-                    >Close</Button>
-                </DialogActions>
-            </Dialog>
-        )
-    }
+            <DialogActions>
+                <Button onClick={clickSubmit}>Sign in</Button>
+                <Button onClick={
+                    () => { props.setGlobalStateParameter('signinActive', false)}}
+                >Close</Button>
+            </DialogActions>
+        </Dialog>
+    )
 }

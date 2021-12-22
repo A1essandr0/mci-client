@@ -31,10 +31,9 @@ export type StorageContent = {
     user: User;
 }
 
+export type CredentialObject = {
+    t: string;
+};
 
 export type HigherStateParameterChanger = (paramName: string, paramValue: any) => void;
-
-
-
-// @TODO credentials type
 

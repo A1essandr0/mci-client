@@ -26,10 +26,9 @@ export const ToolBar: FC<ToolBarProps> = function(props) {
                             let result = confirm('Stop the game?');
                             if (result) {
                                 props.setGlobalStateParameter('gameInProgress', false);
-                                // unaccessible from this component for now
-                                // TODO lift userIsPlaying to global state
-                                // if (userIsAuthenticated)                                    
-                                    // props.setGameStateParameter('userIsPlaying', undefined);                                
+                                // TODO
+                                // if (userIsAuthenticated)
+                                //      props.setGlobalStateParameter('userIsPlaying', undefined);
                             }
                         }}
                 >Stop</BlueButton>}

@@ -1,6 +1,7 @@
 import { 
     get_presets_url, make_preset_url, delete_preset_url, edit_preset_url 
 } from './urls';
+import { CredentialObject as credentialObject } from 'src/code/globalTypes';
 
 
 const getPresets = function(userId: string) {
@@ -13,7 +14,7 @@ const getPresets = function(userId: string) {
     ).catch((err) => console.log(err));
 }
 
-const makePreset = function(formContent: any, formFiles: any, credentials: any) {
+const makePreset = function(formContent: any, formFiles: any, credentials: credentialObject) {
     // data has to be sent as FormData object
     let presetAsForm = new FormData();
     
@@ -39,7 +40,7 @@ const makePreset = function(formContent: any, formFiles: any, credentials: any) 
     ).catch((err) => console.log(err))
 }
 
-const editPreset = function(presetId: number, modifiedAttributes: any, credentials: any) {
+const editPreset = function(presetId: number, modifiedAttributes: any, credentials: credentialObject) {
     return fetch(`${edit_preset_url}/${presetId}`, {
         method: 'PUT',
         headers: {
@@ -53,7 +54,7 @@ const editPreset = function(presetId: number, modifiedAttributes: any, credentia
     }).catch((err) => console.log(err))
 }
 
-const deletePreset = function(presetId: number, credentials: any) {
+const deletePreset = function(presetId: number, credentials: credentialObject) {
     return fetch(`${delete_preset_url}/${presetId}`, {
         method: 'DELETE',
         headers: {

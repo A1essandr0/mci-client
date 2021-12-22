@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { FC, useState, useEffect, ChangeEvent } from 'react';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -18,89 +18,69 @@ type EditUserProfileProps = {
     editDialogOpen: boolean;
     toggleEditOpen: (value: boolean) => void;
 }
-type EditUserProfileState = {
-    id: number;
-    name: string;
-    email: string;
-    error: string;
-}
 
-// TODO refactor with hooks
-export class EditUserProfile extends React.Component<EditUserProfileProps, EditUserProfileState> {
-    constructor(props: EditUserProfileProps) {
-        super(props)
-        this.state = { id: -100, name: "", email: "", error: "" }
+export const EditUserProfile: FC<EditUserProfileProps> = function(props) {
+    const [id, setId] = useState(-100);
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [error, setError] = useState("");
 
-        this.handleChange = this.handleChange.bind(this);
-        this.clickSubmit = this.clickSubmit.bind(this);
-    }
-
-    componentDidUpdate(prevProps: EditUserProfileProps) {
-        if (this.props.userId !== prevProps.userId) {
-            let user = this.props.users
-                .filter((item: User) => item.id === this.props.userId)[0];
-            this.setState({
-                id: this.props.userId,
-                name: user && user.name,
-                email: user && user.email
-            })
+    useEffect(() => {
+        if (props.userId > 0) {
+            setId(props.userId);
+            let user = props.users.filter((item: User) => item.id === props.userId)[0] // O(n) search
+            if (user && user.email) { 
+                setEmail(user.email);
+                setName(user.name)
+            }
         }
-    }
+    }, [props.userId]);
 
-    handleChange(field: string) {
-        return (event: ChangeEvent<HTMLInputElement>) => {
-            this.setState((state) => ({ ...state, [field]: event.target.value }))
-        }
-    }
-
-    clickSubmit() {
+    const clickSubmit = function() {
         const jwt = auth.isAuthenticated();
         const userModified = {
-            id: this.state.id || undefined,
-            name: this.state.name || undefined,
-            email: this.state.email || undefined
+            id: id || undefined,
+            name: name || undefined,
+            email: email || undefined
         };
         if (!userModified.email || !userModified.name) {
-            this.setState({error: 'All fields are required'});
+            setError("All fields are required");
             return;
         }
 
         updateUser(userModified, {t: jwt.token }).then(
             (data: any) => {
-                if (!data || data.error) this.setState({error: data.error})
+                if (!data || data.error) setError(data.error)
                 else {
-                    this.setState({error: ""});
-                    this.props.toggleEditOpen(false);
-                    alert(`User ${this.state.email} modified`);                    
+                    setError("");
+                    props.toggleEditOpen(false);
+                    alert(`User ${email} modified`);                    
                 }
             }
         )
     }
 
-        
-    render() {
-        return (
-            <Dialog open={this.props.editDialogOpen} onClose={()=>{this.props.toggleEditOpen(false)}}>
-                <DialogContent>
-                    <DialogContentText>Edit user profile</DialogContentText>
+    return (
+        <Dialog open={props.editDialogOpen} onClose={()=>{props.toggleEditOpen(false)}}>
+            <DialogContent>
+                <DialogContentText>Edit user profile</DialogContentText>
 
-                    <TextField id="name" value={this.state.name} label="UserName"
-                                required fullWidth variant="outlined" margin="normal"
-                                onChange={this.handleChange('name')}
-                    />
-                    <TextField id="email" type="email" value={this.state.email} label="UserEmail"
-                                required fullWidth variant="outlined" margin="normal"
-                                onChange={this.handleChange('email')}
-                    />
-                    {this.state.error && <div>{this.state.error}</div>}
+                <TextField id="name" value={name} label="UserName"
+                            required fullWidth variant="outlined" margin="normal"
+                            onChange={(event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
+                />
+                <TextField id="email" type="email" value={email} label="UserEmail"
+                            required fullWidth variant="outlined" margin="normal"
+                            onChange={(event: ChangeEvent<HTMLInputElement>) => setEmail(event.target.value)}
+                />
+                {error && <div>{error}</div>}
 
-                    <DialogActions>
-                            <Button onClick={this.clickSubmit} color="primary">Edit</Button>
-                            <Button onClick={()=>{this.props.toggleEditOpen(false)}}>Close</Button>
-                    </DialogActions>
+                <DialogActions>
+                        <Button onClick={clickSubmit} color="primary">Edit</Button>
+                        <Button onClick={()=>{props.toggleEditOpen(false)}}>Close</Button>
+                </DialogActions>
 
-                </DialogContent>
-            </Dialog>
-        )
-    }
+            </DialogContent>
+        </Dialog>
+    )
 }

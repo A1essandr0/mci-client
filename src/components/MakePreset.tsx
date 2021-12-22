@@ -41,9 +41,9 @@ type MakePresetState = {
 
     cardPairsNum: number;
 
-    cardTypes: any;
-    cardFiles: any;
-    cardTexts: any;
+    cardTypes: { [key in string]: any };
+    cardFiles: { [key in string]: any };
+    cardTexts: { [key in string]: any };
 
     backFileName: string;
     emptyFileName: string;

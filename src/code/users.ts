@@ -1,7 +1,17 @@
 import { create_user_url, get_users_url } from './urls'
+import { CredentialObject as credentialObject } from 'src/code/globalTypes';
 
 
-const createUser = function(user: any) {
+type userObject = { 
+    id?: number | undefined;
+    name: string | undefined;
+    email: string | undefined;
+    password?: string | undefined;
+    passwordRepeat?: string | undefined;
+}
+
+
+const createUser = function(user: userObject) {
     return fetch(create_user_url, {
         method: 'POST',
         headers: {
@@ -14,7 +24,7 @@ const createUser = function(user: any) {
     }).catch((err) => console.log(err));
 }
 
-const listUsers = function(credentials: any) {
+const listUsers = function(credentials: credentialObject) {
     return fetch(get_users_url, {
         method: 'GET',
         headers: {
@@ -25,7 +35,7 @@ const listUsers = function(credentials: any) {
     }).catch((err) => console.log(err))
 }
 
-const getUser = function(userId: number, credentials: any) {
+const getUser = function(userId: number, credentials: credentialObject) {
     return fetch(`${get_users_url}/${userId}`, {
         method: 'GET',
         headers: {
@@ -37,7 +47,7 @@ const getUser = function(userId: number, credentials: any) {
 
 }
 
-const removeUser = function(userId: number, credentials: any) {
+const removeUser = function(userId: number, credentials: credentialObject) {
     return fetch(`${get_users_url}/${userId}`, {
         method: 'DELETE',
         headers: {
@@ -50,7 +60,7 @@ const removeUser = function(userId: number, credentials: any) {
     }).catch((err) => console.log(err))
 }
 
-const updateUser = function(user: any, credentials: any) {
+const updateUser = function(user: userObject, credentials: credentialObject) {
     return fetch(`${get_users_url}/${user.id}`, {
         method: 'PUT',
         headers: {

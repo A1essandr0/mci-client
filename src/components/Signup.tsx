@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { FC, useState, ChangeEvent } from 'react';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -15,93 +15,85 @@ type SignupProps = {
     signupActive: boolean;
     setGlobalStateParameter: HigherStateParameterChanger;
 }
-type FieldType = "password" | "email" | "error" | "passwordRepeat" | "name";
-type SignupState = { [key in FieldType]: string }
 
-// TODO refactor with hooks
-export class Signup extends React.Component<SignupProps, SignupState> {
-    constructor(props: SignupProps) {
-        super(props);
-        this.state = { name: '', email: '', password: '', passwordRepeat: '', error: '' }
+export const Signup: FC<SignupProps> = function(props) {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [passwordRepeat, setPasswordRepeat] = useState("");
+    const [error, setError] = useState("");
 
-        this.handleChange = this.handleChange.bind(this);
-        this.clickSubmit = this.clickSubmit.bind(this);
+    const clearFields = function() {
+        [setName, setEmail, setPassword, setPasswordRepeat, setError].forEach(
+            func => func("")
+        )
     }
 
-    handleChange(field: FieldType) {
-        return (event: ChangeEvent<HTMLInputElement>) => { 
-            this.setState((state) => ({ ...state, [field]: event.target.value}))
-        }
-    }
-
-    clickSubmit() {
+    const clickSubmit = function() {
         const user = {
-            name: this.state.name || undefined,
-            email: this.state.email || undefined,
-            password: this.state.password || undefined,
-            passwordRepeat: this.state.passwordRepeat || undefined
+            name: name || undefined,
+            email: email || undefined,
+            password: password || undefined,
+            passwordRepeat: passwordRepeat || undefined
         }
 
         if (!user.email || !user.password || !user.name || !user.passwordRepeat) {
-            this.setState({error: 'All fields are required'});
+            setError("All fields are required");
             return;
         }
         if (user.passwordRepeat !== user.password) {
-            this.setState({error: "Passwords don't match"});
+            setError("Passwords don't match");
             return;
         }
 
         createUser(user).then(
             (data: any) => { 
-                if (data.error) this.setState({error: data.error})
+                if (data.error) setError(data.error)
                 else {
-                    this.setState({error: ""});
-                    this.props.setGlobalStateParameter('signupActive', false);
-                    alert(`User ${user.email} created`)
+                    props.setGlobalStateParameter('signupActive', false);
+                    alert(`User ${user.email} created`);
+                    clearFields();
                 }
             }
         )            
     }
 
+    return (
+        <Dialog open={props.signupActive} onClose={
+                () => { props.setGlobalStateParameter('signupActive', false)}}>
+            <DialogContent>
+                <DialogContentText>
+                    Register
+                </DialogContentText>
+                <TextField id="name" type="text" label="User name" 
+                            required fullWidth margin="normal" variant="outlined"
+                            value={name}
+                            onChange={(event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)} 
+                />
+                <TextField id="email" type="email" label="Email" 
+                            required fullWidth margin="normal" variant="outlined"
+                            value={email}
+                            onChange={(event: ChangeEvent<HTMLInputElement>) => setEmail(event.target.value)} 
+                />
+                <TextField id="password" type="password" label="Password" 
+                            required fullWidth margin="normal" variant="outlined"
+                            value={password}
+                            onChange={(event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
+                />
+                <TextField id="password-repeat" type="password" label="Repeat password" 
+                            required fullWidth margin="normal" variant="outlined"
+                            value={passwordRepeat}
+                            onChange={(event: ChangeEvent<HTMLInputElement>) => setPasswordRepeat(event.target.value)}
+                />
+                {error && <div>{error}</div>}
+            </DialogContent>
 
-    render() {
-        return (
-            <Dialog open={this.props.signupActive} onClose={
-                    () => { this.props.setGlobalStateParameter('signupActive', false)}}>
-                <DialogContent>
-                    <DialogContentText>
-                        Register
-                    </DialogContentText>
-                    <TextField id="name" type="text" label="User name" 
-                                required fullWidth margin="normal" variant="outlined"
-                                value={this.state['name']}
-                                onChange={this.handleChange('name')} 
-                    />
-                    <TextField id="email" type="email" label="Email" 
-                                required fullWidth margin="normal" variant="outlined"
-                                value={this.state['email']}
-                                onChange={this.handleChange('email')} 
-                    />
-                    <TextField id="password" type="password" label="Password" 
-                                required fullWidth margin="normal" variant="outlined"
-                                value={this.state['password']}
-                                onChange={this.handleChange('password')}
-                    />
-                    <TextField id="password-repeat" type="password" label="Repeat password" 
-                                required fullWidth margin="normal" variant="outlined"
-                                value={this.state['passwordRepeat']}
-                                onChange={this.handleChange('passwordRepeat')}
-                    />
-                    {this.state['error'] && <div>{this.state['error']}</div>}
-                </DialogContent>
-
-                <DialogActions>
-                    <Button onClick={this.clickSubmit}>Sign up</Button>
-                    <Button onClick={
-                        () => { this.props.setGlobalStateParameter('signupActive', false)}}
-                    >Close</Button>
-                </DialogActions>
-            </Dialog>           
-        )
-    }
+            <DialogActions>
+                <Button onClick={clickSubmit}>Sign up</Button>
+                <Button onClick={
+                    () => { props.setGlobalStateParameter('signupActive', false)}}
+                >Close</Button>
+            </DialogActions>
+        </Dialog>           
+    )
 }
