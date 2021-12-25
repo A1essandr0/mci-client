@@ -92,10 +92,8 @@ export class Game extends React.Component<any, GameState> {
             cardsOpenedAtm: state.cardsOpenedAtm + 1
         }});
 
-
         if (this.state.checkingPair === null) this.setState({checkingPair: card})
         else {
-
             sleep(this.props.gameDelayOnShow).then( () => {
                 this.setState({});
 
@@ -159,15 +157,12 @@ export class Game extends React.Component<any, GameState> {
                     });
                 }
 
-
                 this.setState({
                     checkingPair: null
                 });
             })       
         }
     }
-
-
 
 
     componentDidUpdate(prevProps: any) {
@@ -199,7 +194,6 @@ export class Game extends React.Component<any, GameState> {
 
 
     render() {
-        // console.log(this.state)
         return (
             <div className="gameArea">
                 <Paper elevation={4}>

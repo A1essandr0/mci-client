@@ -107,7 +107,6 @@ class GeneralLayout extends React.Component<GeneralLayoutProps, GeneralLayoutSta
                 } else chosenPreset = playablePresetsData[0];
 
                 // it is better to have presets in dictionary, indexed by presetName
-                // TODO extract method
                 let playablePresetsDict = {};
                 for (let pr of playablePresetsData) {
                     playablePresetsDict = {...playablePresetsDict,

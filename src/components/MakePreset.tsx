@@ -1,4 +1,4 @@
-import React, { ChangeEvent, MouseEventHandler } from 'react';
+import React, { ChangeEvent } from 'react';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -41,9 +41,9 @@ type MakePresetState = {
 
     cardPairsNum: number;
 
-    cardTypes: { [key in string]: any };
-    cardFiles: { [key in string]: any };
-    cardTexts: { [key in string]: any };
+    cardTypes: { [key in string]: string };
+    cardFiles: { [key in string]: File };
+    cardTexts: { [key in string]: string };
 
     backFileName: string;
     emptyFileName: string;
@@ -53,7 +53,7 @@ type MakePresetState = {
 type toggleButtons = "isPlayableByAll" | "isViewableByAll" | "isViewableByUsers";
 
 
-// It seems like the best way to manage state for this component is to use class
+// Seems like class is the best way to manage state for this component
 export class MakePreset extends React.Component<MakePresetProps, MakePresetState> {
     constructor(props: MakePresetProps) {
         super(props);
@@ -351,7 +351,7 @@ export class MakePreset extends React.Component<MakePresetProps, MakePresetState
                     </div>
                     
                     <div className="dialogMenuBox">
-                        {/* TODO extract component and ['bgColorOne', '...'].map() */}
+                        {/* ['bgColorOne', '...'].map() */}
                         <div className="dialogMenuItem">
                             <input type="color" id="bgColorOne" value={this.state['bgColorOne']}
                                     onChange={this.handleChange('bgColorOne')}
@@ -377,7 +377,7 @@ export class MakePreset extends React.Component<MakePresetProps, MakePresetState
                     <Divider />
 
                     <div className="dialogMenuBox">
-                        {/* TODO extract component ['isPlayableByAll', '...'].map() */}
+                        {/* ['isPlayableByAll', '...'].map() */}
                         <div className="dialogMenuItem">
                             <input type="checkbox" checked={this.state['isPlayableByAll']}
                                     onChange={this.handleToggleChange('isPlayableByAll')}
