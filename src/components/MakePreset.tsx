@@ -202,6 +202,13 @@ export class MakePreset extends React.Component<MakePresetProps, MakePresetState
             return;
         }
 
+        if (/[^A-Za-z0-9_-\s]/.test(newPreset['presetName'])) {
+            this.setState({
+                error: `Preset name can only contains latin letters, numbers, _, - and spaces`
+            })
+            return;
+        }
+
         // checking whether all image files are taken into account
         let newTypesRecords: {[key in string]: string} = {};
         for (let key in this.state['cardFiles']) {
