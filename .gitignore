@@ -6,6 +6,11 @@ test/
 node_modules/
 jspm_packages/
 
+# somewhat sensitive
+deploy_regruvm.sh
+*.service
+serve-static-main.go
+
 
 ####################
 # Logs

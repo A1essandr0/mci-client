@@ -2,9 +2,8 @@
 export const config = {
     mode: process.env.CLIENT_MODE,
 
-    local_server_url: 'https://localhost:3003',
-    azurevm_server_url: 'https://memoricci.fun',
-    application_url: 'https://memoricci.fun',
+    local_backend_server_url: 'http://localhost:3003',
+    production_backend_server_url: 'https://memoricci.fun',
 
     gameStartingDelay: 7,
     gameDelayOnShow: 400,

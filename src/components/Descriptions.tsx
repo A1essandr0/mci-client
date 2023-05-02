@@ -21,7 +21,7 @@ type DescriptionsProps = {
 export const Descriptions: FC<DescriptionsProps> = function(props: DescriptionsProps) {
     if (!props.gameInProgress) {
         if (props.currentView === "presets") {
-            const presetUrl = `${config.application_url}/preset=${props.currentViewedPreset.presetId}`;
+            const presetUrl = `${config.production_backend_server_url}/preset=${props.currentViewedPreset.presetId}`;
             return (
                 <div className="infoPanelLinks">
                     <div className="infoPanelLinksElement">Preset name: {props.currentViewedPreset.presetName}</div>
