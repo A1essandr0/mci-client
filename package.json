@@ -7,7 +7,7 @@
     "test": "tsc --project tsconfig.test.json && mocha test/**/* --recursive",
     "dev": "webpack serve --config webpack.config.js",
     "compile": "webpack --config webpack.config.production.js",
-    "build": "webpack --config webpack.config.production.js && bash deploy_regruvm.sh"
+    "deploy": "webpack --config webpack.config.production.js && bash deploy_regruvm.sh"
   },
   "keywords": [],
   "author": "",

@@ -5,6 +5,6 @@ import GeneralLayout from '../components/GeneralLayout';
 
 
 ReactDOM.render(
-    <GeneralLayout path={window.location.pathname} />, 
+    <GeneralLayout path={window.location.href} />, 
     document.getElementById('root')
 );

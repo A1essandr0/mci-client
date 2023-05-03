@@ -96,11 +96,14 @@ class GeneralLayout extends React.Component<GeneralLayoutProps, GeneralLayoutSta
                     (item: IPreset) => item.viewableByAll || item.viewableByUsers && user || user && user.id === item.owner
                 );
                 
-                let path = this.props.path.split('=');
+                let path = this.props.path.split(/[=|?]/);
+                // console.log(`source path: ${this.props.path}`);
+                // console.log(path);
+                
                 let chosenPreset: IPreset;
-                if (path[0] === '/preset' && path[1]) {
+                if (path[1] === 'preset' && path[2]) {
                     const presetViaLink = playablePresetsData.filter(item => 
-                        item['presetId'] === Number(path[1])
+                        item['presetId'] === Number(path[2])
                     )
                     if (presetViaLink.length === 1) chosenPreset = presetViaLink[0]
                         else chosenPreset = playablePresetsData[0];                
